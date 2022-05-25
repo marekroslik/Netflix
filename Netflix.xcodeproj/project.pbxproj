@@ -8,12 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		F2318DB2FC80330ECADF3200 /* Pods_Netflix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F404FC2FA6F4E72BB3F058F /* Pods_Netflix.framework */; };
+		F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B15283E1CD100677A73 /* HomeViewController.swift */; };
+		F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */; };
+		F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B19283E1D2400677A73 /* FavoritesViewController.swift */; };
+		F9489B1E283E212600677A73 /* HomeHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B1D283E212600677A73 /* HomeHeaderUIView.swift */; };
 		F9633E30283BED8100B8C083 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9633E2F283BED8100B8C083 /* swiftgen.yml */; };
 		F9A2AF0C283CC5E700EB7EB1 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9A2AF0B283CC5E700EB7EB1 /* .swiftlint.yml */; };
 		F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C04499283B9ED40038F175 /* AppDelegate.swift */; };
 		F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C0449B283B9ED40038F175 /* SceneDelegate.swift */; };
-		F9C0449E283B9ED40038F175 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C0449D283B9ED40038F175 /* ViewController.swift */; };
-		F9C044A1283B9ED40038F175 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9C0449F283B9ED40038F175 /* Main.storyboard */; };
+		F9C0449E283B9ED40038F175 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */; };
 		F9C044A3283B9ED40038F175 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9C044A2283B9ED40038F175 /* Assets.xcassets */; };
 		F9C044A6283B9ED40038F175 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9C044A4283B9ED40038F175 /* LaunchScreen.storyboard */; };
 		F9C044B1283B9ED50038F175 /* NetflixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C044B0283B9ED50038F175 /* NetflixTests.swift */; };
@@ -42,13 +45,16 @@
 		220D5AE1C398F972F140CF21 /* Pods-Netflix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Netflix.debug.xcconfig"; path = "Target Support Files/Pods-Netflix/Pods-Netflix.debug.xcconfig"; sourceTree = "<group>"; };
 		7F404FC2FA6F4E72BB3F058F /* Pods_Netflix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Netflix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9A0B76BEEC1C6AFEDCD8A2B /* Pods-Netflix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Netflix.release.xcconfig"; path = "Target Support Files/Pods-Netflix/Pods-Netflix.release.xcconfig"; sourceTree = "<group>"; };
+		F9489B15283E1CD100677A73 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonViewController.swift; sourceTree = "<group>"; };
+		F9489B19283E1D2400677A73 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		F9489B1D283E212600677A73 /* HomeHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderUIView.swift; sourceTree = "<group>"; };
 		F9633E2F283BED8100B8C083 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		F9A2AF0B283CC5E700EB7EB1 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		F9C04496283B9ED40038F175 /* Netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9C04499283B9ED40038F175 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9C0449B283B9ED40038F175 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F9C0449D283B9ED40038F175 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F9C044A0283B9ED40038F175 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		F9C044A2283B9ED40038F175 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F9C044A5283B9ED40038F175 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F9C044A7283B9ED40038F175 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -102,39 +108,48 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		F9A516CB283CC160008B6BA6 /* Splash */ = {
+		F9489B0D283E111300677A73 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F9489B1C283E20E600677A73 /* Home */,
 			);
-			path = Splash;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		F9A516CC283CC183008B6BA6 /* OnBoarding */ = {
+		F9489B0F283E11AD00677A73 /* Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				F9C04499283B9ED40038F175 /* AppDelegate.swift */,
+				F9C0449B283B9ED40038F175 /* SceneDelegate.swift */,
 			);
-			path = OnBoarding;
+			path = Delegate;
 			sourceTree = "<group>";
 		};
-		F9A516CD283CC193008B6BA6 /* LoginSignUp */ = {
+		F9489B14283E1B5200677A73 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */,
+				F9489B1B283E1E9000677A73 /* MainTabBarItems */,
 			);
-			path = LoginSignUp;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		F9A516CE283CC1A4008B6BA6 /* Dashboard */ = {
+		F9489B1B283E1E9000677A73 /* MainTabBarItems */ = {
 			isa = PBXGroup;
 			children = (
+				F9489B15283E1CD100677A73 /* HomeViewController.swift */,
+				F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */,
+				F9489B19283E1D2400677A73 /* FavoritesViewController.swift */,
 			);
-			path = Dashboard;
+			path = MainTabBarItems;
 			sourceTree = "<group>";
 		};
-		F9A516CF283CC1AC008B6BA6 /* MovieDetails */ = {
+		F9489B1C283E20E600677A73 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				F9489B1D283E212600677A73 /* HomeHeaderUIView.swift */,
 			);
-			path = MovieDetails;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		F9C0448D283B9ED40038F175 = {
@@ -164,13 +179,9 @@
 		F9C04498283B9ED40038F175 /* Netflix */ = {
 			isa = PBXGroup;
 			children = (
-				F9C044CB283BA14A0038F175 /* Views */,
-				F9C044C9283BA1270038F175 /* ViewModels */,
-				F9C044CA283BA1350038F175 /* Models */,
-				F9C04499283B9ED40038F175 /* AppDelegate.swift */,
-				F9C0449B283B9ED40038F175 /* SceneDelegate.swift */,
-				F9C0449D283B9ED40038F175 /* ViewController.swift */,
-				F9C0449F283B9ED40038F175 /* Main.storyboard */,
+				F9489B0F283E11AD00677A73 /* Delegate */,
+				F9489B14283E1B5200677A73 /* Controllers */,
+				F9489B0D283E111300677A73 /* Views */,
 				F9C044A2283B9ED40038F175 /* Assets.xcassets */,
 				F9C044A4283B9ED40038F175 /* LaunchScreen.storyboard */,
 				F9C044A7283B9ED40038F175 /* Info.plist */,
@@ -193,32 +204,6 @@
 				F9C044BC283B9ED50038F175 /* NetflixUITestsLaunchTests.swift */,
 			);
 			path = NetflixUITests;
-			sourceTree = "<group>";
-		};
-		F9C044C9283BA1270038F175 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		F9C044CA283BA1350038F175 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		F9C044CB283BA14A0038F175 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				F9A516CF283CC1AC008B6BA6 /* MovieDetails */,
-				F9A516CE283CC1A4008B6BA6 /* Dashboard */,
-				F9A516CD283CC193008B6BA6 /* LoginSignUp */,
-				F9A516CC283CC183008B6BA6 /* OnBoarding */,
-				F9A516CB283CC160008B6BA6 /* Splash */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,7 +317,6 @@
 				F9A2AF0C283CC5E700EB7EB1 /* .swiftlint.yml in Resources */,
 				F9C044A6283B9ED40038F175 /* LaunchScreen.storyboard in Resources */,
 				F9C044A3283B9ED40038F175 /* Assets.xcassets in Resources */,
-				F9C044A1283B9ED40038F175 /* Main.storyboard in Resources */,
 				F9633E30283BED8100B8C083 /* swiftgen.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,9 +420,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9C0449E283B9ED40038F175 /* ViewController.swift in Sources */,
+				F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */,
+				F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */,
+				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
+				F9C0449E283B9ED40038F175 /* MainTabBarViewController.swift in Sources */,
 				F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */,
 				F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */,
+				F9489B1E283E212600677A73 /* HomeHeaderUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,14 +463,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F9C0449F283B9ED40038F175 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F9C044A0283B9ED40038F175 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F9C044A4283B9ED40038F175 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -621,7 +601,7 @@
 				INFOPLIST_FILE = Netflix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -652,7 +632,7 @@
 				INFOPLIST_FILE = Netflix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
