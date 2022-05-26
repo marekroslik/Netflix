@@ -29,7 +29,7 @@ class HomeLatestMovieUIView: UIView {
         let button = UIButton()
         button.setTitle(" Play", for: .normal)
         button.setImage(UIImage(systemName: "play.fill"),
-                for: .normal)
+                        for: .normal)
         button.tintColor = .black
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
@@ -41,20 +41,42 @@ class HomeLatestMovieUIView: UIView {
         let button = UIVerticalButton()
         button.setTitle("Like", for: .normal)
         button.setImage(UIImage(systemName: "heart"),
-                for: .normal)
+                        for: .normal)
         button.tintColor = .white
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         return button
     }()
+    private var gradientView: UIView = {
+        let gradient = UIView()
+        return gradient
+    }()
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(movieImage)
+        addSubview(gradientView)
         addSubview(likeButton)
         addSubview(playButton)
         addSubview(filmName)
         addSubview(hashtags)
         applyConstraints()
+        addGradient()
+    }
+    private func addGradient() {
+        let startColor = UIColor.clear.cgColor
+        let endColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+        let gradientTop = CAGradientLayer()
+        gradientTop.frame = CGRect(x: 0, y: 0,
+                                   width: UIScreen.main.bounds.width,
+                                   height: UIScreen.main.bounds.height * 0.6)
+        let gradientBottom = CAGradientLayer()
+        gradientBottom.frame = CGRect(x: 0, y: 0,
+                                width: UIScreen.main.bounds.width,
+                                height: UIScreen.main.bounds.height * 0.6)
+        gradientTop.colors = [endColor, startColor, startColor]
+        gradientBottom.colors = [startColor, startColor, endColor]
+        gradientView.layer.addSublayer(gradientTop)
+        gradientView.layer.addSublayer(gradientBottom)
     }
     private func applyConstraints() {
         movieImage.snp.makeConstraints { make in
@@ -62,6 +84,9 @@ class HomeLatestMovieUIView: UIView {
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.width.equalToSuperview()
+        }
+        gradientView.snp.makeConstraints { make in
+            make.edges.equalTo(movieImage)
         }
         playButton.snp.makeConstraints { make in
             make.bottom.equalTo(movieImage).offset(20)
