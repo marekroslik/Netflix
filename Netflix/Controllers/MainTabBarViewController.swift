@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 class MainTabBarViewController: UITabBarController {
     override func viewDidLoad() {
@@ -17,5 +18,9 @@ class MainTabBarViewController: UITabBarController {
         tabBar.barTintColor = .white
         tabBar.backgroundColor = .black
         setViewControllers([vc1, vc2, vc3], animated: true)
+        updateValue(controller: vc3, value: 1)
+    }
+    private func updateValue(controller: UINavigationController, value: Int) {
+        controller.tabBarItem.badgeValue = "\(value)"
     }
 }
