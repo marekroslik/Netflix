@@ -73,8 +73,8 @@ class HomeLatestMovieUIView: UIView {
         gradientBottom.frame = CGRect(x: 0, y: 0,
                                 width: UIScreen.main.bounds.width,
                                 height: UIScreen.main.bounds.height * 0.6)
-        gradientTop.colors = [endColor, startColor, startColor]
-        gradientBottom.colors = [startColor, startColor, endColor]
+        gradientTop.colors = [endColor, startColor, startColor, startColor]
+        gradientBottom.colors = [startColor, startColor, startColor, endColor]
         gradientView.layer.addSublayer(gradientTop)
         gradientView.layer.addSublayer(gradientBottom)
     }
