@@ -1,7 +1,8 @@
 import UIKit
 
+// Custom vertical button
 final class UIVerticalButton: UIButton {
-
+    
     override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
         let superRect = super.titleRect(forContentRect: contentRect)
         return CGRect(
@@ -11,7 +12,7 @@ final class UIVerticalButton: UIButton {
             height: superRect.height
         )
     }
-
+    
     override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
         let superRect = super.imageRect(forContentRect: contentRect)
         return CGRect(
@@ -21,25 +22,17 @@ final class UIVerticalButton: UIButton {
             height: superRect.height
         )
     }
-
-    override var intrinsicContentSize: CGSize {
-        _ = super.intrinsicContentSize
-        guard let image = imageView?.image else { return super.intrinsicContentSize }
-        let size = titleLabel?.sizeThatFits(contentRect(forBounds: bounds).size) ?? .zero
-        let spacing: CGFloat = 12
-        return CGSize(width: max(size.width, image.size.width), height: image.size.height + size.height + spacing)
-    }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
-
+    
     private func setup() {
         titleLabel?.textAlignment = .center
     }

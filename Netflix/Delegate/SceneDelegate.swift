@@ -7,6 +7,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
+            
+            // Set initial controller
             window.rootViewController = MainTabBarViewController()
             self.window = window
             window.makeKeyAndVisible()

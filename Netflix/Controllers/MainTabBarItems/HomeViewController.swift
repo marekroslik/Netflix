@@ -2,8 +2,11 @@ import UIKit
 import SnapKit
 
 class HomeViewController: UIViewController {
+    
+    // Create view
     private let latestMovieView = HomeLatestMovieUIView()
     private let popularMovies = HomePopularMoviesUIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -12,6 +15,8 @@ class HomeViewController: UIViewController {
         configNavBar()
         applyConstraints()
     }
+    
+    // Set Constraints
     private func applyConstraints() {
         latestMovieView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
@@ -23,24 +28,38 @@ class HomeViewController: UIViewController {
             make.height.equalToSuperview().multipliedBy(0.4)
         }
     }
+    
+    // Customize navigation bar
     private func configNavBar() {
-        let menuBtn = UIButton(type: .custom)
-        menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 35)
-        menuBtn.setImage(Asset.smallLogoNetflix.image, for: .normal)
-        let menuBarItem = UIBarButtonItem(customView: menuBtn)
-        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 20)
-        currWidth?.isActive = true
-        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 35)
-        currHeight?.isActive = true
-        navigationItem.leftBarButtonItem = menuBarItem
-        let menuBtn2 = UIButton(type: .custom)
-        menuBtn2.frame = CGRect(x: 0.0, y: 0.0, width: 35, height: 35)
-        menuBtn2.setImage(Asset.accountLogoNetflix.image, for: .normal)
-        let menuBarItem2 = UIBarButtonItem(customView: menuBtn2)
-        let currWidth2 = menuBarItem2.customView?.widthAnchor.constraint(equalToConstant: 35)
-        currWidth2?.isActive = true
-        let currHeight2 = menuBarItem2.customView?.heightAnchor.constraint(equalToConstant: 35)
-        currHeight2?.isActive = true
-        navigationItem.rightBarButtonItem = menuBarItem2
+        
+        // Create Netlifx logo (left navigation button)
+        let logoButton = UIButton(type: .custom)
+        // Set ftame size
+        logoButton.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 35)
+        // Set asset
+        logoButton.setImage(Asset.smallLogoNetflix.image, for: .normal)
+        let logoBarItem = UIBarButtonItem(customView: logoButton)
+        // Set constraints
+        let currentWidth = logoBarItem.customView?.widthAnchor.constraint(equalToConstant: 20)
+        currentWidth?.isActive = true
+        let currentHeight = logoBarItem.customView?.heightAnchor.constraint(equalToConstant: 35)
+        currentHeight?.isActive = true
+        // Add button to navigation bar
+        navigationItem.leftBarButtonItem = logoBarItem
+        
+        // Create account button (right navigation button)
+        let accountButton = UIButton(type: .custom)
+        // Set size
+        accountButton.frame = CGRect(x: 0.0, y: 0.0, width: 35, height: 35)
+        // Set asset
+        accountButton.setImage(Asset.accountLogoNetflix.image, for: .normal)
+        let  accountButtonBarItem = UIBarButtonItem(customView: accountButton)
+        // Set constraints
+        let currentWidth2 = accountButtonBarItem.customView?.widthAnchor.constraint(equalToConstant: 35)
+        currentWidth2?.isActive = true
+        let currentHeight2 = accountButtonBarItem.customView?.heightAnchor.constraint(equalToConstant: 35)
+        currentHeight2?.isActive = true
+        // Add button to navigation bar
+        navigationItem.rightBarButtonItem = accountButtonBarItem
     }
 }
