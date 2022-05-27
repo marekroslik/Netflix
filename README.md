@@ -1,5 +1,5 @@
-#Netflix app
+# Netflix app
 
 # Home view
-![alt text](/Screeshots/homeview.png)
+![alt text](/Screeshots/homeview.png =x250)
 
