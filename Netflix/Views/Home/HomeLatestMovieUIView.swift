@@ -7,7 +7,7 @@ class HomeLatestMovieUIView: UIView {
     private let movieImage: UIImageView = {
         let image = UIImageView()
         image.image = Asset.latestMovieNetflix.image
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         return image
     }()
     
@@ -63,16 +63,20 @@ class HomeLatestMovieUIView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        addSubviews()
+        applyConstraints()
+        addGradient()
+    }
+    
+    // Add subviews
+    private func addSubviews() {
         addSubview(movieImage)
         addSubview(gradientView)
         addSubview(likeButton)
         addSubview(playButton)
         addSubview(filmName)
         addSubview(hashtags)
-        applyConstraints()
-        addGradient()
     }
-    
     // Set constraints function
     private func applyConstraints() {
         
@@ -134,8 +138,8 @@ class HomeLatestMovieUIView: UIView {
         gradientBottom.frame = CGRect(x: 0, y: 0,
                                       width: UIScreen.main.bounds.width,
                                       height: UIScreen.main.bounds.height * 0.6)
-        gradientTop.colors = [endColor, startColor, startColor]
-        gradientBottom.colors = [startColor, startColor, endColor]
+        gradientTop.colors = [endColor, startColor, startColor, startColor]
+        gradientBottom.colors = [startColor, startColor, startColor, endColor]
         gradientView.layer.addSublayer(gradientTop)
         gradientView.layer.addSublayer(gradientBottom)
     }
