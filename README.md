@@ -1,5 +1,5 @@
 # Netflix app
 
 # Home view
-![alt text](/Screeshots/homeview.png =x250)
 
+<img src="/Screeshots/homeview.png" width="200">
