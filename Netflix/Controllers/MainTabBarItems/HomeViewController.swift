@@ -10,23 +10,15 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        view.addSubview(latestMovieView)
-        view.addSubview(popularMovies)
+        addSubviews()
         configNavBar()
         applyConstraints()
     }
     
-    // Set Constraints
-    private func applyConstraints() {
-        latestMovieView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalTo(popularMovies.snp.top)
-        }
-        popularMovies.snp.makeConstraints { make in
-            make.bottom.left.right.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.4)
-        }
+    // Add subviews
+    private func addSubviews() {
+        view.addSubview(latestMovieView)
+        view.addSubview(popularMovies)
     }
     
     // Customize navigation bar
@@ -61,5 +53,18 @@ class HomeViewController: UIViewController {
         currentHeight2?.isActive = true
         // Add button to navigation bar
         navigationItem.rightBarButtonItem = accountButtonBarItem
+    }
+    
+    // Set Constraints
+    private func applyConstraints() {
+        latestMovieView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalTo(popularMovies.snp.top)
+        }
+        popularMovies.snp.makeConstraints { make in
+            make.bottom.left.right.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.4)
+        }
     }
 }
