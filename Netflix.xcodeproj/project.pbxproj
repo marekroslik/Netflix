@@ -21,6 +21,9 @@
 		F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98359A22841278800BD6F8A /* SplashUIView.swift */; };
 		F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */; };
 		F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */; };
+		F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */; };
+		F99D1B5D284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D1B5C284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift */; };
+		F99D1B602842808A009EE515 /* FavoritesUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D1B5F2842808A009EE515 /* FavoritesUIView.swift */; };
 		F9A2AF0C283CC5E700EB7EB1 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9A2AF0B283CC5E700EB7EB1 /* .swiftlint.yml */; };
 		F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C04499283B9ED40038F175 /* AppDelegate.swift */; };
 		F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C0449B283B9ED40038F175 /* SceneDelegate.swift */; };
@@ -66,6 +69,9 @@
 		F98359A22841278800BD6F8A /* SplashUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashUIView.swift; sourceTree = "<group>"; };
 		F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingUIView.swift; sourceTree = "<group>"; };
 		F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopularMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
+		F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonUIView.swift; sourceTree = "<group>"; };
+		F99D1B5C284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCommingSoonCollectionViewCell.swift; sourceTree = "<group>"; };
+		F99D1B5F2842808A009EE515 /* FavoritesUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesUIView.swift; sourceTree = "<group>"; };
 		F9A2AF0B283CC5E700EB7EB1 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		F9C04496283B9ED40038F175 /* Netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9C04499283B9ED40038F175 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -184,6 +190,7 @@
 		F981054A283F7E93005496FD /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F99D1B5C284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift */,
 				F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */,
 				F9810548283F69BA005496FD /* UIVerticalButton.swift */,
 			);
@@ -222,10 +229,28 @@
 			path = OnBoarding;
 			sourceTree = "<group>";
 		};
+		F99D1B58284262D2009EE515 /* CommingSoon */ = {
+			isa = PBXGroup;
+			children = (
+				F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */,
+			);
+			path = CommingSoon;
+			sourceTree = "<group>";
+		};
+		F99D1B5E28428072009EE515 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				F99D1B5F2842808A009EE515 /* FavoritesUIView.swift */,
+			);
+			path = Favorites;
+			sourceTree = "<group>";
+		};
 		F99F54C9284261E200302337 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
 				F9489B1C283E20E600677A73 /* Home */,
+				F99D1B58284262D2009EE515 /* CommingSoon */,
+				F99D1B5E28428072009EE515 /* Favorites */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -504,6 +529,7 @@
 				F910B982283E5D6B00A55A7A /* XCAssets+Generated.swift in Sources */,
 				F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */,
 				F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */,
+				F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */,
 				F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */,
 				F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */,
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
@@ -511,9 +537,11 @@
 				F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */,
 				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
 				F983599F28411EB300BD6F8A /* UIExtensions.swift in Sources */,
+				F99D1B602842808A009EE515 /* FavoritesUIView.swift in Sources */,
 				F9C0449E283B9ED40038F175 /* MainTabBarViewController.swift in Sources */,
 				F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */,
 				F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */,
+				F99D1B5D284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift in Sources */,
 				F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
