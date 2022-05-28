@@ -16,6 +16,10 @@
 		F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B1F283E51C200677A73 /* HomeLatestMovieUIView.swift */; };
 		F9489B22283E58DD00677A73 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9489B21283E58DD00677A73 /* swiftgen.yml */; };
 		F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9810548283F69BA005496FD /* UIVerticalButton.swift */; };
+		F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F983599C284110D100BD6F8A /* LoginUIView.swift */; };
+		F983599F28411EB300BD6F8A /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F983599E28411EB300BD6F8A /* UIExtensions.swift */; };
+		F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98359A22841278800BD6F8A /* SplashUIView.swift */; };
+		F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */; };
 		F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */; };
 		F9A2AF0C283CC5E700EB7EB1 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9A2AF0B283CC5E700EB7EB1 /* .swiftlint.yml */; };
 		F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C04499283B9ED40038F175 /* AppDelegate.swift */; };
@@ -57,6 +61,10 @@
 		F9489B1F283E51C200677A73 /* HomeLatestMovieUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLatestMovieUIView.swift; sourceTree = "<group>"; };
 		F9489B21283E58DD00677A73 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		F9810548283F69BA005496FD /* UIVerticalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIVerticalButton.swift; sourceTree = "<group>"; };
+		F983599C284110D100BD6F8A /* LoginUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIView.swift; sourceTree = "<group>"; };
+		F983599E28411EB300BD6F8A /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
+		F98359A22841278800BD6F8A /* SplashUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashUIView.swift; sourceTree = "<group>"; };
+		F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingUIView.swift; sourceTree = "<group>"; };
 		F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopularMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
 		F9A2AF0B283CC5E700EB7EB1 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		F9C04496283B9ED40038F175 /* Netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,7 +135,10 @@
 		F9489B0D283E111300677A73 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F9489B1C283E20E600677A73 /* Home */,
+				F99F54C9284261E200302337 /* Dashboard */,
+				F98359A6284128DA00BD6F8A /* OnBoarding */,
+				F98359A12841276D00BD6F8A /* Splash */,
+				F983599B284110A300BD6F8A /* Login */,
 				F981054A283F7E93005496FD /* Components */,
 			);
 			path = Views;
@@ -179,6 +190,46 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		F983599B284110A300BD6F8A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				F983599C284110D100BD6F8A /* LoginUIView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		F98359A02841272600BD6F8A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F983599E28411EB300BD6F8A /* UIExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F98359A12841276D00BD6F8A /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				F98359A22841278800BD6F8A /* SplashUIView.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		F98359A6284128DA00BD6F8A /* OnBoarding */ = {
+			isa = PBXGroup;
+			children = (
+				F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */,
+			);
+			path = OnBoarding;
+			sourceTree = "<group>";
+		};
+		F99F54C9284261E200302337 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				F9489B1C283E20E600677A73 /* Home */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
 		F9C0448D283B9ED40038F175 = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +257,7 @@
 		F9C04498283B9ED40038F175 /* Netflix */ = {
 			isa = PBXGroup;
 			children = (
+				F98359A02841272600BD6F8A /* Extensions */,
 				F910B980283E5D5100A55A7A /* Generated */,
 				F9489B0F283E11AD00677A73 /* Delegate */,
 				F9489B14283E1B5200677A73 /* Controllers */,
@@ -453,8 +505,12 @@
 				F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */,
 				F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */,
 				F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */,
+				F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */,
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
+				F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */,
+				F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */,
 				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
+				F983599F28411EB300BD6F8A /* UIExtensions.swift in Sources */,
 				F9C0449E283B9ED40038F175 /* MainTabBarViewController.swift in Sources */,
 				F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */,
 				F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */,
