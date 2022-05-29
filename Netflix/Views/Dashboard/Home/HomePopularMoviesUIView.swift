@@ -32,7 +32,7 @@ class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollectionVie
     private func createCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: UIScreen.main.bounds.height * 0.4 - 160)
+        layout.itemSize = CGSize(width: 100, height: 190)
         popularMoviesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         guard let popularMoviesCollectionView = popularMoviesCollectionView else {
             return

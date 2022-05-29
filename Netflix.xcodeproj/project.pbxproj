@@ -33,6 +33,9 @@
 		F9C044B1283B9ED50038F175 /* NetflixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C044B0283B9ED50038F175 /* NetflixTests.swift */; };
 		F9C044BB283B9ED50038F175 /* NetflixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C044BA283B9ED50038F175 /* NetflixUITests.swift */; };
 		F9C044BD283B9ED50038F175 /* NetflixUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C044BC283B9ED50038F175 /* NetflixUITestsLaunchTests.swift */; };
+		F9C73AAE2843A67F004EF079 /* CustomFavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */; };
+		F9C73AB12843D958004EF079 /* MovieDetailsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */; };
+		F9D39DAD28440AC00021A5A0 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D39DAC28440AC00021A5A0 /* PreviewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,9 @@
 		F9C044B6283B9ED50038F175 /* NetflixUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NetflixUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9C044BA283B9ED50038F175 /* NetflixUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetflixUITests.swift; sourceTree = "<group>"; };
 		F9C044BC283B9ED50038F175 /* NetflixUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetflixUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFavoritesTableViewCell.swift; sourceTree = "<group>"; };
+		F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsUIView.swift; sourceTree = "<group>"; };
+		F9D39DAC28440AC00021A5A0 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,10 +147,11 @@
 		F9489B0D283E111300677A73 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F99F54C9284261E200302337 /* Dashboard */,
-				F98359A6284128DA00BD6F8A /* OnBoarding */,
 				F98359A12841276D00BD6F8A /* Splash */,
+				F98359A6284128DA00BD6F8A /* OnBoarding */,
 				F983599B284110A300BD6F8A /* Login */,
+				F99F54C9284261E200302337 /* Dashboard */,
+				F9C73AAF2843D908004EF079 /* MovieDetails */,
 				F981054A283F7E93005496FD /* Components */,
 			);
 			path = Views;
@@ -162,6 +169,7 @@
 		F9489B14283E1B5200677A73 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F9D39DAC28440AC00021A5A0 /* PreviewViewController.swift */,
 				F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */,
 				F9489B1B283E1E9000677A73 /* MainTabBarItems */,
 			);
@@ -192,6 +200,7 @@
 			children = (
 				F99D1B5C284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift */,
 				F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */,
+				F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */,
 				F9810548283F69BA005496FD /* UIVerticalButton.swift */,
 			);
 			path = Components;
@@ -309,6 +318,14 @@
 				F9C044BC283B9ED50038F175 /* NetflixUITestsLaunchTests.swift */,
 			);
 			path = NetflixUITests;
+			sourceTree = "<group>";
+		};
+		F9C73AAF2843D908004EF079 /* MovieDetails */ = {
+			isa = PBXGroup;
+			children = (
+				F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */,
+			);
+			path = MovieDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -527,10 +544,13 @@
 			files = (
 				F910B984283E716A00A55A7A /* HomePopularMoviesUIView.swift in Sources */,
 				F910B982283E5D6B00A55A7A /* XCAssets+Generated.swift in Sources */,
+				F9C73AB12843D958004EF079 /* MovieDetailsUIView.swift in Sources */,
 				F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */,
 				F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */,
 				F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */,
 				F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */,
+				F9D39DAD28440AC00021A5A0 /* PreviewViewController.swift in Sources */,
+				F9C73AAE2843A67F004EF079 /* CustomFavoritesTableViewCell.swift in Sources */,
 				F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */,
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
 				F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */,

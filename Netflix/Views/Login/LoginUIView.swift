@@ -20,6 +20,7 @@ class LoginUIVIew: UIView {
         textField.font = .boldSystemFont(ofSize: 14)
         textField.setLeftPaddingPoints(10)
         textField.setRightPaddingPoints(10)
+        textField.tintColor = .red
         return textField
     }()
     
@@ -33,7 +34,7 @@ class LoginUIVIew: UIView {
         textField.setLeftPaddingPoints(10)
         textField.setRightPaddingPoints(65)
         textField.isSecureTextEntry = true
-        
+        textField.tintColor = .red
         return textField
     }()
     

@@ -8,8 +8,8 @@ class CommingSoonViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         view.addSubview(commingSoon)
-        applyConstraints()
         self.navigationController?.isNavigationBarHidden = true
+        applyConstraints()
     }
     
     private func applyConstraints() {

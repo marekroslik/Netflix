@@ -26,6 +26,8 @@ class MainTabBarViewController: UITabBarController {
         
         view.backgroundColor = .black
     }
+   
+    // Update badge value
     private func updateValue(controller: UINavigationController, value: Int) {
         controller.tabBarItem.badgeValue = "\(value)"
     }

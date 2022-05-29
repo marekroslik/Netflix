@@ -8,6 +8,7 @@ class HomeLatestMovieUIView: UIView {
         let image = UIImageView()
         image.image = Asset.latestMovieNetflix.image
         image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         return image
     }()
     

@@ -10,6 +10,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             // Set initial controller
             window.rootViewController = MainTabBarViewController()
+
+            // Uncomment to view other views. And go to the "PreviewViewController" file
+//            window.rootViewController = PreviewViewController()
             self.window = window
             window.makeKeyAndVisible()
         }

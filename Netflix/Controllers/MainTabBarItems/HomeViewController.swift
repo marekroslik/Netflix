@@ -60,11 +60,11 @@ class HomeViewController: UIViewController {
         latestMovieView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalToSuperview()
-            make.bottom.equalTo(popularMovies.snp.top)
+            make.height.equalTo(505)
         }
         popularMovies.snp.makeConstraints { make in
             make.bottom.left.right.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.4)
+            make.height.equalTo(340)
         }
     }
 }

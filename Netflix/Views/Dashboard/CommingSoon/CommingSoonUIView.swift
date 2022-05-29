@@ -7,16 +7,17 @@ class CommingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     private let searchTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .darkGray
+        textField.textColor = .white
         textField.layer.cornerRadius = 5
-
         let centeredParagraphStyle = NSMutableParagraphStyle()
         centeredParagraphStyle.alignment = .center
         textField.attributedPlaceholder = NSAttributedString(
             string: "Search",
-            attributes: [.paragraphStyle: centeredParagraphStyle])
+            attributes: [.paragraphStyle: centeredParagraphStyle, NSAttributedString.Key.foregroundColor: UIColor.gray])
         textField.font = .boldSystemFont(ofSize: 14)
         textField.setLeftPaddingPoints(10)
         textField.setRightPaddingPoints(10)
+        textField.tintColor = .red
         return textField
     }()
     

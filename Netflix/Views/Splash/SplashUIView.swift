@@ -8,6 +8,7 @@ class SplashUIView: UIView {
         let image = UIImageView()
         image.image = Asset.bigLogoNetflix.image
         image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         return image
     }()
     
@@ -26,7 +27,7 @@ class SplashUIView: UIView {
     private func applyConstraints() {
         bigLogo.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.3)
+            make.width.equalTo(350)
         }
     }
     

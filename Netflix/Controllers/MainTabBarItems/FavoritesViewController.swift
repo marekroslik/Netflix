@@ -2,16 +2,17 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
-    let onBoarding = OnBoardingUIView()
+    let favoritesView = FavoritesUIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        view.addSubview(onBoarding)
+        view.addSubview(favoritesView)
+        self.navigationController?.isNavigationBarHidden = true
         applyConstraints()
     }
     private func applyConstraints() {
-        onBoarding.snp.makeConstraints { make in
+        favoritesView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
