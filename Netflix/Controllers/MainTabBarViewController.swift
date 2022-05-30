@@ -21,6 +21,13 @@ class MainTabBarViewController: UITabBarController {
         tabBar.tintColor = .white
         tabBar.barTintColor = .white
         tabBar.backgroundColor = .black
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            tabBar.standardAppearance = appearance
+            tabBar.scrollEdgeAppearance = appearance
+        }
+        
         setViewControllers([vc1, vc2, vc3], animated: true)
         updateValue(controller: vc3, value: 1)
         
