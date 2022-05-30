@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class OnBoardingUIView: UIView {
+class OnBoardingUIView: UIView, UIScrollViewDelegate {
     
     // Create background image
     private let bigLogo: UIImageView = {
@@ -14,7 +14,7 @@ class OnBoardingUIView: UIView {
     // Create blur view for image
     private let blurView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
         return view
     }()
     

@@ -15,6 +15,9 @@
 		F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B19283E1D2400677A73 /* FavoritesViewController.swift */; };
 		F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B1F283E51C200677A73 /* HomeLatestMovieUIView.swift */; };
 		F9489B22283E58DD00677A73 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9489B21283E58DD00677A73 /* swiftgen.yml */; };
+		F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF092844B36900758CE0 /* OnBoardingViewController.swift */; };
+		F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */; };
+		F967AF0F2844B48900758CE0 /* SecondOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */; };
 		F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9810548283F69BA005496FD /* UIVerticalButton.swift */; };
 		F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F983599C284110D100BD6F8A /* LoginUIView.swift */; };
 		F983599F28411EB300BD6F8A /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F983599E28411EB300BD6F8A /* UIExtensions.swift */; };
@@ -66,6 +69,9 @@
 		F9489B19283E1D2400677A73 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		F9489B1F283E51C200677A73 /* HomeLatestMovieUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLatestMovieUIView.swift; sourceTree = "<group>"; };
 		F9489B21283E58DD00677A73 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
+		F967AF092844B36900758CE0 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
+		F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstOnBoardingUIView.swift; sourceTree = "<group>"; };
+		F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondOnBoardingUIView.swift; sourceTree = "<group>"; };
 		F9810548283F69BA005496FD /* UIVerticalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIVerticalButton.swift; sourceTree = "<group>"; };
 		F983599C284110D100BD6F8A /* LoginUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIView.swift; sourceTree = "<group>"; };
 		F983599E28411EB300BD6F8A /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
@@ -171,6 +177,7 @@
 			children = (
 				F9D39DAC28440AC00021A5A0 /* PreviewViewController.swift */,
 				F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */,
+				F967AF092844B36900758CE0 /* OnBoardingViewController.swift */,
 				F9489B1B283E1E9000677A73 /* MainTabBarItems */,
 			);
 			path = Controllers;
@@ -193,6 +200,15 @@
 				F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		F967AF0B2844B45100758CE0 /* OnBoardingItems */ = {
+			isa = PBXGroup;
+			children = (
+				F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */,
+				F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */,
+			);
+			path = OnBoardingItems;
 			sourceTree = "<group>";
 		};
 		F981054A283F7E93005496FD /* Components */ = {
@@ -234,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */,
+				F967AF0B2844B45100758CE0 /* OnBoardingItems */,
 			);
 			path = OnBoarding;
 			sourceTree = "<group>";
@@ -549,11 +566,13 @@
 				F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */,
 				F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */,
 				F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */,
+				F967AF0F2844B48900758CE0 /* SecondOnBoardingUIView.swift in Sources */,
 				F9D39DAD28440AC00021A5A0 /* PreviewViewController.swift in Sources */,
 				F9C73AAE2843A67F004EF079 /* CustomFavoritesTableViewCell.swift in Sources */,
 				F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */,
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
 				F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */,
+				F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */,
 				F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */,
 				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
 				F983599F28411EB300BD6F8A /* UIExtensions.swift in Sources */,
@@ -563,6 +582,7 @@
 				F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */,
 				F99D1B5D284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift in Sources */,
 				F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */,
+				F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
