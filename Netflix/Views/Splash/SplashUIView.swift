@@ -27,7 +27,7 @@ class SplashUIView: UIView {
     private func applyConstraints() {
         bigLogo.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-            make.width.equalTo(350)
+            make.width.equalToSuperview().multipliedBy(0.5)
         }
     }
     

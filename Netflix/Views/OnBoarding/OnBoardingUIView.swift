@@ -18,6 +18,16 @@ class OnBoardingUIView: UIView, UIScrollViewDelegate {
         return view
     }()
     
+    // Create singInButton
+    private let signInButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("SIGN IN", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 20)
+        button.backgroundColor = .red
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
@@ -28,6 +38,7 @@ class OnBoardingUIView: UIView, UIScrollViewDelegate {
     private func addSubviews() {
         addSubview(bigLogo)
         addSubview(blurView)
+        addSubview(signInButton)
     }
     
     // Set constatints
@@ -36,8 +47,16 @@ class OnBoardingUIView: UIView, UIScrollViewDelegate {
             make.centerX.centerY.equalToSuperview()
             make.width.equalToSuperview()
         }
+        
         blurView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+       
+        signInButton.snp.makeConstraints { make in
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.height.equalTo(40)
+            make.bottom.equalToSuperview().offset(-50)
+            make.centerX.equalToSuperview()
         }
     }
     

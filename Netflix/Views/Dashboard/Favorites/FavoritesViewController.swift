@@ -8,7 +8,7 @@ class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         view.addSubview(favoritesView)
-        self.navigationController?.isNavigationBarHidden = true
+        navigationController?.isNavigationBarHidden = true
         applyConstraints()
     }
     private func applyConstraints() {

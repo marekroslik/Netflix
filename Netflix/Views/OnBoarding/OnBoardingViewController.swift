@@ -4,8 +4,8 @@ import SnapKit
 class OnBoardingViewController: UIViewController {
     
     private let backGround = OnBoardingUIView()
-    private lazy var firstView = FirstOnBoardingUIView()
-    private lazy var secondView = SecondOnBoardingUIView()
+    private let firstView = FirstOnBoardingUIView()
+    private let secondView = SecondOnBoardingUIView()
     
     private lazy var views = [firstView, secondView]
     
