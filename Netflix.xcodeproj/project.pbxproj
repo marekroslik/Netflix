@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		F2318DB2FC80330ECADF3200 /* Pods_Netflix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F404FC2FA6F4E72BB3F058F /* Pods_Netflix.framework */; };
+		F90CAFD5284630070011E4E5 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFD4284630070011E4E5 /* SplashViewController.swift */; };
+		F90CAFD7284631890011E4E5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFD6284631890011E4E5 /* LoginViewController.swift */; };
+		F90CAFD92846320B0011E4E5 /* MoviewDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFD82846320B0011E4E5 /* MoviewDetailsViewController.swift */; };
+		F90CAFDB284633320011E4E5 /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFDA284633320011E4E5 /* ApplicationCoordinator.swift */; };
+		F90CAFDD2846358B0011E4E5 /* OnBoardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFDC2846358B0011E4E5 /* OnBoardingCoordinator.swift */; };
+		F90CAFDF284637500011E4E5 /* SplashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFDE284637500011E4E5 /* SplashCoordinator.swift */; };
+		F90CAFE128463AB80011E4E5 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFE028463AB80011E4E5 /* MainCoordinator.swift */; };
+		F90CAFE528463D5D0011E4E5 /* HomeViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFE428463D5D0011E4E5 /* HomeViewCoordinator.swift */; };
+		F90CAFE728463E9E0011E4E5 /* CommingSoonCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFE628463E9E0011E4E5 /* CommingSoonCoordinator.swift */; };
+		F90CAFE9284644020011E4E5 /* FavoritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFE8284644020011E4E5 /* FavoritesCoordinator.swift */; };
+		F90CAFEB28464F6F0011E4E5 /* LiginViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFEA28464F6F0011E4E5 /* LiginViewCoordinator.swift */; };
+		F90CAFED28464FD80011E4E5 /* MoviewDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFEC28464FD80011E4E5 /* MoviewDetailsCoordinator.swift */; };
 		F910B982283E5D6B00A55A7A /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910B981283E5D6B00A55A7A /* XCAssets+Generated.swift */; };
 		F910B984283E716A00A55A7A /* HomePopularMoviesUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */; };
 		F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B15283E1CD100677A73 /* HomeViewController.swift */; };
@@ -23,6 +35,7 @@
 		F983599F28411EB300BD6F8A /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F983599E28411EB300BD6F8A /* UIExtensions.swift */; };
 		F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98359A22841278800BD6F8A /* SplashUIView.swift */; };
 		F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */; };
+		F98B38A628461EA900349F6E /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98B38A528461EA900349F6E /* Coordinator.swift */; };
 		F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */; };
 		F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */; };
 		F99D1B5D284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D1B5C284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift */; };
@@ -30,7 +43,6 @@
 		F9A2AF0C283CC5E700EB7EB1 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9A2AF0B283CC5E700EB7EB1 /* .swiftlint.yml */; };
 		F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C04499283B9ED40038F175 /* AppDelegate.swift */; };
 		F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C0449B283B9ED40038F175 /* SceneDelegate.swift */; };
-		F9C0449E283B9ED40038F175 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */; };
 		F9C044A3283B9ED40038F175 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9C044A2283B9ED40038F175 /* Assets.xcassets */; };
 		F9C044A6283B9ED40038F175 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9C044A4283B9ED40038F175 /* LaunchScreen.storyboard */; };
 		F9C044B1283B9ED50038F175 /* NetflixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C044B0283B9ED50038F175 /* NetflixTests.swift */; };
@@ -38,7 +50,6 @@
 		F9C044BD283B9ED50038F175 /* NetflixUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C044BC283B9ED50038F175 /* NetflixUITestsLaunchTests.swift */; };
 		F9C73AAE2843A67F004EF079 /* CustomFavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */; };
 		F9C73AB12843D958004EF079 /* MovieDetailsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */; };
-		F9D39DAD28440AC00021A5A0 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D39DAC28440AC00021A5A0 /* PreviewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +73,18 @@
 		220D5AE1C398F972F140CF21 /* Pods-Netflix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Netflix.debug.xcconfig"; path = "Target Support Files/Pods-Netflix/Pods-Netflix.debug.xcconfig"; sourceTree = "<group>"; };
 		7F404FC2FA6F4E72BB3F058F /* Pods_Netflix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Netflix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9A0B76BEEC1C6AFEDCD8A2B /* Pods-Netflix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Netflix.release.xcconfig"; path = "Target Support Files/Pods-Netflix/Pods-Netflix.release.xcconfig"; sourceTree = "<group>"; };
+		F90CAFD4284630070011E4E5 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		F90CAFD6284631890011E4E5 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F90CAFD82846320B0011E4E5 /* MoviewDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviewDetailsViewController.swift; sourceTree = "<group>"; };
+		F90CAFDA284633320011E4E5 /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFDC2846358B0011E4E5 /* OnBoardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFDE284637500011E4E5 /* SplashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFE028463AB80011E4E5 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFE428463D5D0011E4E5 /* HomeViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFE628463E9E0011E4E5 /* CommingSoonCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFE8284644020011E4E5 /* FavoritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFEA28464F6F0011E4E5 /* LiginViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiginViewCoordinator.swift; sourceTree = "<group>"; };
+		F90CAFEC28464FD80011E4E5 /* MoviewDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviewDetailsCoordinator.swift; sourceTree = "<group>"; };
 		F910B981283E5D6B00A55A7A /* XCAssets+Generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularMoviesUIView.swift; sourceTree = "<group>"; };
 		F9489B15283E1CD100677A73 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +100,7 @@
 		F983599E28411EB300BD6F8A /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		F98359A22841278800BD6F8A /* SplashUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashUIView.swift; sourceTree = "<group>"; };
 		F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingUIView.swift; sourceTree = "<group>"; };
+		F98B38A528461EA900349F6E /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopularMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
 		F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonUIView.swift; sourceTree = "<group>"; };
 		F99D1B5C284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCommingSoonCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -85,7 +109,6 @@
 		F9C04496283B9ED40038F175 /* Netflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Netflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9C04499283B9ED40038F175 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9C0449B283B9ED40038F175 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		F9C044A2283B9ED40038F175 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F9C044A5283B9ED40038F175 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F9C044A7283B9ED40038F175 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,7 +119,6 @@
 		F9C044BC283B9ED50038F175 /* NetflixUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetflixUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsUIView.swift; sourceTree = "<group>"; };
-		F9D39DAC28440AC00021A5A0 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +164,22 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		F90CAFE228463C0E0011E4E5 /* First */ = {
+			isa = PBXGroup;
+			children = (
+				F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */,
+			);
+			path = First;
+			sourceTree = "<group>";
+		};
+		F90CAFE328463C2A0011E4E5 /* Second */ = {
+			isa = PBXGroup;
+			children = (
+				F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */,
+			);
+			path = Second;
+			sourceTree = "<group>";
+		};
 		F910B980283E5D5100A55A7A /* Generated */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,41 +201,22 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		F9489B0F283E11AD00677A73 /* Delegate */ = {
+		F9489B0F283E11AD00677A73 /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
 				F9C04499283B9ED40038F175 /* AppDelegate.swift */,
 				F9C0449B283B9ED40038F175 /* SceneDelegate.swift */,
 			);
-			path = Delegate;
-			sourceTree = "<group>";
-		};
-		F9489B14283E1B5200677A73 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				F9D39DAC28440AC00021A5A0 /* PreviewViewController.swift */,
-				F9C0449D283B9ED40038F175 /* MainTabBarViewController.swift */,
-				F967AF092844B36900758CE0 /* OnBoardingViewController.swift */,
-				F9489B1B283E1E9000677A73 /* MainTabBarItems */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		F9489B1B283E1E9000677A73 /* MainTabBarItems */ = {
-			isa = PBXGroup;
-			children = (
-				F9489B15283E1CD100677A73 /* HomeViewController.swift */,
-				F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */,
-				F9489B19283E1D2400677A73 /* FavoritesViewController.swift */,
-			);
-			path = MainTabBarItems;
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 		F9489B1C283E20E600677A73 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				F9489B15283E1CD100677A73 /* HomeViewController.swift */,
 				F9489B1F283E51C200677A73 /* HomeLatestMovieUIView.swift */,
 				F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */,
+				F90CAFE428463D5D0011E4E5 /* HomeViewCoordinator.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -205,8 +224,8 @@
 		F967AF0B2844B45100758CE0 /* OnBoardingItems */ = {
 			isa = PBXGroup;
 			children = (
-				F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */,
-				F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */,
+				F90CAFE228463C0E0011E4E5 /* First */,
+				F90CAFE328463C2A0011E4E5 /* Second */,
 			);
 			path = OnBoardingItems;
 			sourceTree = "<group>";
@@ -226,6 +245,8 @@
 			isa = PBXGroup;
 			children = (
 				F983599C284110D100BD6F8A /* LoginUIView.swift */,
+				F90CAFD6284631890011E4E5 /* LoginViewController.swift */,
+				F90CAFEA28464F6F0011E4E5 /* LiginViewCoordinator.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -242,6 +263,8 @@
 			isa = PBXGroup;
 			children = (
 				F98359A22841278800BD6F8A /* SplashUIView.swift */,
+				F90CAFD4284630070011E4E5 /* SplashViewController.swift */,
+				F90CAFDE284637500011E4E5 /* SplashCoordinator.swift */,
 			);
 			path = Splash;
 			sourceTree = "<group>";
@@ -250,15 +273,36 @@
 			isa = PBXGroup;
 			children = (
 				F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */,
+				F967AF092844B36900758CE0 /* OnBoardingViewController.swift */,
+				F90CAFDC2846358B0011E4E5 /* OnBoardingCoordinator.swift */,
 				F967AF0B2844B45100758CE0 /* OnBoardingItems */,
 			);
 			path = OnBoarding;
 			sourceTree = "<group>";
 		};
+		F98B38A428461E6600349F6E /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				F90CAFDA284633320011E4E5 /* ApplicationCoordinator.swift */,
+				F90CAFE028463AB80011E4E5 /* MainCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		F98B38A728461EAE00349F6E /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				F98B38A528461EA900349F6E /* Coordinator.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		F99D1B58284262D2009EE515 /* CommingSoon */ = {
 			isa = PBXGroup;
 			children = (
+				F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */,
 				F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */,
+				F90CAFE628463E9E0011E4E5 /* CommingSoonCoordinator.swift */,
 			);
 			path = CommingSoon;
 			sourceTree = "<group>";
@@ -266,7 +310,9 @@
 		F99D1B5E28428072009EE515 /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
+				F9489B19283E1D2400677A73 /* FavoritesViewController.swift */,
 				F99D1B5F2842808A009EE515 /* FavoritesUIView.swift */,
+				F90CAFE8284644020011E4E5 /* FavoritesCoordinator.swift */,
 			);
 			path = Favorites;
 			sourceTree = "<group>";
@@ -308,12 +354,13 @@
 		F9C04498283B9ED40038F175 /* Netflix */ = {
 			isa = PBXGroup;
 			children = (
-				F98359A02841272600BD6F8A /* Extensions */,
-				F910B980283E5D5100A55A7A /* Generated */,
-				F9489B0F283E11AD00677A73 /* Delegate */,
-				F9489B14283E1B5200677A73 /* Controllers */,
+				F98B38A428461E6600349F6E /* Coordinator */,
+				F9489B0F283E11AD00677A73 /* Delegates */,
 				F9489B0D283E111300677A73 /* Views */,
+				F98359A02841272600BD6F8A /* Extensions */,
+				F98B38A728461EAE00349F6E /* Protocols */,
 				F9C044A2283B9ED40038F175 /* Assets.xcassets */,
+				F910B980283E5D5100A55A7A /* Generated */,
 				F9C044A4283B9ED40038F175 /* LaunchScreen.storyboard */,
 				F9C044A7283B9ED40038F175 /* Info.plist */,
 			);
@@ -341,6 +388,8 @@
 			isa = PBXGroup;
 			children = (
 				F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */,
+				F90CAFD82846320B0011E4E5 /* MoviewDetailsViewController.swift */,
+				F90CAFEC28464FD80011E4E5 /* MoviewDetailsCoordinator.swift */,
 			);
 			path = MovieDetails;
 			sourceTree = "<group>";
@@ -567,22 +616,33 @@
 				F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */,
 				F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */,
 				F967AF0F2844B48900758CE0 /* SecondOnBoardingUIView.swift in Sources */,
-				F9D39DAD28440AC00021A5A0 /* PreviewViewController.swift in Sources */,
+				F90CAFD92846320B0011E4E5 /* MoviewDetailsViewController.swift in Sources */,
+				F90CAFE728463E9E0011E4E5 /* CommingSoonCoordinator.swift in Sources */,
+				F90CAFDF284637500011E4E5 /* SplashCoordinator.swift in Sources */,
 				F9C73AAE2843A67F004EF079 /* CustomFavoritesTableViewCell.swift in Sources */,
+				F90CAFD5284630070011E4E5 /* SplashViewController.swift in Sources */,
 				F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */,
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
 				F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */,
 				F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */,
 				F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */,
 				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
+				F90CAFED28464FD80011E4E5 /* MoviewDetailsCoordinator.swift in Sources */,
 				F983599F28411EB300BD6F8A /* UIExtensions.swift in Sources */,
+				F90CAFDD2846358B0011E4E5 /* OnBoardingCoordinator.swift in Sources */,
 				F99D1B602842808A009EE515 /* FavoritesUIView.swift in Sources */,
-				F9C0449E283B9ED40038F175 /* MainTabBarViewController.swift in Sources */,
 				F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */,
 				F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */,
 				F99D1B5D284268B3009EE515 /* CustomCommingSoonCollectionViewCell.swift in Sources */,
+				F90CAFEB28464F6F0011E4E5 /* LiginViewCoordinator.swift in Sources */,
+				F98B38A628461EA900349F6E /* Coordinator.swift in Sources */,
 				F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */,
+				F90CAFE128463AB80011E4E5 /* MainCoordinator.swift in Sources */,
+				F90CAFE528463D5D0011E4E5 /* HomeViewCoordinator.swift in Sources */,
+				F90CAFD7284631890011E4E5 /* LoginViewController.swift in Sources */,
 				F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */,
+				F90CAFE9284644020011E4E5 /* FavoritesCoordinator.swift in Sources */,
+				F90CAFDB284633320011E4E5 /* ApplicationCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

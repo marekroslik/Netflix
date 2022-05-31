@@ -1,13 +1,10 @@
 import UIKit
 import SnapKit
 
-class PreviewViewController: UIViewController {
+class SplashViewController: UIViewController {
     
     // Create view
-    // Uncomment to view other views.
-    private let mainView = SplashUIView()
-//    private let mainView = LoginUIVIew()
-//    private let mainView = MovieDetailsUIView()
+    private let splashView = SplashUIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,12 +15,12 @@ class PreviewViewController: UIViewController {
     
     // Add subviews
     private func addSubviews() {
-        view.addSubview(mainView)
+        view.addSubview(splashView)
     }
     
     // Set Constraints
     private func applyConstraints() {
-        mainView.snp.makeConstraints { make in
+        splashView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
