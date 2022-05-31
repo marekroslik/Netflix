@@ -15,9 +15,19 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BigLogoNetflix" translatesAutoresizingMaskIntoConstraints="NO" id="HUr-Y5-j7G">
+                                <rect key="frame" x="103.5" y="189.5" width="207" height="517"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="HUr-Y5-j7G" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.5" id="KEo-Ip-RHH"/>
+                            <constraint firstItem="HUr-Y5-j7G" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="mb3-D8-aXG"/>
+                            <constraint firstItem="HUr-Y5-j7G" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="rVJ-1D-iQ8"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -25,4 +35,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="BigLogoNetflix" width="284" height="517"/>
+    </resources>
 </document>

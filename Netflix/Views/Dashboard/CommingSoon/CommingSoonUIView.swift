@@ -15,8 +15,8 @@ class CommingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             string: "Search",
             attributes: [.paragraphStyle: centeredParagraphStyle, NSAttributedString.Key.foregroundColor: UIColor.gray])
         textField.font = .boldSystemFont(ofSize: 14)
-        textField.setLeftPaddingPoints(10)
-        textField.setRightPaddingPoints(10)
+        textField.setLeftPadding(10)
+        textField.setRightPadding(10)
         textField.tintColor = .red
         return textField
     }()
@@ -41,7 +41,7 @@ class CommingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     private func createCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 123, height: 200)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
         commingSoonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         guard let commingSoonCollectionView = commingSoonCollectionView else {
             return
@@ -58,7 +58,7 @@ class CommingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     private func applyConstraints() {
         // Set seatch text field name constraints
         searchTextField.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(50)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.left.equalToSuperview()
             make.height.equalTo(30)
             make.width.equalToSuperview()
@@ -71,7 +71,14 @@ class CommingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         }
     }
     
-    // Confirm protocols functions
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+}
+
+// Set settings functions
+extension CommingSoonUIView {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 30
     }
@@ -79,7 +86,5 @@ class CommingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCommingSoonCollectionViewCell.identifier, for: indexPath)
         return cell
     }
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
+
 }

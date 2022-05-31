@@ -8,7 +8,7 @@ class CommingSoonViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         view.addSubview(commingSoon)
-        self.navigationController?.isNavigationBarHidden = true
+        navigationController?.isNavigationBarHidden = true
         applyConstraints()
     }
     

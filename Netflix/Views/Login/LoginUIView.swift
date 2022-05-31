@@ -18,8 +18,8 @@ class LoginUIVIew: UIView {
         textField.layer.cornerRadius = 5
         textField.placeholder = "Email"
         textField.font = .boldSystemFont(ofSize: 14)
-        textField.setLeftPaddingPoints(10)
-        textField.setRightPaddingPoints(10)
+        textField.setLeftPadding(10)
+        textField.setRightPadding(10)
         textField.tintColor = .red
         return textField
     }()
@@ -31,8 +31,8 @@ class LoginUIVIew: UIView {
         textField.layer.cornerRadius = 5
         textField.placeholder = "Password"
         textField.font = .boldSystemFont(ofSize: 14)
-        textField.setLeftPaddingPoints(10)
-        textField.setRightPaddingPoints(65)
+        textField.setLeftPadding(10)
+        textField.setRightPadding(65)
         textField.isSecureTextEntry = true
         textField.tintColor = .red
         return textField

@@ -5,8 +5,7 @@ class PreviewViewController: UIViewController {
     
     // Create view
     // Uncomment to view other views.
-//    private let mainView = SplashUIView()
-    private let mainView = OnBoardingUIView()
+    private let mainView = SplashUIView()
 //    private let mainView = LoginUIVIew()
 //    private let mainView = MovieDetailsUIView()
     

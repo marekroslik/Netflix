@@ -24,8 +24,9 @@ class MainTabBarViewController: UITabBarController {
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .black
             tabBar.standardAppearance = appearance
-            tabBar.scrollEdgeAppearance = appearance
+            tabBar.scrollEdgeAppearance = tabBar.standardAppearance
         }
         
         setViewControllers([vc1, vc2, vc3], animated: true)
@@ -33,7 +34,7 @@ class MainTabBarViewController: UITabBarController {
         
         view.backgroundColor = .black
     }
-   
+    
     // Update badge value
     private func updateValue(controller: UINavigationController, value: Int) {
         controller.tabBarItem.badgeValue = "\(value)"

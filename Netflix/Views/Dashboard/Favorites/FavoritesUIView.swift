@@ -39,6 +39,13 @@ class FavoritesUIView: UIView, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// Set settings functions
+extension FavoritesUIView {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
@@ -53,9 +60,5 @@ class FavoritesUIView: UIView, UITableViewDelegate, UITableViewDataSource {
         }
         return UISwipeActionsConfiguration(actions: [deleteButton])
         
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
