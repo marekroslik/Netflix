@@ -8,6 +8,8 @@ final class SplashViewController: UIViewController {
     // Create view
     private let splashView = SplashUIView()
     
+    var viewModel: SplashViewModel!
+    
     private let bag = DisposeBag()
 
     override func viewDidLoad() {
@@ -15,7 +17,6 @@ final class SplashViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        
     }
     
     // Add subviews

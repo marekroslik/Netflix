@@ -22,6 +22,7 @@
 		F90CAFED28464FD80011E4E5 /* MovieDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFEC28464FD80011E4E5 /* MovieDetailsCoordinator.swift */; };
 		F910B982283E5D6B00A55A7A /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910B981283E5D6B00A55A7A /* XCAssets+Generated.swift */; };
 		F910B984283E716A00A55A7A /* HomePopularMoviesUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */; };
+		F91253E92848F368005792F9 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91253E82848F368005792F9 /* SplashViewModel.swift */; };
 		F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B15283E1CD100677A73 /* HomeViewController.swift */; };
 		F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */; };
 		F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B19283E1D2400677A73 /* FavoritesViewController.swift */; };
@@ -87,6 +88,7 @@
 		F90CAFEC28464FD80011E4E5 /* MovieDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsCoordinator.swift; sourceTree = "<group>"; };
 		F910B981283E5D6B00A55A7A /* XCAssets+Generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularMoviesUIView.swift; sourceTree = "<group>"; };
+		F91253E82848F368005792F9 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		F9489B15283E1CD100677A73 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonViewController.swift; sourceTree = "<group>"; };
 		F9489B19283E1D2400677A73 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 			children = (
 				F98359A22841278800BD6F8A /* SplashUIView.swift */,
 				F90CAFD4284630070011E4E5 /* SplashViewController.swift */,
+				F91253E82848F368005792F9 /* SplashViewModel.swift */,
 				F90CAFDE284637500011E4E5 /* SplashCoordinator.swift */,
 			);
 			path = Splash;
@@ -611,6 +614,7 @@
 				F910B984283E716A00A55A7A /* HomePopularMoviesUIView.swift in Sources */,
 				F910B982283E5D6B00A55A7A /* XCAssets+Generated.swift in Sources */,
 				F9C73AB12843D958004EF079 /* MovieDetailsUIView.swift in Sources */,
+				F91253E92848F368005792F9 /* SplashViewModel.swift in Sources */,
 				F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */,
 				F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */,
 				F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */,

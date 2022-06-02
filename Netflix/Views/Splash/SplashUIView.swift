@@ -23,7 +23,7 @@ final class SplashUIView: UIView {
         addSubview(bigLogo)
     }
     
-    // Set constatints
+    // Set constraints
     private func applyConstraints() {
         bigLogo.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()

@@ -1,5 +1,7 @@
 import Foundation
 import UIKit
+import RxCocoa
+import RxSwift
 
 final class ApplicationCoordinator: Coordinator {
     
@@ -13,8 +15,6 @@ final class ApplicationCoordinator: Coordinator {
     
     func start() {
         let navigationController = UINavigationController()
-        
-//        let tabBarController = UITabBarController()
         
         let splashCoordinator = SplashCoordinator(navigationController: navigationController)
         
