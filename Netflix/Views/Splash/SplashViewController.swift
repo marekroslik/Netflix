@@ -1,16 +1,21 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-class SplashViewController: UIViewController {
+final class SplashViewController: UIViewController {
     
     // Create view
     private let splashView = SplashUIView()
     
+    private let bag = DisposeBag()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
+        
     }
     
     // Add subviews

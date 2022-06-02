@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final class SplashCoordinator: Coordinator {
+final class LoginViewCoordinator: Coordinator {
     
     private(set) var childCoordinators: [Coordinator] = []
 
@@ -12,7 +12,7 @@ final class SplashCoordinator: Coordinator {
     }
     
     func start() {
-        let splashViewController = SplashViewController()
-        navigationController.setViewControllers([splashViewController], animated: false)
+        let loginViewController = LoginViewController()
+        navigationController.setViewControllers([loginViewController], animated: false)
     }
 }

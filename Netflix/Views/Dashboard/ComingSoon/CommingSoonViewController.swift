@@ -1,19 +1,19 @@
 import UIKit
 
-class CommingSoonViewController: UIViewController {
+final class ComingSoonViewController: UIViewController {
     
-    private let commingSoon = CommingSoonUIView()
+    private let comingSoon = ComingSoonUIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        view.addSubview(commingSoon)
+        view.addSubview(comingSoon)
         navigationController?.isNavigationBarHidden = true
         applyConstraints()
     }
     
     private func applyConstraints() {
-        commingSoon.snp.makeConstraints { make in
+        comingSoon.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }

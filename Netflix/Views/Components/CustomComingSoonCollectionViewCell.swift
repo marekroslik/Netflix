@@ -1,9 +1,9 @@
 import UIKit
 
 // Custom collection cell for collection view
-class CustomCommingSoonCollectionViewCell: UICollectionViewCell {
+final class CustomComingSoonCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "CustomCommingSoonCollectionViewCell"
+    static let identifier = "CustomComingSoonCollectionViewCell"
     
     // Add image
     private let imageView: UIImageView = {

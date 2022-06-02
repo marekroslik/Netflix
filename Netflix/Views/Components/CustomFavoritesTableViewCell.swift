@@ -1,6 +1,6 @@
 import UIKit
 
-class CustomFavoritesTableViewCell: UITableViewCell {
+final class CustomFavoritesTableViewCell: UITableViewCell {
     
     static let identifier = "CustomFavoritesTableViewCell"
     

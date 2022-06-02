@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class OnBoardingViewController: UIViewController {
+final class OnBoardingViewController: UIViewController {
     
     private let backGround = OnBoardingUIView()
     private let firstView = FirstOnBoardingUIView()

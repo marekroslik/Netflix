@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class FirstOnBoardingUIView: UIView {
+final class FirstOnBoardingUIView: UIView {
     
     // Create main label
     private let mainLabel: UILabel = {

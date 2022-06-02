@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
+final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
     // Create category name for popular movies view
     private let categoryName: UILabel = {

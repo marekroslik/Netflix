@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class HomeLatestMovieUIView: UIView {
+final class HomeLatestMovieUIView: UIView {
     
     // Create latest movie IMAGE UI
     private let movieImage: UIImageView = {

@@ -22,5 +22,13 @@ extension UIScrollView {
         frame.origin.y = frame.size.width * CGFloat(verticalPage ?? 0)
         self.scrollRectToVisible(frame, animated: animated ?? true)
     }
+}
 
+// SetupViewController
+extension UITabBarItem {
+    func setup(title: String, imageName: String, selectedImageName: String) {
+        self.title = title
+        self.image = UIImage(systemName: imageName)
+        self.selectedImage = UIImage(systemName: selectedImageName)
+    }
 }

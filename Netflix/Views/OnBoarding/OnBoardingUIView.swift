@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class OnBoardingUIView: UIView, UIScrollViewDelegate {
+final class OnBoardingUIView: UIView, UIScrollViewDelegate {
     
     // Create background image
     private let bigLogo: UIImageView = {

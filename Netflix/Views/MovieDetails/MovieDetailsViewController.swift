@@ -1,10 +1,10 @@
 import UIKit
 import SnapKit
 
-class MoviewDetailsViewController: UIViewController {
+final class MovieDetailsViewController: UIViewController {
     
     // Create view
-    private let moviewDetailsView = MovieDetailsUIView()
+    private let movieDetailsView = MovieDetailsUIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,12 +15,12 @@ class MoviewDetailsViewController: UIViewController {
     
     // Add subviews
     private func addSubviews() {
-        view.addSubview(moviewDetailsView)
+        view.addSubview(movieDetailsView)
     }
     
     // Set Constraints
     private func applyConstraints() {
-        moviewDetailsView.snp.makeConstraints { make in
+        movieDetailsView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }

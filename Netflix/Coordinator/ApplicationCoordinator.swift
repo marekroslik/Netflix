@@ -1,46 +1,29 @@
 import Foundation
 import UIKit
 
-class ApplicationCoordinator: Coordinator {
+final class ApplicationCoordinator: Coordinator {
     
-    let window: UIWindow
+    private(set) var childCoordinators: [Coordinator] = []
     
-    var childCoordinators = [Coordinator]()
+    private let window: UIWindow
     
     init(window: UIWindow) {
         self.window = window
     }
     
     func start() {
-        // Splash
-//        let splashCoordinator = SplashCoordinator()
-//        splashCoordinator.start()
-//        self.childCoordinators = [splashCoordinator]
-//        window.rootViewController = splashCoordinator.rootViewController
+        let navigationController = UINavigationController()
         
-        // OnBoarding
-//        let onBoardingCoordinator = OnBoardingCoordinator()
-//        onBoardingCoordinator.start()
-//        self.childCoordinators = [onBoardingCoordinator]
-//        window.rootViewController = onBoardingCoordinator.rootViewController
+//        let tabBarController = UITabBarController()
         
-        // Login
-//        let loginCoordinator = LiginViewCoordinator()
-//        loginCoordinator.start()
-//        self.childCoordinators = [loginCoordinator]
-//        window.rootViewController = loginCoordinator.rootViewController
+        let splashCoordinator = SplashCoordinator(navigationController: navigationController)
         
-//        // MovieDetails
-//        let movieDetailsCoordinator = MoviewDetailsCoordinator()
-//        movieDetailsCoordinator.start()
-//        self.childCoordinators = [movieDetailsCoordinator]
-//        window.rootViewController = movieDetailsCoordinator.rootViewController
-       
-//         Dashboard
-        let mainCoordinator = MainCoordinator()
-        mainCoordinator.start()
-        self.childCoordinators = [mainCoordinator]
-        window.rootViewController = mainCoordinator.rootViewController
+        childCoordinators.append(splashCoordinator)
+        
+        splashCoordinator.start()
+        
+        window.rootViewController =  navigationController
+        window.makeKeyAndVisible()
         
     }
 }

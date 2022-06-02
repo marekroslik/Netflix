@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class SplashUIView: UIView {
+final class SplashUIView: UIView {
     
     // Cteate big logo
     private let bigLogo: UIImageView = {

@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     
     // Create view
     private let latestMovieView = HomeLatestMovieUIView()

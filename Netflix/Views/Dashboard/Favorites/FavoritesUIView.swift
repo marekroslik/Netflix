@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class FavoritesUIView: UIView, UITableViewDelegate, UITableViewDataSource {
+final class FavoritesUIView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     // Cteate table
     private let table: UITableView = {

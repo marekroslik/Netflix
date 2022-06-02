@@ -1,8 +1,10 @@
 import Foundation
 import UIKit
 
-class HomeViewCoordinator: Coordinator {
-    
+final class HomeViewCoordinator: Coordinator {
+   
+    private(set) var childCoordinators: [Coordinator] = []
+
     var rootViewController = UINavigationController()
     
     lazy var homeViewController = HomeViewController()
