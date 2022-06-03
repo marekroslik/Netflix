@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final class OnBoardingCoordinator: Coordinator {
+final class MovieDetailsCoordinator: Coordinator {
     
     private(set) var childCoordinators: [Coordinator] = []
 
@@ -12,7 +12,7 @@ final class OnBoardingCoordinator: Coordinator {
     }
     
     func start() {
-        let onBoardingViewController = OnBoardingViewController()
-        navigationController.setViewControllers([onBoardingViewController], animated: false)
+        let movieDetailsViewController = MovieDetailsViewController()
+        navigationController.setViewControllers([movieDetailsViewController], animated: false)
     }
 }

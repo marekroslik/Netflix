@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class MovieDetailsUIView: UIView {
+final class MovieDetailsUIView: UIView {
     
     // Create big image
     private let imageMovieDetails: UIImageView = {

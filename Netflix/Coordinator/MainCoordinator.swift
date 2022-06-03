@@ -1,26 +1,26 @@
 import Foundation
 import UIKit
 
-class MainCoordinator: Coordinator {
+final class MainCoordinator: Coordinator {
     
-    var rootViewController: UITabBarController
+    private(set) var childCoordinators: [Coordinator] = []
     
-    var childCoordinator = [Coordinator]()
+    private let tabBarController: UITabBarController
     
-    init() {
-        self.rootViewController = UITabBarController()
+    init(tabBarController: UITabBarController) {
+        self.tabBarController = tabBarController
         
         // Customize
-        rootViewController.tabBar.tintColor = .red
-        rootViewController.tabBar.backgroundColor = .black
+        tabBarController.tabBar.tintColor = .red
+        tabBarController.tabBar.backgroundColor = .black
         
         // Fix iOS 15 UITabBarController tabBar background color
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .black
-            rootViewController.tabBar.standardAppearance = appearance
-            rootViewController.tabBar.scrollEdgeAppearance = rootViewController.tabBar.standardAppearance
+            tabBarController.tabBar.standardAppearance = appearance
+            tabBarController.tabBar.scrollEdgeAppearance = tabBarController.tabBar.standardAppearance
         }
     }
     
@@ -29,42 +29,33 @@ class MainCoordinator: Coordinator {
         // Home
         let firstCoordinator = HomeViewCoordinator()
         firstCoordinator.start()
-        self.childCoordinator.append(firstCoordinator)
+        self.childCoordinators.append(firstCoordinator)
         let firstViewController = firstCoordinator.rootViewController
-        setup(viewController: firstViewController,
-              title: "Home",
-              imageName: "house",
-              selectedImageName: "house.fill")
+        firstViewController.tabBarItem.setup(
+            title: "Home",
+            imageName: "house",
+            selectedImageName: "house.fill")
         
         // CommingSoon
-        let secondCoordinator = CommingSoonCoordinator()
+        let secondCoordinator = ComingSoonCoordinator()
         secondCoordinator.start()
-        self.childCoordinator.append(secondCoordinator)
+        self.childCoordinators.append(secondCoordinator)
         let secondViewController = secondCoordinator.rootViewController
-        setup(viewController: secondViewController,
-              title: "Cooming Soon",
-              imageName: "play.square",
-              selectedImageName: "play.square.fill")
+        secondViewController.tabBarItem.setup(
+            title: "Cooming Soon",
+            imageName: "play.square",
+            selectedImageName: "play.square.fill")
         
         // Favorites
         let thirdCoordinator = FavoritesCoordinator()
         thirdCoordinator.start()
-        self.childCoordinator.append(thirdCoordinator)
+        self.childCoordinators.append(thirdCoordinator)
         let thirdViewController = thirdCoordinator.rootViewController
-        setup(viewController: thirdViewController,
-              title: "Favorites",
-              imageName: "heart",
-              selectedImageName: "heart.fill")
+        thirdViewController.tabBarItem.setup(
+            title: "Favorites",
+            imageName: "heart",
+            selectedImageName: "heart.fill")
         
-        rootViewController.viewControllers = [firstViewController, secondViewController, thirdViewController]
+        tabBarController.viewControllers = [firstViewController, secondViewController, thirdViewController]
     }
-    
-    // SetupViewController
-    func setup(viewController: UIViewController, title: String, imageName: String, selectedImageName: String) {
-        let defaultImage = UIImage(systemName: imageName)
-        let selectedImage = UIImage(systemName: selectedImageName)
-        let tabBarItem = UITabBarItem(title: title, image: defaultImage, selectedImage: selectedImage)
-        viewController.tabBarItem = tabBarItem
-    }
-    
 }

@@ -1,7 +1,7 @@
 import UIKit
 
 // Custom collection cell for collection view
-class CustomPopularMoviesCollectionViewCell: UICollectionViewCell {
+final class CustomPopularMoviesCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "CustomPopularMoviesCollectionViewCell"
     

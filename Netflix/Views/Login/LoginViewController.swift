@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController {
     
     // Create view
     private let loginView = LoginUIVIew()

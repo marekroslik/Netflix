@@ -1,7 +1,9 @@
 import Foundation
 import UIKit
 
-class FavoritesCoordinator: Coordinator {
+final class FavoritesCoordinator: Coordinator {
+    
+    private(set) var childCoordinators: [Coordinator] = []
     
     var rootViewController = UINavigationController()
     

@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class FirstOnBoardingUIView: UIView {
+final class FirstOnBoardingUIView: UIView {
     
     // Create main label
     private let mainLabel: UILabel = {
@@ -16,7 +16,12 @@ class FirstOnBoardingUIView: UIView {
     // Create info label
     private let infoLabel: UILabel = {
         let label = UILabel()
-        label.text = "You can’t sign up for Netflix in the app. We know it’s a hassle. After you’re a member, you can start watching in the app. Scroll > to learn more"
+        label.text = """
+You can’t sign up Netflix in the app.
+We know it’s a hassle.
+After you’re a member, you can start watching in the app.
+Scroll > to learn more
+"""
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 20)
         label.textAlignment = .center

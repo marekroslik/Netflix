@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class SplashUIView: UIView {
+final class SplashUIView: UIView {
     
     // Cteate big logo
     private let bigLogo: UIImageView = {
@@ -23,7 +23,7 @@ class SplashUIView: UIView {
         addSubview(bigLogo)
     }
     
-    // Set constatints
+    // Set constraints
     private func applyConstraints() {
         bigLogo.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
