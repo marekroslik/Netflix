@@ -17,6 +17,7 @@ final class SplashViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
+        viewModel.timer()
     }
     
     // Add subviews

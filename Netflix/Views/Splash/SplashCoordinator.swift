@@ -13,6 +13,15 @@ final class SplashCoordinator: Coordinator {
     
     func start() {
         let splashViewController = SplashViewController()
+        let splashViewModel = SplashViewModel()
+        splashViewModel.coordinator = self
+        splashViewController.viewModel = splashViewModel
         navigationController.setViewControllers([splashViewController], animated: false)
+    }
+    
+    func startOnBoarding() {
+        let onBoardingCoordinator = OnBoardingCoordinator(navigationController: navigationController)
+        childCoordinators.append(onBoardingCoordinator)
+        onBoardingCoordinator.start()
     }
 }
