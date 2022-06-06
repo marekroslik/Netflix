@@ -22,7 +22,7 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
     }()
     
     // Create collection view for coming soon movies view
-    private var comingSoonCollectionView: UICollectionView?
+    private lazy var comingSoonCollectionView = UICollectionView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,19 +33,16 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
     // Add subviews function
     private func addSubviews() {
         addSubview(searchTextField)
-        createCollectionView()
-        addSubview(comingSoonCollectionView!)
+        configureCollectionView()
+        addSubview(comingSoonCollectionView)
     }
     
-    // Create collection view for coming soon movies view
-    private func createCollectionView() {
+    // Configure collection view for coming soon movies view
+    private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
         comingSoonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        guard let comingSoonCollectionView = comingSoonCollectionView else {
-            return
-        }
         comingSoonCollectionView.register(CustomComingSoonCollectionViewCell.self,
                                              forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
         comingSoonCollectionView.dataSource = self
@@ -64,7 +61,7 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
             make.width.equalToSuperview()
         }
         // Set coming soon movies collection view
-        comingSoonCollectionView!.snp.makeConstraints { make in
+        comingSoonCollectionView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalTo(searchTextField.snp.bottom).offset(15)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)

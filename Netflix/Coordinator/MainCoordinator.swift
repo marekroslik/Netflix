@@ -3,7 +3,7 @@ import UIKit
 
 final class MainCoordinator: Coordinator {
     
-    private(set) var childCoordinators: [Coordinator] = []
+    private var childCoordinators: [Coordinator] = []
     
     private let tabBarController: UITabBarController
     

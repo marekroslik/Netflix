@@ -3,11 +3,12 @@ import UIKit
 
 final class HomeViewCoordinator: Coordinator {
    
-    private(set) var childCoordinators: [Coordinator] = []
-
-    var rootViewController = UINavigationController()
+    private var childCoordinators: [Coordinator] = []
     
-    lazy var homeViewController = HomeViewController()
+    // I will set private. When will do dashboard. Need to make some changes.
+    let rootViewController = UINavigationController()
+    
+    let homeViewController = HomeViewController()
     
     func start() {
         rootViewController.setViewControllers([homeViewController], animated: false)

@@ -5,7 +5,7 @@ import RxSwift
 
 final class ApplicationCoordinator: Coordinator {
     
-    private(set) var childCoordinators: [Coordinator] = []
+    private var childCoordinators: [Coordinator] = []
     
     private let window: UIWindow
     
@@ -15,14 +15,17 @@ final class ApplicationCoordinator: Coordinator {
     
     func start() {
         let navigationController = UINavigationController()
+        let tab = UITabBarController()
         
-        let splashCoordinator = SplashCoordinator(navigationController: navigationController)
+        let splashCoordinator = MainCoordinator(tabBarController: tab)
+        
+//        let splashCoordinator = SplashCoordinator(navigationController: navigationController)
         
         childCoordinators.append(splashCoordinator)
         
         splashCoordinator.start()
         
-        window.rootViewController =  navigationController
+        window.rootViewController =  tab
         window.makeKeyAndVisible()
         
     }
