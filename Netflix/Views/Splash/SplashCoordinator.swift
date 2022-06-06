@@ -3,9 +3,9 @@ import UIKit
 
 final class SplashCoordinator: Coordinator {
     
-    private(set) var childCoordinators: [Coordinator] = []
+    private var childCoordinators: [Coordinator] = []
 
-    private var navigationController: UINavigationController
+    private let navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
