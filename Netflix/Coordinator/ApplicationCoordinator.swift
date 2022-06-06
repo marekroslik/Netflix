@@ -14,18 +14,16 @@ final class ApplicationCoordinator: Coordinator {
     }
     
     func start() {
+        
         let navigationController = UINavigationController()
-        let tab = UITabBarController()
         
-        let splashCoordinator = MainCoordinator(tabBarController: tab)
-        
-//        let splashCoordinator = SplashCoordinator(navigationController: navigationController)
+        let splashCoordinator = SplashCoordinator(navigationController: navigationController)
         
         childCoordinators.append(splashCoordinator)
         
         splashCoordinator.start()
         
-        window.rootViewController =  tab
+        window.rootViewController =  navigationController
         window.makeKeyAndVisible()
         
     }
