@@ -24,4 +24,10 @@ final class SplashCoordinator: Coordinator {
         childCoordinators.append(onBoardingCoordinator)
         onBoardingCoordinator.start()
     }
+    
+    func startDashboard() {
+        let dashboardCoordinator = LoginViewCoordinator(navigationController: navigationController)
+        childCoordinators.append(dashboardCoordinator)
+        dashboardCoordinator.start()
+    }
 }

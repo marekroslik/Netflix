@@ -17,7 +17,10 @@ final class SplashViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        viewModel.timer()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        viewModel.timer(countDown: 2, bag: bag)
     }
     
     // Add subviews
@@ -31,4 +34,5 @@ final class SplashViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
+    
 }
