@@ -16,11 +16,12 @@ final class LoginUIVIew: UIView {
         let textField = UITextField()
         textField.backgroundColor = .darkGray
         textField.layer.cornerRadius = 5
-        textField.placeholder = "Email"
+        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         textField.font = .boldSystemFont(ofSize: 14)
         textField.setLeftPadding(10)
         textField.setRightPadding(10)
         textField.tintColor = .red
+        textField.textColor = .white
         return textField
     }()
     
@@ -29,12 +30,13 @@ final class LoginUIVIew: UIView {
         let textField = UITextField()
         textField.backgroundColor = .darkGray
         textField.layer.cornerRadius = 5
-        textField.placeholder = "Password"
+        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         textField.font = .boldSystemFont(ofSize: 14)
         textField.setLeftPadding(10)
         textField.setRightPadding(65)
         textField.isSecureTextEntry = true
         textField.tintColor = .red
+        textField.textColor = .white
         return textField
     }()
     
