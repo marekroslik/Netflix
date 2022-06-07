@@ -9,4 +9,5 @@ pod 'SwiftGen'
 pod 'SnapKit'
 pod 'RxSwift'
 pod 'RxCocoa'
+pod 'lottie-ios'
 end
