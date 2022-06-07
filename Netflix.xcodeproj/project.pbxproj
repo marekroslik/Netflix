@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F2318DB2FC80330ECADF3200 /* Pods_Netflix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F404FC2FA6F4E72BB3F058F /* Pods_Netflix.framework */; };
+		F904FDF6284F366200B0A72A /* LottieSpinner.json in Resources */ = {isa = PBXBuildFile; fileRef = F904FDF5284F366200B0A72A /* LottieSpinner.json */; };
 		F90CAFD5284630070011E4E5 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFD4284630070011E4E5 /* SplashViewController.swift */; };
 		F90CAFD7284631890011E4E5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFD6284631890011E4E5 /* LoginViewController.swift */; };
 		F90CAFD92846320B0011E4E5 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CAFD82846320B0011E4E5 /* MovieDetailsViewController.swift */; };
@@ -33,6 +34,7 @@
 		F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF092844B36900758CE0 /* OnBoardingViewController.swift */; };
 		F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */; };
 		F967AF0F2844B48900758CE0 /* SecondOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */; };
+		F97E8E73284F337D00461380 /* LoadingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97E8E72284F337D00461380 /* LoadingUIView.swift */; };
 		F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9810548283F69BA005496FD /* UIVerticalButton.swift */; };
 		F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F983599C284110D100BD6F8A /* LoginUIView.swift */; };
 		F983599F28411EB300BD6F8A /* UITextField.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F983599E28411EB300BD6F8A /* UITextField.Extensions.swift */; };
@@ -76,6 +78,7 @@
 		220D5AE1C398F972F140CF21 /* Pods-Netflix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Netflix.debug.xcconfig"; path = "Target Support Files/Pods-Netflix/Pods-Netflix.debug.xcconfig"; sourceTree = "<group>"; };
 		7F404FC2FA6F4E72BB3F058F /* Pods_Netflix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Netflix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9A0B76BEEC1C6AFEDCD8A2B /* Pods-Netflix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Netflix.release.xcconfig"; path = "Target Support Files/Pods-Netflix/Pods-Netflix.release.xcconfig"; sourceTree = "<group>"; };
+		F904FDF5284F366200B0A72A /* LottieSpinner.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LottieSpinner.json; sourceTree = "<group>"; };
 		F90CAFD4284630070011E4E5 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F90CAFD6284631890011E4E5 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F90CAFD82846320B0011E4E5 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +104,7 @@
 		F967AF092844B36900758CE0 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstOnBoardingUIView.swift; sourceTree = "<group>"; };
 		F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondOnBoardingUIView.swift; sourceTree = "<group>"; };
+		F97E8E72284F337D00461380 /* LoadingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingUIView.swift; sourceTree = "<group>"; };
 		F9810548283F69BA005496FD /* UIVerticalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIVerticalButton.swift; sourceTree = "<group>"; };
 		F983599C284110D100BD6F8A /* LoginUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIView.swift; sourceTree = "<group>"; };
 		F983599E28411EB300BD6F8A /* UITextField.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.Extensions.swift; sourceTree = "<group>"; };
@@ -246,6 +250,15 @@
 			path = OnBoardingItems;
 			sourceTree = "<group>";
 		};
+		F97E8E71284F335700461380 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				F97E8E72284F337D00461380 /* LoadingUIView.swift */,
+				F904FDF5284F366200B0A72A /* LottieSpinner.json */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
 		F981054A283F7E93005496FD /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -340,6 +353,7 @@
 				F9489B1C283E20E600677A73 /* Home */,
 				F99D1B58284262D2009EE515 /* ComingSoon */,
 				F99D1B5E28428072009EE515 /* Favorites */,
+				F97E8E71284F335700461380 /* Loading */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -519,6 +533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F904FDF6284F366200B0A72A /* LottieSpinner.json in Resources */,
 				F9A2AF0C283CC5E700EB7EB1 /* .swiftlint.yml in Resources */,
 				F9C044A6283B9ED40038F175 /* LaunchScreen.storyboard in Resources */,
 				F9C044A3283B9ED40038F175 /* Assets.xcassets in Resources */,
@@ -644,6 +659,7 @@
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
 				F94E13B5284DE4A7008F9B2F /* UITabBarItem.Extensions.swift in Sources */,
 				F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */,
+				F97E8E73284F337D00461380 /* LoadingUIView.swift in Sources */,
 				F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */,
 				F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */,
 				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
