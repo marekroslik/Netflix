@@ -6,14 +6,16 @@ final class SplashViewModel {
     
     var coordinator: SplashCoordinator?
     
-    // Some var form userdefaults
-    let isLogin: Bool = true
+    // Chech var from userdefaults
+    private let isLogin: Bool = IsLoginManager().check()
     
-    func timer(countDown: Int, bag: DisposeBag) {
+    private let countDown = 2
+    
+    func timer(bag: DisposeBag) {
         Observable<Int>.timer(.seconds(0), period: .seconds(1), scheduler: MainScheduler.instance)
             .take(countDown+1)
             .subscribe(onNext: { timePassed in
-                let count = countDown - timePassed
+                let count = self.countDown - timePassed
                 print(count)
             }, onCompleted: {
                 if self.isLogin == true {

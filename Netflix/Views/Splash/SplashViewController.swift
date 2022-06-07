@@ -20,7 +20,7 @@ final class SplashViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        viewModel.timer(countDown: 2, bag: bag)
+        viewModel.timer(bag: bag)
     }
     
     // Add subviews
