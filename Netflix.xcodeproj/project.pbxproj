@@ -23,7 +23,7 @@
 		F910B982283E5D6B00A55A7A /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910B981283E5D6B00A55A7A /* XCAssets+Generated.swift */; };
 		F910B984283E716A00A55A7A /* HomePopularMoviesUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */; };
 		F91253E92848F368005792F9 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91253E82848F368005792F9 /* SplashViewModel.swift */; };
-		F9253518284F3D770037AD29 /* IsLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9253517284F3D770037AD29 /* IsLoginManager.swift */; };
+		F9253518284F3D770037AD29 /* UserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9253517284F3D770037AD29 /* UserUseCase.swift */; };
 		F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B15283E1CD100677A73 /* HomeViewController.swift */; };
 		F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */; };
 		F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B19283E1D2400677A73 /* FavoritesViewController.swift */; };
@@ -92,7 +92,7 @@
 		F910B981283E5D6B00A55A7A /* XCAssets+Generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		F910B983283E716A00A55A7A /* HomePopularMoviesUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularMoviesUIView.swift; sourceTree = "<group>"; };
 		F91253E82848F368005792F9 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
-		F9253517284F3D770037AD29 /* IsLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsLoginManager.swift; sourceTree = "<group>"; };
+		F9253517284F3D770037AD29 /* UserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCase.swift; sourceTree = "<group>"; };
 		F9489B15283E1CD100677A73 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonViewController.swift; sourceTree = "<group>"; };
 		F9489B19283E1D2400677A73 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -196,12 +196,12 @@
 			path = Generated;
 			sourceTree = "<group>";
 		};
-		F9253516284F3D6D0037AD29 /* Managers */ = {
+		F9253516284F3D6D0037AD29 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				F9253517284F3D770037AD29 /* IsLoginManager.swift */,
+				F9253517284F3D770037AD29 /* UserUseCase.swift */,
 			);
-			path = Managers;
+			path = UseCases;
 			sourceTree = "<group>";
 		};
 		F9489B0D283E111300677A73 /* Views */ = {
@@ -381,7 +381,7 @@
 		F9C04498283B9ED40038F175 /* Netflix */ = {
 			isa = PBXGroup;
 			children = (
-				F9253516284F3D6D0037AD29 /* Managers */,
+				F9253516284F3D6D0037AD29 /* UseCases */,
 				F98B38A428461E6600349F6E /* Coordinator */,
 				F9489B0F283E11AD00677A73 /* Delegates */,
 				F9489B0D283E111300677A73 /* Views */,
@@ -658,7 +658,7 @@
 				F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */,
 				F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */,
 				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
-				F9253518284F3D770037AD29 /* IsLoginManager.swift in Sources */,
+				F9253518284F3D770037AD29 /* UserUseCase.swift in Sources */,
 				F90CAFED28464FD80011E4E5 /* MovieDetailsCoordinator.swift in Sources */,
 				F983599F28411EB300BD6F8A /* UITextField.Extensions.swift in Sources */,
 				F90CAFDD2846358B0011E4E5 /* OnBoardingCoordinator.swift in Sources */,

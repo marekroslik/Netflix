@@ -6,9 +6,6 @@ final class SplashViewModel {
     
     var coordinator: SplashCoordinator?
     
-    // Chech var from userdefaults
-    private let isLogin: Bool = IsLoginManager().check()
-    
     private let countDown = 2
     
     func timer(bag: DisposeBag) {
@@ -18,7 +15,8 @@ final class SplashViewModel {
                 let count = self.countDown - timePassed
                 print(count)
             }, onCompleted: {
-                if self.isLogin == true {
+                let isLogin: Bool = UserUseCase().isUserLogin
+                if isLogin {
                     print("Start dashboard")
                     self.coordinator?.startDashboard()
                 } else {
