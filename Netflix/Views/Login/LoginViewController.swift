@@ -12,6 +12,15 @@ final class LoginViewController: UIViewController {
         addSubviews()
         applyConstraints()
     }
+
+    // Move view when keyboard is shown
+    override func viewWillAppear(_ animated: Bool) {
+            self.addKeyboardObserver()
+        }
+
+        override func viewWillDisappear(_ animated: Bool) {
+            self.removeKeyboardObserver()
+        }
     
     // Add subviews
     private func addSubviews() {
