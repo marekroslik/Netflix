@@ -12,7 +12,7 @@ final class LoginUIVIew: UIView {
     }()
     
     // Create email text field
-    private let emailTextField: UITextField = {
+    let emailTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .darkGray
         textField.layer.cornerRadius = 5
@@ -26,7 +26,7 @@ final class LoginUIVIew: UIView {
     }()
     
     // Create password text field
-    private let passwordTextField: UITextField = {
+    let passwordTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .darkGray
         textField.layer.cornerRadius = 5
@@ -41,7 +41,7 @@ final class LoginUIVIew: UIView {
     }()
     
     // Create login button
-    private let loginButton: UIButton = {
+    let loginButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 5
         button.layer.borderWidth = 1

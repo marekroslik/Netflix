@@ -20,7 +20,7 @@ final class SplashCoordinator: Coordinator {
     }
     
     func startOnBoarding() {
-        let onBoardingCoordinator = OnBoardingCoordinator(navigationController: navigationController)
+        let onBoardingCoordinator = LoginViewCoordinator(navigationController: navigationController)
         childCoordinators.append(onBoardingCoordinator)
         onBoardingCoordinator.start()
     }

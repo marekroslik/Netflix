@@ -44,6 +44,7 @@
 		F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */; };
 		F98B38A628461EA900349F6E /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98B38A528461EA900349F6E /* Coordinator.swift */; };
 		F9962FEE2850A3800072DF08 /* UserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9962FED2850A3800072DF08 /* UserUseCase.swift */; };
+		F9962FF42850B79C0072DF08 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9962FF32850B79C0072DF08 /* LoginViewModel.swift */; };
 		F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */; };
 		F99D1B5A284262EE009EE515 /* CommingSoonUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */; };
 		F99D1B5D284268B3009EE515 /* CustomComingSoonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D1B5C284268B3009EE515 /* CustomComingSoonCollectionViewCell.swift */; };
@@ -117,6 +118,7 @@
 		F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingUIView.swift; sourceTree = "<group>"; };
 		F98B38A528461EA900349F6E /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F9962FED2850A3800072DF08 /* UserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCase.swift; sourceTree = "<group>"; };
+		F9962FF32850B79C0072DF08 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopularMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
 		F99D1B59284262EE009EE515 /* CommingSoonUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonUIView.swift; sourceTree = "<group>"; };
 		F99D1B5C284268B3009EE515 /* CustomComingSoonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomComingSoonCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			children = (
 				F983599C284110D100BD6F8A /* LoginUIView.swift */,
 				F90CAFD6284631890011E4E5 /* LoginViewController.swift */,
+				F9962FF32850B79C0072DF08 /* LoginViewModel.swift */,
 				F90CAFEA28464F6F0011E4E5 /* LoginViewCoordinator.swift */,
 			);
 			path = Login;
@@ -677,6 +680,7 @@
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
 				F94E13B5284DE4A7008F9B2F /* UITabBarItem.Extensions.swift in Sources */,
 				F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */,
+				F9962FF42850B79C0072DF08 /* LoginViewModel.swift in Sources */,
 				F97E8E73284F337D00461380 /* LoadingUIView.swift in Sources */,
 				F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */,
 				F983599D284110D100BD6F8A /* LoginUIView.swift in Sources */,
