@@ -8,7 +8,7 @@ class APIClient {
     
     func getToken() throws -> Observable<[TokenResponseModel]> {
         var request = URLRequest(url:
-                                    URL(string: "https://api.themovied.org/3/authentication/token/new?api_key=978a9c4ffdf0c73cd042eb5cd6607c8e")!)
+                                    URL(string: "https://api.themoviedb.org/3/authentication/token/new?api_key=978a9c4ffdf0c73cd042eb5cd6607c8e")!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField:
                             "Content-Type")
