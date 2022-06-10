@@ -23,13 +23,15 @@ final class UserUseCase {
             } else {
                 single(.success(false))
             }
+            
+            // Failure event
             single(.failure(UserUseCaseError.userDefaults))
             return Disposables.create()
         }
 
     }
 
-    enum UserUseCaseError: Error {
+    private enum UserUseCaseError: Error {
         case userDefaults
     }
 }

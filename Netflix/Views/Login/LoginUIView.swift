@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class LoginUIVIew: UIView {
+final class LoginUIView: UIView {
     
     // Cteate full logo
     private let fullLogo: UIImageView = {
