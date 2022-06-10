@@ -18,16 +18,16 @@ public class APIRequest {
         return Observable.create { observer in
             
             // Create URLSession dataTask
-            let task = self.urlSession.dataTask(with: request) { (data, response, error) in
+            let task = self.urlSession.dataTask(with: request) { [weak self] (data, response, error) in
                 if let httpResponse = response as? HTTPURLResponse {
                     let statusCode = httpResponse.statusCode
                     do {
                         let data = data ?? Data()
                         if (200...399).contains(statusCode) {
-                            let objs = try self.jsonDecoder.decode(ItemModel.self, from:
+                            let objs = try self?.jsonDecoder.decode(ItemModel.self, from:
                                                                     data)
                             // Observer onNext event
-                            observer.onNext(objs)
+                            observer.onNext(objs!)
                         } else {
                             observer.onError(error!)
                         }

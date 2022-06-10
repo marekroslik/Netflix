@@ -13,13 +13,11 @@ struct APIConstants {
     }
     
     struct Endpoint {
-        static let tokenWithLogin = "authentication/token/validate_with_login"
-        static let popular = "movie/popular"
-        static let detail = "movie/"
+        static let getToken = "authentication/token/new?"
     }
     
     struct ParamKeys {
-        static let apiKey = "api_key"
+        static let apiKey = "api_key="
     }
     
     enum HTTPHeaderField: String {
@@ -28,5 +26,9 @@ struct APIConstants {
 
     enum ContentType: String {
         case json = "application/json"
+    }
+    
+    enum RequestType: String {
+        case GET, POST
     }
 }

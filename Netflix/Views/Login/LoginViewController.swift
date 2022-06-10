@@ -9,7 +9,6 @@ final class LoginViewController: UIViewController {
     private let loginView = LoginUIView()
     var viewModel: LoginViewModel!
     
-    var posts: [TokenResponseModel] = []
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -18,24 +17,7 @@ final class LoginViewController: UIViewController {
         addSubviews()
         applyConstraints()
         validating()
-        
-        // Check APIClient
-        let client = APIClient.shared
-        do {
-            try client.getToken().subscribe(
-                onNext: { result in
-                    self.posts = result
-                    // MARK: display in UITableView
-//                    print(result)
-                },
-                onError: { error in
-                    print("ATTENTION! ACHTUNG! УВАГА!  \(error.localizedDescription)")
-                },
-                onCompleted: {
-                    print("Completed event.")
-                }).disposed(by: bag)
-        } catch {
-        }
+        getToken()
     }
     
     // Move view when keyboard is shown
@@ -50,6 +32,22 @@ final class LoginViewController: UIViewController {
     // Add subviews
     private func addSubviews() {
         view.addSubview(loginView)
+    }
+    
+    // Get token function
+    private func getToken() {
+        let client = APIClient.shared
+        do {
+            try client.getToken().subscribe(
+                onNext: { [weak self] result in
+                    self?.viewModel.token = result
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                }).disposed(by: bag)
+        } catch {
+            print(error)
+        }
     }
     
     // Validating email and password

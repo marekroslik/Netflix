@@ -9,6 +9,8 @@ final class LoginViewModel {
     let emailTextPublishSubject = PublishSubject<String>()
     let passwordTextPublishSubject = PublishSubject<String>()
     
+    var token: TokenResponseModel?
+    
     func isValid() -> Observable<Bool> {
         return Observable
             .combineLatest(emailTextPublishSubject.asObserver()
