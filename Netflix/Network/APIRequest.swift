@@ -21,7 +21,6 @@ public class APIRequest {
             let task = self.urlSession.dataTask(with: request) { [weak self] (data, response, error) in
                 if let httpResponse = response as? HTTPURLResponse {
                     let statusCode = httpResponse.statusCode
-                    print("STATUS - \(statusCode)")
                     do {
                         let data = data ?? Data()
                         if (200...399).contains(statusCode) {

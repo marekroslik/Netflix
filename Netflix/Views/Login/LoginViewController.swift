@@ -52,7 +52,7 @@ final class LoginViewController: UIViewController {
                 login: self.loginView.emailTextField.text!,
                 password: self.loginView.passwordTextField.text!,
                 bag: self.bag)
-            self.loginView.showToast(message: "Wrong password")
+            self.loginView.showToast(message: "Incorrect username or password")
             
             // Add animation
             self.loginView.loginButton.animateWhenPressed(disposeBag: self.bag)

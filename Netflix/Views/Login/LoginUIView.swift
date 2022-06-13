@@ -70,6 +70,19 @@ final class LoginUIView: UIView {
         return button
     }()
     
+    let showAlert: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.red
+        label.font = .boldSystemFont(ofSize: 14)
+        label.textAlignment = .center
+        label.text = "Incorrect username or password"
+        label.alpha = 0
+        label.layer.cornerRadius = 5
+        label.clipsToBounds  =  true
+//        label.isHidden = true
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
@@ -84,27 +97,17 @@ final class LoginUIView: UIView {
         addSubview(loginButton)
         addSubview(guestButton)
         addSubview(showHidePasswordButton)
+        addSubview(showAlert)
     }
     
     func showToast(message: String) {
-        let toastLabel = UILabel(frame: CGRect(x: frame.size.width/2 - 75, y: frame.size.height-100, width: 150, height: 35))
-        toastLabel.backgroundColor = UIColor.black
-        toastLabel.textColor = UIColor.red
-        toastLabel.font = UIFont.systemFont(ofSize: 14.0)
-        toastLabel.textAlignment = .center
-        toastLabel.text = message
-        toastLabel.alpha = 1.0
-        toastLabel.layer.cornerRadius = 5
-        toastLabel.clipsToBounds  =  true
-        addSubview(toastLabel)
-        toastLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(emailTextField.snp.top).offset(-20)
-            make.centerX.equalToSuperview()
-        }
-        UIView.animate(withDuration: 5.0, delay: 3, options: .curveEaseOut, animations: {
-            toastLabel.alpha = 0.0
+        self.showAlert.text = message
+        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseOut, animations: {
+            self.showAlert.alpha = 1
         }, completion: {(_) in
-            toastLabel.removeFromSuperview()
+            UIView.animate(withDuration: 1.0, delay: 2, options: .curveEaseOut) {
+                self.showAlert.alpha = 0
+            }
         })
     }
     
@@ -143,6 +146,12 @@ final class LoginUIView: UIView {
         showHidePasswordButton.snp.makeConstraints { make in
             make.centerY.equalTo(passwordTextField)
             make.right.equalTo(passwordTextField.snp.right).offset(-10)
+        }
+        
+        showAlert.snp.makeConstraints { make in
+            make.bottom.equalTo(emailTextField.snp.top).offset(-20)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.9)
         }
     }
     

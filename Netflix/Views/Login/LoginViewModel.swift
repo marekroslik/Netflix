@@ -8,10 +8,19 @@ final class LoginViewModel {
     
     let emailTextPublishSubject = PublishSubject<String>()
     let passwordTextPublishSubject = PublishSubject<String>()
+    let errorHandlingPublishSubject = PublishSubject<Error>()
     
     private var token: TokenResponseModel?
-    private var loginPost: LoginPostResponseModel?
     private var login: LoginResponseModel?
+    
+    
+    func errorHandling() -> Observable<Error> {
+        return Observable
+            .subscribe(errorHandlingPublishSubject.asObserver())
+            .map { error in
+                return error
+            }
+    }
     
     func isValid() -> Observable<Bool> {
         return Observable
@@ -27,7 +36,6 @@ final class LoginViewModel {
         client.getToken().subscribe(
             onNext: { [weak self] result in
                 self?.token = result
-                print("Token - \(result)")
             },
             onError: { error in
                 print(error.localizedDescription)
@@ -36,11 +44,10 @@ final class LoginViewModel {
     
     func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag) {
         let client = APIClient.shared
-        self.loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!.requestToken)
-        client.authenticationWithLoginPassword(loginModel: loginPost! ).subscribe(
+        let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!.requestToken)
+        client.authenticationWithLoginPassword(loginModel: loginPost ).subscribe(
             onNext: { [weak self] result in
                 self?.login = result
-                print("Login - \(result)")
             },
             onError: { error in
                 switch error {
