@@ -62,7 +62,7 @@ final class LoginUIView: UIView {
     }()
     
     // Create show/hide password button
-    private let showHidePasswordButton: UIButton = {
+    let showHidePasswordButton: UIButton = {
         let button = UIButton()
         button.setTitle("SHOW", for: .normal)
         button.setTitleColor(.gray, for: .normal)
@@ -84,6 +84,28 @@ final class LoginUIView: UIView {
         addSubview(loginButton)
         addSubview(guestButton)
         addSubview(showHidePasswordButton)
+    }
+    
+    func showToast(message: String) {
+        let toastLabel = UILabel(frame: CGRect(x: frame.size.width/2 - 75, y: frame.size.height-100, width: 150, height: 35))
+        toastLabel.backgroundColor = UIColor.black
+        toastLabel.textColor = UIColor.red
+        toastLabel.font = UIFont.systemFont(ofSize: 14.0)
+        toastLabel.textAlignment = .center
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 5
+        toastLabel.clipsToBounds  =  true
+        addSubview(toastLabel)
+        toastLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(emailTextField.snp.top).offset(-20)
+            make.centerX.equalToSuperview()
+        }
+        UIView.animate(withDuration: 5.0, delay: 3, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(_) in
+            toastLabel.removeFromSuperview()
+        })
     }
     
     // Set constatints

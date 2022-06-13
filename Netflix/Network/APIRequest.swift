@@ -4,7 +4,7 @@ import RxCocoa
 
 public class APIRequest {
     private lazy var jsonDecoder = JSONDecoder()
-    private var urlSession: URLSession
+    private let urlSession: URLSession
     public init(config: URLSessionConfiguration) {
         urlSession = URLSession(configuration:
                                     URLSessionConfiguration.default)
@@ -21,6 +21,7 @@ public class APIRequest {
             let task = self.urlSession.dataTask(with: request) { [weak self] (data, response, error) in
                 if let httpResponse = response as? HTTPURLResponse {
                     let statusCode = httpResponse.statusCode
+                    print("STATUS - \(statusCode)")
                     do {
                         let data = data ?? Data()
                         if (200...399).contains(statusCode) {
@@ -28,6 +29,8 @@ public class APIRequest {
                                                                     data)
                             // Observer onNext event
                             observer.onNext(objs!)
+                        } else if statusCode == 401 {
+                            observer.onError(APIError.wrongPassword)
                         } else {
                             observer.onError(error!)
                         }

@@ -5,6 +5,9 @@ enum APIError: Error {
     // Status 400
     case forbidden
     
+    // Status 401
+    case wrongPassword
+    
     // Status code 403
     case unauthorized
     

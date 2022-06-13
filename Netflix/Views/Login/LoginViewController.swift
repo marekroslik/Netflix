@@ -17,7 +17,9 @@ final class LoginViewController: UIViewController {
         addSubviews()
         applyConstraints()
         validating()
-        getToken()
+        viewModel.getToken(bag: bag)
+        loginButton()
+        showHidePasswordButton()
     }
     
     // Move view when keyboard is shown
@@ -34,22 +36,6 @@ final class LoginViewController: UIViewController {
         view.addSubview(loginView)
     }
     
-    // Get token function
-    private func getToken() {
-        let client = APIClient.shared
-        do {
-            try client.getToken().subscribe(
-                onNext: { [weak self] result in
-                    self?.viewModel.token = result
-                },
-                onError: { error in
-                    print(error.localizedDescription)
-                }).disposed(by: bag)
-        } catch {
-            print(error)
-        }
-    }
-    
     // Validating email and password
     private func validating() {
         loginView.emailTextField.becomeFirstResponder()
@@ -58,6 +44,30 @@ final class LoginViewController: UIViewController {
         
         viewModel.isValid().bind(to: loginView.loginButton.rx.isEnabled).disposed(by: bag)
         viewModel.isValid().map { $0 ? 1 : 0.5}.bind(to: loginView.loginButton.rx.alpha).disposed(by: bag)
+    }
+    
+    private func loginButton() {
+        self.loginView.loginButton.rx.tap.bind {
+            self.viewModel.authenticationWithLoginPassword(
+                login: self.loginView.emailTextField.text!,
+                password: self.loginView.passwordTextField.text!,
+                bag: self.bag)
+            self.loginView.showToast(message: "Wrong password")
+            
+            // Add animation
+            self.loginView.loginButton.animateWhenPressed(disposeBag: self.bag)
+        }.disposed(by: self.bag)
+    }
+    
+    private func showHidePasswordButton() {
+        self.loginView.showHidePasswordButton.rx.tap.bind {
+            self.loginView.passwordTextField.isSecureTextEntry.toggle()
+            if self.loginView.passwordTextField.isSecureTextEntry == true {
+                self.loginView.showHidePasswordButton.setTitle("SHOW", for: .normal)
+            } else { self.loginView.showHidePasswordButton.setTitle("HIDE", for: .normal) }
+            // Add animation
+            self.loginView.showHidePasswordButton.animateWhenPressed(disposeBag: self.bag)
+        }.disposed(by: self.bag)
     }
     
     // Set Constraints

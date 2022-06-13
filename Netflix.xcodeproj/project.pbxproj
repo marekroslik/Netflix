@@ -65,6 +65,8 @@
 		F9C73AB12843D958004EF079 /* MovieDetailsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */; };
 		F9E0CB6D28533B0200ED9658 /* TokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E0CB6C28533B0200ED9658 /* TokenResponseModel.swift */; };
 		F9E0CB6F28533BC900ED9658 /* LoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E0CB6E28533BC900ED9658 /* LoginResponseModel.swift */; };
+		F9EC85AC28572B18009DC89D /* LoginPostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EC85AB28572B18009DC89D /* LoginPostResponseModel.swift */; };
+		F9EC85AE28574638009DC89D /* UIButton.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EC85AD28574638009DC89D /* UIButton.Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +151,8 @@
 		F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsUIView.swift; sourceTree = "<group>"; };
 		F9E0CB6C28533B0200ED9658 /* TokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponseModel.swift; sourceTree = "<group>"; };
 		F9E0CB6E28533BC900ED9658 /* LoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseModel.swift; sourceTree = "<group>"; };
+		F9EC85AB28572B18009DC89D /* LoginPostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPostResponseModel.swift; sourceTree = "<group>"; };
+		F9EC85AD28574638009DC89D /* UIButton.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +263,7 @@
 				F94E13B4284DE4A7008F9B2F /* UITabBarItem.Extensions.swift */,
 				F9253519284F53B10037AD29 /* UIViewController.Extensions.swift */,
 				F925351B284F53F70037AD29 /* UIResponder.Extensions.swift */,
+				F9EC85AD28574638009DC89D /* UIButton.Extensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -475,6 +480,7 @@
 			children = (
 				F9E0CB6C28533B0200ED9658 /* TokenResponseModel.swift */,
 				F9E0CB6E28533BC900ED9658 /* LoginResponseModel.swift */,
+				F9EC85AB28572B18009DC89D /* LoginPostResponseModel.swift */,
 			);
 			path = ResponseModels;
 			sourceTree = "<group>";
@@ -706,6 +712,7 @@
 				F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */,
 				F9E0CB6F28533BC900ED9658 /* LoginResponseModel.swift in Sources */,
 				F9942AAF2851FFE70055DB56 /* APIError.swift in Sources */,
+				F9EC85AE28574638009DC89D /* UIButton.Extensions.swift in Sources */,
 				F9962FEE2850A3800072DF08 /* UserUseCase.swift in Sources */,
 				F967AF0F2844B48900758CE0 /* SecondOnBoardingUIView.swift in Sources */,
 				F90CAFD92846320B0011E4E5 /* MovieDetailsViewController.swift in Sources */,
@@ -738,6 +745,7 @@
 				F9C0449C283B9ED40038F175 /* SceneDelegate.swift in Sources */,
 				F90CAFE128463AB80011E4E5 /* MainCoordinator.swift in Sources */,
 				F90CAFE528463D5D0011E4E5 /* HomeViewCoordinator.swift in Sources */,
+				F9EC85AC28572B18009DC89D /* LoginPostResponseModel.swift in Sources */,
 				F90CAFD7284631890011E4E5 /* LoginViewController.swift in Sources */,
 				F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */,
 				F90CAFE9284644020011E4E5 /* FavoritesCoordinator.swift in Sources */,

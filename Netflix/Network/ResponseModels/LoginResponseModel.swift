@@ -1,13 +1,13 @@
 import Foundation
 
 struct LoginResponseModel: Codable {
-    let success: Bool?
-    let statusCode: Int?
-    let statusMessage: String?
+    let success: Bool
+    let expiresAt: String
+    let requestToken: String
 
     enum CodingKeys: String, CodingKey {
         case success = "success"
-        case statusCode = "status_code"
-        case statusMessage = "status_message"
+        case expiresAt = "expires_at"
+        case requestToken = "request_token"
     }
 }
