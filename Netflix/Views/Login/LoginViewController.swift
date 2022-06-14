@@ -20,6 +20,7 @@ final class LoginViewController: UIViewController {
         viewModel.getToken(bag: bag)
         loginButton()
         showHidePasswordButton()
+        errorHandling()
     }
     
     // Move view when keyboard is shown
@@ -46,13 +47,23 @@ final class LoginViewController: UIViewController {
         viewModel.isValid().map { $0 ? 1 : 0.5}.bind(to: loginView.loginButton.rx.alpha).disposed(by: bag)
     }
     
+    private func errorHandling() {
+        self.viewModel.errorHandling
+            .observe(on: MainScheduler.instance)
+            .subscribe { value in
+                self.loginView.showToast(message: value)
+            } onError: { error in
+                print(error)
+            }.disposed(by: bag)
+        
+    }
+    
     private func loginButton() {
         self.loginView.loginButton.rx.tap.bind {
             self.viewModel.authenticationWithLoginPassword(
                 login: self.loginView.emailTextField.text!,
                 password: self.loginView.passwordTextField.text!,
                 bag: self.bag)
-            self.loginView.showToast(message: "Incorrect username or password")
             
             // Add animation
             self.loginView.loginButton.animateWhenPressed(disposeBag: self.bag)

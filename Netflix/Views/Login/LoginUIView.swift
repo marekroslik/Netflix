@@ -70,7 +70,7 @@ final class LoginUIView: UIView {
         return button
     }()
     
-    let showAlert: UILabel = {
+    private let showAlert: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.red
         label.font = .boldSystemFont(ofSize: 14)
@@ -79,7 +79,6 @@ final class LoginUIView: UIView {
         label.alpha = 0
         label.layer.cornerRadius = 5
         label.clipsToBounds  =  true
-//        label.isHidden = true
         return label
     }()
     

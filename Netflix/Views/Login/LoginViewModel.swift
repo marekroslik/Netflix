@@ -8,26 +8,17 @@ final class LoginViewModel {
     
     let emailTextPublishSubject = PublishSubject<String>()
     let passwordTextPublishSubject = PublishSubject<String>()
-    let errorHandlingPublishSubject = PublishSubject<Error>()
+    var errorHandling = PublishSubject<String>()
     
     private var token: TokenResponseModel?
     private var login: LoginResponseModel?
-    
-    
-    func errorHandling() -> Observable<Error> {
-        return Observable
-            .subscribe(errorHandlingPublishSubject.asObserver())
-            .map { error in
-                return error
-            }
-    }
     
     func isValid() -> Observable<Bool> {
         return Observable
             .combineLatest(emailTextPublishSubject.asObserver()
                 .startWith(""), passwordTextPublishSubject.asObserver().startWith(""))
             .map { username, password in
-                return username.count > 3 && password.count > 5
+                return username.count >= 1 && password.count >= 4
             }.startWith(false)
     }
     
@@ -48,13 +39,14 @@ final class LoginViewModel {
         client.authenticationWithLoginPassword(loginModel: loginPost ).subscribe(
             onNext: { [weak self] result in
                 self?.login = result
+                print("LOGIN -> SHOW DASHBOARD")
             },
-            onError: { error in
+            onError: { [weak self] error in
                 switch error {
                 case APIError.wrongPassword:
-                    print(APIError.wrongPassword)
-                    
-                default: print(error.localizedDescription)
+                    self!.errorHandling.onNext("Invalid username or password")
+                default:
+                    self!.errorHandling.onNext("Login failed. Please try again later")
                 }
             }).disposed(by: bag)
     }
