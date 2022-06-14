@@ -13,8 +13,7 @@ final class SplashCoordinator: Coordinator {
     
     func start() {
         let splashViewController = SplashViewController()
-        let splashViewModel = SplashViewModel()
-        splashViewModel.coordinator = self
+        let splashViewModel = SplashViewModel(coordinator: self)
         splashViewController.viewModel = splashViewModel
         navigationController.setViewControllers([splashViewController], animated: false)
     }
