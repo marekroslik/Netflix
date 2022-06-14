@@ -4,7 +4,11 @@ import RxCocoa
 
 final class LoginViewModel {
     
-    var coordinator: LoginViewCoordinator?
+    private var coordinator: LoginViewCoordinator
+    
+    init (coordinator: LoginViewCoordinator) {
+        self.coordinator = coordinator
+    }
     
     let emailTextPublishSubject = PublishSubject<String>()
     let passwordTextPublishSubject = PublishSubject<String>()
@@ -23,8 +27,7 @@ final class LoginViewModel {
     }
     
     func getToken(bag: DisposeBag) {
-        let client = APIClient.shared
-        client.getToken().subscribe(
+        APIClient.shared.getToken().subscribe(
             onNext: { [weak self] result in
                 self?.token = result
             },
@@ -34,9 +37,8 @@ final class LoginViewModel {
     }
     
     func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag) {
-        let client = APIClient.shared
         let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!.requestToken)
-        client.authenticationWithLoginPassword(loginModel: loginPost ).subscribe(
+        APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost ).subscribe(
             onNext: { [weak self] result in
                 self?.login = result
                 print("LOGIN -> SHOW DASHBOARD")
@@ -44,9 +46,9 @@ final class LoginViewModel {
             onError: { [weak self] error in
                 switch error {
                 case APIError.wrongPassword:
-                    self!.errorHandling.onNext("Invalid username or password")
+                    self?.errorHandling.onNext("Invalid username or password")
                 default:
-                    self!.errorHandling.onNext("Login failed. Please try again later")
+                    self?.errorHandling.onNext("Login failed. Please try again later")
                 }
             }).disposed(by: bag)
     }
