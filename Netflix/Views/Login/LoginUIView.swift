@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class LoginUIVIew: UIView {
+final class LoginUIView: UIView {
     
     // Cteate full logo
     private let fullLogo: UIImageView = {
@@ -62,12 +62,24 @@ final class LoginUIVIew: UIView {
     }()
     
     // Create show/hide password button
-    private let showHidePasswordButton: UIButton = {
+    let showHidePasswordButton: UIButton = {
         let button = UIButton()
         button.setTitle("SHOW", for: .normal)
         button.setTitleColor(.gray, for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 14)
         return button
+    }()
+    
+    private let showAlert: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.red
+        label.font = .boldSystemFont(ofSize: 14)
+        label.textAlignment = .center
+        label.text = "Incorrect username or password"
+        label.alpha = 0
+        label.layer.cornerRadius = 5
+        label.clipsToBounds  =  true
+        return label
     }()
     
     override init(frame: CGRect) {
@@ -84,6 +96,18 @@ final class LoginUIVIew: UIView {
         addSubview(loginButton)
         addSubview(guestButton)
         addSubview(showHidePasswordButton)
+        addSubview(showAlert)
+    }
+    
+    func showToast(message: String) {
+        self.showAlert.text = message
+        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseOut, animations: {
+            self.showAlert.alpha = 1
+        }, completion: {(_) in
+            UIView.animate(withDuration: 1.0, delay: 2, options: .curveEaseOut) {
+                self.showAlert.alpha = 0
+            }
+        })
     }
     
     // Set constatints
@@ -121,6 +145,12 @@ final class LoginUIVIew: UIView {
         showHidePasswordButton.snp.makeConstraints { make in
             make.centerY.equalTo(passwordTextField)
             make.right.equalTo(passwordTextField.snp.right).offset(-10)
+        }
+        
+        showAlert.snp.makeConstraints { make in
+            make.bottom.equalTo(emailTextField.snp.top).offset(-20)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.9)
         }
     }
     
