@@ -25,7 +25,7 @@ final class SecondOnBoardingUIView: UIView {
     }()
     
     // Create singUpButton
-    private let signUpButton: UIButton = {
+    let signUpButton: UIButton = {
         let button = UIButton()
         button.setTitle("SIGN UP", for: .normal)
         button.setTitleColor(.white, for: .normal)

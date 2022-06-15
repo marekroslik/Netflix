@@ -19,12 +19,15 @@ final class SplashCoordinator: Coordinator {
     }
     
     func startOnBoarding() {
-        let onBoardingCoordinator = LoginViewCoordinator(navigationController: navigationController)
+        let onBoardingCoordinator = OnBoardingCoordinator(navigationController: navigationController)
         childCoordinators.append(onBoardingCoordinator)
         onBoardingCoordinator.start()
     }
     
     func startDashboard() {
+        // Need it ERROR - Cannot convert value of type 'UINavigationController' to expected argument type 'UITabBarController'
+//        let dashboardCoordinator = MainCoordinator(tabBarController: navigationController)
+        
         let dashboardCoordinator = LoginViewCoordinator(navigationController: navigationController)
         childCoordinators.append(dashboardCoordinator)
         dashboardCoordinator.start()

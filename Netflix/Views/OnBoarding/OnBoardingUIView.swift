@@ -19,7 +19,7 @@ final class OnBoardingUIView: UIView, UIScrollViewDelegate {
     }()
     
     // Create singInButton
-    private let signInButton: UIButton = {
+    let signInButton: UIButton = {
         let button = UIButton()
         button.setTitle("SIGN IN", for: .normal)
         button.setTitleColor(.white, for: .normal)

@@ -64,6 +64,7 @@
 		F9C3C23F2850F2DC001E2BF8 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C3C23E2850F2DC001E2BF8 /* APIRequest.swift */; };
 		F9C73AAE2843A67F004EF079 /* CustomFavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */; };
 		F9C73AB12843D958004EF079 /* MovieDetailsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */; };
+		F9C8C6802859D9730067F98F /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8C67F2859D9730067F98F /* OnBoardingViewModel.swift */; };
 		F9E0CB6D28533B0200ED9658 /* TokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E0CB6C28533B0200ED9658 /* TokenResponseModel.swift */; };
 		F9E0CB6F28533BC900ED9658 /* LoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E0CB6E28533BC900ED9658 /* LoginResponseModel.swift */; };
 		F9EC85AC28572B18009DC89D /* LoginPostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EC85AB28572B18009DC89D /* LoginPostResponseModel.swift */; };
@@ -151,6 +152,7 @@
 		F9C3C23E2850F2DC001E2BF8 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		F9C73AB02843D958004EF079 /* MovieDetailsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsUIView.swift; sourceTree = "<group>"; };
+		F9C8C67F2859D9730067F98F /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
 		F9E0CB6C28533B0200ED9658 /* TokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponseModel.swift; sourceTree = "<group>"; };
 		F9E0CB6E28533BC900ED9658 /* LoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseModel.swift; sourceTree = "<group>"; };
 		F9EC85AB28572B18009DC89D /* LoginPostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPostResponseModel.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 			children = (
 				F98359A4284128D100BD6F8A /* OnBoardingUIView.swift */,
 				F967AF092844B36900758CE0 /* OnBoardingViewController.swift */,
+				F9C8C67F2859D9730067F98F /* OnBoardingViewModel.swift */,
 				F90CAFDC2846358B0011E4E5 /* OnBoardingCoordinator.swift */,
 				F967AF0B2844B45100758CE0 /* OnBoardingItems */,
 			);
@@ -738,6 +741,7 @@
 				F90CAFED28464FD80011E4E5 /* MovieDetailsCoordinator.swift in Sources */,
 				F983599F28411EB300BD6F8A /* UITextField.Extensions.swift in Sources */,
 				F90CAFDD2846358B0011E4E5 /* OnBoardingCoordinator.swift in Sources */,
+				F9C8C6802859D9730067F98F /* OnBoardingViewModel.swift in Sources */,
 				F99D1B602842808A009EE515 /* FavoritesUIView.swift in Sources */,
 				F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */,
 				F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */,
