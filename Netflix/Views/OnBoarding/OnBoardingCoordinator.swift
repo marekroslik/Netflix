@@ -11,8 +11,16 @@ final class OnBoardingCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start() {
+    func start() {        
         let onBoardingViewController = OnBoardingViewController()
+        let onBoardingViewModel = OnBoardingViewModel(coordinator: self)
+        onBoardingViewController.viewModel = onBoardingViewModel
         navigationController.setViewControllers([onBoardingViewController], animated: false)
+    }
+    
+    func startLogin() {
+        let loginCoordinator = LoginViewCoordinator(navigationController: navigationController)
+        childCoordinators.append(loginCoordinator)
+        loginCoordinator.start()
     }
 }
