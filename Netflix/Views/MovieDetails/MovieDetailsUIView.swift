@@ -13,7 +13,7 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create back button
-    private let topBackButton: UIButton = {
+    let topBackButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = .white

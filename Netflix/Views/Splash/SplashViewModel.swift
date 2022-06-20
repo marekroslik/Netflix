@@ -4,17 +4,11 @@ import RxCocoa
 
 final class SplashViewModel {
     
-    private var coordinator: SplashCoordinator
-    
-    init (coordinator: SplashCoordinator) {
-        self.coordinator = coordinator
-    }
-    
     private let countDown = 2
     private var loginAndPassword: (login: String, password: String)?
     private var token: String?
     
-    func timer(bag: DisposeBag) {
+    func timer(bag: DisposeBag, didSendEventClosure: ((SplashViewController.Event) -> Void)?) {
         Observable<Int>.timer(.seconds(0), period: .seconds(1), scheduler: MainScheduler.instance)
             .take(countDown+1)
             .subscribe(onNext: { timePassed in
@@ -26,44 +20,48 @@ final class SplashViewModel {
                 // Trying to get data from KeyChain
                 do {
                     self.loginAndPassword = try KeyChainUseCase.getLoginAndPassword()
-                    self.tryToLogin(bag: bag)
+                    self.tryToLogin(bag: bag, didSendEventClosure: didSendEventClosure)
                 } catch {
                     // KeyChain error
-                    self.coordinator.startOnBoarding()
+                    didSendEventClosure?(.login)
                     return
                 }
             }).disposed(by: bag)
     }
     
-    func tryToLogin(bag: DisposeBag) {
+    func tryToLogin(bag: DisposeBag, didSendEventClosure: ((SplashViewController.Event) -> Void)?) {
         APIClient.shared.getToken()
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] result in
                 self?.token = result.requestToken
             },
-            onError: { [weak self] _ in
-                self!.coordinator.startOnBoarding()
+            onError: { _ in
+                didSendEventClosure?(.login)
             }, onCompleted: { [weak self] in
-                self!.authenticationWithLoginPassword(login: self!.loginAndPassword!.login, password: self!.loginAndPassword!.password, bag: bag)
+                self!.authenticationWithLoginPassword(
+                    login: self!.loginAndPassword!.login,
+                    password: self!.loginAndPassword!.password,
+                    bag: bag,
+                    didSendEventClosure: didSendEventClosure)
             }).disposed(by: bag)
     }
     
-    func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag) {
+    func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag, didSendEventClosure: ((SplashViewController.Event) -> Void)?) {
         let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!)
         APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                self?.coordinator.startDashboard()
+            .subscribe(onNext: { _ in
+                didSendEventClosure?(.main)
             },
-            onError: { [weak self] _ in
-                self?.coordinator.startOnBoarding()
+            onError: { _ in
+                didSendEventClosure?(.login)
             }).disposed(by: bag)
     }
     
     // Functions to test KeyChain CRUD
     func saveKeyChain() {
         do {
-            try KeyChainUseCase.saveLoginAndPassword(login: "marekqq", password: "marekq".data(using: .utf8)!)
+            try KeyChainUseCase.saveLoginAndPassword(login: "marekqq", password: "marekqq".data(using: .utf8)!)
             print("KeyChain - SAVE")
             print("---------------")
         } catch {
@@ -82,7 +80,7 @@ final class SplashViewModel {
     
     func updateKeyChain() {
         do {
-            try KeyChainUseCase.updateLoginAndPassword(login: "marekqq", password: "marekqq")
+            try KeyChainUseCase.updateLoginAndPassword(login: "asdasd", password: "123")
             print("KeyChain - UPDATE")
             print("---------------")
         } catch {

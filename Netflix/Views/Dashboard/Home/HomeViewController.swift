@@ -3,6 +3,10 @@ import SnapKit
 
 final class HomeViewController: UIViewController {
     
+    var didSendEventClosure: ((HomeViewController.Event) -> Void)?
+    
+    var viewModel: HomeViewModel!
+    
     // Create view
     private let latestMovieView = HomeLatestMovieUIView()
     private let popularMovies = HomePopularMoviesUIView()
@@ -36,6 +40,8 @@ final class HomeViewController: UIViewController {
         currentWidth?.isActive = true
         let currentHeight = logoBarItem.customView?.heightAnchor.constraint(equalToConstant: 35)
         currentHeight?.isActive = true
+        
+        logoButton.addTarget(self, action: #selector(logoButtonAction), for: .touchUpInside)
         // Add button to navigation bar
         navigationItem.leftBarButtonItem = logoBarItem
         
@@ -51,8 +57,18 @@ final class HomeViewController: UIViewController {
         currentWidth2?.isActive = true
         let currentHeight2 = accountButtonBarItem.customView?.heightAnchor.constraint(equalToConstant: 35)
         currentHeight2?.isActive = true
+        
+        accountButton.addTarget(self, action: #selector(accountButtonAction), for: .touchUpInside)
         // Add button to navigation bar
         navigationItem.rightBarButtonItem = accountButtonBarItem
+    }
+    
+    @objc func accountButtonAction(sender: UIButton!) {
+        viewModel.logOut(didSendEventClosure: didSendEventClosure)
+    }
+    
+    @objc func logoButtonAction(sender: UIButton!) {
+        viewModel.showMovieDetails(didSendEventClosure: didSendEventClosure)
     }
     
     // Set Constraints
@@ -67,5 +83,12 @@ final class HomeViewController: UIViewController {
             make.bottom.left.right.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.4)
         }
+    }
+}
+
+extension HomeViewController {
+    enum Event {
+        case movieDetails
+        case logout
     }
 }
