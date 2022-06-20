@@ -2,6 +2,7 @@ import UIKit
 
 final class ComingSoonViewController: UIViewController {
     
+    var didSendEventClosure: ((ComingSoonViewController.Event) -> Void)?
     private let comingSoon = ComingSoonUIView()
     
     override func viewDidLoad() {
@@ -16,5 +17,11 @@ final class ComingSoonViewController: UIViewController {
         comingSoon.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension ComingSoonViewController {
+    enum Event {
+        case movieDetails
     }
 }

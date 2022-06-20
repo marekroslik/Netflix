@@ -9,6 +9,8 @@ final class OnBoardingViewController: UIViewController {
     private let firstView = FirstOnBoardingUIView()
     private let secondView = SecondOnBoardingUIView()
     
+    var didSendEventClosure: ((OnBoardingViewController.Event) -> Void)?
+    
     var viewModel: OnBoardingViewModel!
     
     private let bag = DisposeBag()
@@ -56,7 +58,7 @@ final class OnBoardingViewController: UIViewController {
         self.backGround.signInButton.rx.tap.bind { [ weak self] in
             
             // Open Login View
-            self!.viewModel.signIn()
+            self!.viewModel.signIn(didSendEventClosure: self?.didSendEventClosure)
            
             // Add animation
             self!.backGround.signInButton.animateWhenPressed(disposeBag: self!.bag)
@@ -104,5 +106,11 @@ extension OnBoardingViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
         pageControl.currentPage = Int(pageIndex)
+    }
+}
+
+extension OnBoardingViewController {
+    enum Event {
+        case login
     }
 }

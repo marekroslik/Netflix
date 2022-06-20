@@ -9,6 +9,8 @@ final class LoginViewController: UIViewController {
     private let loginView = LoginUIView()
     var viewModel: LoginViewModel!
     
+    var didSendEventClosure: ((LoginViewController.Event) -> Void)?
+    
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -65,7 +67,8 @@ final class LoginViewController: UIViewController {
             self!.viewModel.authenticationWithLoginPassword(
                 login: self!.loginView.emailTextField.text!,
                 password: self!.loginView.passwordTextField.text!,
-                bag: self!.bag)
+                bag: self!.bag,
+                didSendEventClosure: self?.didSendEventClosure)
             
             // Add animation
             self!.loginView.loginButton.animateWhenPressed(disposeBag: self!.bag)
@@ -88,5 +91,11 @@ final class LoginViewController: UIViewController {
         loginView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension LoginViewController {
+    enum Event {
+        case main
     }
 }

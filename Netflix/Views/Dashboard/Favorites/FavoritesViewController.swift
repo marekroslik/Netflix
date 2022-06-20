@@ -2,6 +2,8 @@ import UIKit
 
 final class FavoritesViewController: UIViewController {
     
+    var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
+    
     let favoritesView = FavoritesUIView()
     
     override func viewDidLoad() {
@@ -15,5 +17,11 @@ final class FavoritesViewController: UIViewController {
         favoritesView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension FavoritesViewController {
+    enum Event {
+        case movieDetails
     }
 }

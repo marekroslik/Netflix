@@ -4,12 +4,6 @@ import RxCocoa
 
 final class LoginViewModel {
     
-    private var coordinator: LoginViewCoordinator
-    
-    init (coordinator: LoginViewCoordinator) {
-        self.coordinator = coordinator
-    }
-    
     let emailTextPublishSubject = PublishSubject<String>()
     let passwordTextPublishSubject = PublishSubject<String>()
     var errorHandling = PublishSubject<String>()
@@ -36,12 +30,21 @@ final class LoginViewModel {
             }).disposed(by: bag)
     }
     
-    func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag) {
-        let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!.requestToken)
-        APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost ).subscribe(
-            onNext: { [weak self] result in
+    func authenticationWithLoginPassword(
+        login: String,
+        password: String,
+        bag: DisposeBag,
+        didSendEventClosure: ((LoginViewController.Event) -> Void)?) {
+        let loginPost = LoginPostResponseModel(
+            username: login,
+            password: password,
+            requestToken: self.token!.requestToken)
+        APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost )
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak self] result in
                 self?.login = result
-                print("LOGIN -> SHOW DASHBOARD")
+                self?.saveKeyChain(login: login, password: password)
+                didSendEventClosure?(.main)
             },
             onError: { [weak self] error in
                 switch error {
@@ -51,5 +54,13 @@ final class LoginViewModel {
                     self?.errorHandling.onNext("Login failed. Please try again later")
                 }
             }).disposed(by: bag)
+    }
+    
+    func saveKeyChain(login: String, password: String) {
+        do {
+            try KeyChainUseCase.saveLoginAndPassword(login: login, password: password.data(using: .utf8)!)
+        } catch {
+            print("KEYCHAIN SAVE \(error)")
+        }
     }
 }
