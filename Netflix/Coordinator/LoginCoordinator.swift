@@ -47,6 +47,6 @@ class LoginCoordinator: LoginCoordinatorProtocol {
                 self?.finish()
             }
         }
-        navigationController.pushViewController(loginVC, animated: false)
+        navigationController.setViewControllers([loginVC], animated: false)
     }
 }
