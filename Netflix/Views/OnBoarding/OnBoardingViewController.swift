@@ -9,8 +9,6 @@ final class OnBoardingViewController: UIViewController {
     private let firstView = FirstOnBoardingUIView()
     private let secondView = SecondOnBoardingUIView()
     
-    var didSendEventClosure: ((OnBoardingViewController.Event) -> Void)?
-    
     var viewModel: OnBoardingViewModel!
     
     private let bag = DisposeBag()
@@ -56,23 +54,24 @@ final class OnBoardingViewController: UIViewController {
     // SignInButton
     private func singInButton() {
         self.backGround.signInButton.rx.tap.bind { [ weak self] in
-            
+            guard let self = self else { return }
             // Open Login View
-            self!.viewModel.signIn(didSendEventClosure: self?.didSendEventClosure)
+            self.viewModel.signIn()
            
             // Add animation
-            self!.backGround.signInButton.animateWhenPressed(disposeBag: self!.bag)
+            self.backGround.signInButton.animateWhenPressed(disposeBag: self.bag)
         }.disposed(by: bag)
     }
     
     private func singUpButton() {
         self.secondView.signUpButton.rx.tap.bind { [ weak self] in
+            guard let self = self else { return }
             // Open URL
             if let url = URL(string: "https://www.themoviedb.org/signup?") {
                 UIApplication.shared.open(url)
             }
             // Add animation
-            self!.secondView.signUpButton.animateWhenPressed(disposeBag: self!.bag)
+            self.secondView.signUpButton.animateWhenPressed(disposeBag: self.bag)
         }.disposed(by: bag)
     }
     

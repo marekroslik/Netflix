@@ -1,7 +1,10 @@
 import Foundation
 
 class MovieDetailsViewModel {
-    func closeView(didSendEventClosure: ((MovieDetailsViewController.Event) -> Void)?) {
-        didSendEventClosure?(.close)
+    
+    var didSendEventClosure: ((MovieDetailsViewController.Event) -> Void)?
+    
+    func closeView() {
+        self.didSendEventClosure?(.close)
     }
 }

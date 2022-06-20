@@ -2,13 +2,14 @@ import Foundation
 import UIKit
 
 class HomeViewModel {
+    var didSendEventClosure: ((HomeViewController.Event) -> Void)?
     
-    func logOut(didSendEventClosure: ((HomeViewController.Event) -> Void)?) {
+    func logOut() {
         deleteKetChain()
         didSendEventClosure?(.logout)
     }
     
-    func showMovieDetails(didSendEventClosure: ((HomeViewController.Event) -> Void)?) {
+    func showMovieDetails() {
         didSendEventClosure?(.movieDetails)
     }
     

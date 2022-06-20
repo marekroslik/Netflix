@@ -30,7 +30,7 @@ class LoginCoordinator: LoginCoordinatorProtocol {
     func showOnBoardingViewController() {
         let loginVC: OnBoardingViewController = .init()
         loginVC.viewModel = OnBoardingViewModel()
-        loginVC.didSendEventClosure = { [weak self] event in
+        loginVC.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
             case .login:
                 self?.showLoginViewController()
@@ -41,7 +41,7 @@ class LoginCoordinator: LoginCoordinatorProtocol {
     func showLoginViewController() {
         let loginVC: LoginViewController = .init()
         loginVC.viewModel = LoginViewModel()
-        loginVC.didSendEventClosure = { [weak self] event in
+        loginVC.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
             case .main:
                 self?.finish()

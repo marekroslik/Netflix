@@ -8,8 +8,6 @@ final class MovieDetailsViewController: UIViewController {
     
     var viewModel: MovieDetailsViewModel!
     
-    var didSendEventClosure: ((MovieDetailsViewController.Event) -> Void)?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -28,7 +26,7 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     @objc func topBacButtonAction() {
-        viewModel.closeView(didSendEventClosure: didSendEventClosure)
+        viewModel.closeView()
     }
     // Set Constraints
     private func applyConstraints() {

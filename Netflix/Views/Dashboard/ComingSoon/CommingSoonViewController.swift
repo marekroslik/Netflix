@@ -2,8 +2,8 @@ import UIKit
 
 final class ComingSoonViewController: UIViewController {
     
-    var didSendEventClosure: ((ComingSoonViewController.Event) -> Void)?
     private let comingSoon = ComingSoonUIView()
+    var viewModel: ComingSoonViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

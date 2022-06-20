@@ -29,7 +29,7 @@ class SplashCoordinator: SplashCoordinatorProtocol {
     func showSplashViewController() {
         let loginVC: SplashViewController = .init()
         loginVC.viewModel = SplashViewModel()
-        loginVC.didSendEventClosure = { [weak self] event in
+        loginVC.viewModel.didSendEventClosure = { [weak self] event in
             self?.finishWith(splashEvent: event)
         }
         navigationController.pushViewController(loginVC, animated: true)
