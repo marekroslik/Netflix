@@ -2,8 +2,12 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class APIClient {
-    static var shared = APIClient()
+protocol APIClientProtocol {
+    func getToken() -> Observable<TokenResponseModel>
+    func authenticationWithLoginPassword(loginModel: LoginPostResponseModel) -> Observable<LoginResponseModel>
+}
+
+class APIClient: APIClientProtocol {
     let requestObservable = APIRequest(config: .default)
     
     // Get token request

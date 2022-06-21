@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class LoginViewModel {
+final class LoginViewModel: APIViewModel {
     
     let emailTextPublishSubject = PublishSubject<String>()
     let passwordTextPublishSubject = PublishSubject<String>()
@@ -11,6 +11,7 @@ final class LoginViewModel {
     private var token: TokenResponseModel?
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
+    var apiClient: APIClient = APIClient()
     
     func isValid() -> Observable<Bool> {
         return Observable
@@ -22,7 +23,7 @@ final class LoginViewModel {
     }
     
     func getToken(bag: DisposeBag) {
-        APIClient.shared.getToken().subscribe(
+        apiClient.getToken().subscribe(
             onNext: { [weak self] result in
                 self?.token = result
             },
@@ -39,7 +40,7 @@ final class LoginViewModel {
             username: login,
             password: password,
             requestToken: self.token!.requestToken)
-        APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost )
+            apiClient.authenticationWithLoginPassword(loginModel: loginPost )
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [weak self] _ in
                 self?.saveKeyChain(login: login, password: password)
