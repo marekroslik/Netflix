@@ -9,7 +9,6 @@ final class LoginViewModel {
     var errorHandling = PublishSubject<String>()
     
     private var token: TokenResponseModel?
-    private var login: LoginResponseModel?
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
     
@@ -42,10 +41,9 @@ final class LoginViewModel {
             requestToken: self.token!.requestToken)
         APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost )
                 .observe(on: MainScheduler.instance)
-                .subscribe(onNext: { [weak self] result in
-                self?.login = result
+                .subscribe(onNext: { [weak self] _ in
                 self?.saveKeyChain(login: login, password: password)
-                    self?.didSendEventClosure?(.main)
+                self?.didSendEventClosure?(.main)
             },
             onError: { [weak self] error in
                 switch error {
