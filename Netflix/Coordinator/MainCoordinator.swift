@@ -87,7 +87,7 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
         case .home:
             // If needed: Each tab bar flow can have it's own Coordinator.
             let home = HomeViewController()
-            home.viewModel = HomeViewModel()
+            home.viewModel = HomeViewModel(apiClient: APIClient())
             home.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails:
@@ -100,7 +100,7 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             
         case .comingSoon:
             let comingSoon = ComingSoonViewController()
-            comingSoon.viewModel = ComingSoonViewModel()
+            comingSoon.viewModel = ComingSoonViewModel(apiClient: APIClient())
             comingSoon.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails:
@@ -111,7 +111,7 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             
         case .favorites:
             let favorites = FavoritesViewController()
-            favorites.viewModel = FavoritesViewModel()
+            favorites.viewModel = FavoritesViewModel(apiClient: APIClient())
             favorites.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails:

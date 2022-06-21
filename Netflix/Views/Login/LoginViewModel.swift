@@ -2,7 +2,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class LoginViewModel: APIViewModel {
+final class LoginViewModel {
     
     let emailTextPublishSubject = PublishSubject<String>()
     let passwordTextPublishSubject = PublishSubject<String>()
@@ -11,7 +11,11 @@ final class LoginViewModel: APIViewModel {
     private var token: TokenResponseModel?
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
-    var apiClient: APIClient = APIClient()
+    private var apiClient: APIClient
+    
+    init(apiClient: APIClient) {
+        self.apiClient = apiClient
+    }
     
     func isValid() -> Observable<Bool> {
         return Observable

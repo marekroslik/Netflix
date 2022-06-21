@@ -2,13 +2,17 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class SplashViewModel: APIViewModel {
+final class SplashViewModel {
     
     private let countDown = 2
     private var loginAndPassword: (login: String, password: String)?
     private var token: String?
     var didSendEventClosure: ((SplashViewController.Event) -> Void)?
-    var apiClient: APIClient = APIClient()
+    private var apiClient: APIClient
+    
+    init(apiClient: APIClient) {
+        self.apiClient = apiClient
+    }
     
     func timer(bag: DisposeBag) {
         Observable<Int>.timer(.seconds(0), period: .seconds(1), scheduler: MainScheduler.instance)

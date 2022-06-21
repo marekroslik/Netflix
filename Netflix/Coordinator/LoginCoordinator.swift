@@ -35,7 +35,7 @@ class LoginCoordinator: BaseCoordinator, LoginCoordinatorProtocol {
     }
     func showLoginViewController() {
         let loginVC: LoginViewController = .init()
-        loginVC.viewModel = LoginViewModel()
+        loginVC.viewModel = LoginViewModel(apiClient: APIClient())
         loginVC.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
             case .main:
