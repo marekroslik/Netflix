@@ -15,7 +15,7 @@ class HomeViewModel {
     
     func deleteKetChain() {
         do {
-            try KeyChainUseCase.deleteLoginAndPassword()
+            try KeyChainUseCase().deleteLoginAndPassword()
         } catch {
             print("KEYCHAIN DELETE \(error)")
         }

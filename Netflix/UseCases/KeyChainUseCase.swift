@@ -1,10 +1,3 @@
-//
-//  KeyChainUseCase.swift
-//  Netflix
-//
-//  Created by Marek Roslik on 14.06.22.
-//
-
 import Foundation
 
 class KeyChainUseCase {
@@ -17,7 +10,7 @@ class KeyChainUseCase {
         case unknown(OSStatus)
     }
     
-    static func saveLoginAndPassword(login: String, password: Data) throws {
+    func saveLoginAndPassword(login: String, password: Data) throws {
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
@@ -29,7 +22,7 @@ class KeyChainUseCase {
         guard status == errSecSuccess else { throw KeyChainError.unknown(status) }
     }
     
-    static func getLoginAndPassword() throws -> (login: String, password: String) {
+    func getLoginAndPassword() throws -> (login: String, password: String) {
        
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
@@ -53,7 +46,7 @@ class KeyChainUseCase {
         return (login: account, password: password)
     }
     
-    static func updateLoginAndPassword(login: String, password: String) throws {
+    func updateLoginAndPassword(login: String, password: String) throws {
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
@@ -68,7 +61,7 @@ class KeyChainUseCase {
         guard status == errSecSuccess else { throw KeyChainError.unknown(status) }
     }
     
-    static func deleteLoginAndPassword() throws {
+    func deleteLoginAndPassword() throws {
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
