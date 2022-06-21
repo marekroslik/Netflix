@@ -3,8 +3,6 @@ import SnapKit
 
 final class HomeViewController: UIViewController {
     
-    var didSendEventClosure: ((HomeViewController.Event) -> Void)?
-    
     var viewModel: HomeViewModel!
     
     // Create view
@@ -64,11 +62,11 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func accountButtonAction(sender: UIButton!) {
-        viewModel.logOut(didSendEventClosure: didSendEventClosure)
+        viewModel.logOut()
     }
     
     @objc func logoButtonAction(sender: UIButton!) {
-        viewModel.showMovieDetails(didSendEventClosure: didSendEventClosure)
+        viewModel.showMovieDetails()
     }
     
     // Set Constraints

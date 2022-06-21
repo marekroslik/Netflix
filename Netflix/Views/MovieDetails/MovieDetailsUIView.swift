@@ -15,11 +15,9 @@ final class MovieDetailsUIView: UIView {
     // Create back button
     let topBackButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.tintColor = .white
-        button.contentVerticalAlignment = .fill
-        button.contentHorizontalAlignment = .fill
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.setImage(UIImage(systemName: "chevron.down")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .red
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 50), forImageIn: .normal)
         return button
     }()
     
@@ -27,10 +25,8 @@ final class MovieDetailsUIView: UIView {
     private let toplikeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.tintColor = .white
-        button.contentVerticalAlignment = .fill
-        button.contentHorizontalAlignment = .fill
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 10)
+        button.tintColor = .red
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 40), forImageIn: .normal)
         return button
     }()
     

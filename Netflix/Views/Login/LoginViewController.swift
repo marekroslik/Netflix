@@ -9,8 +9,6 @@ final class LoginViewController: UIViewController {
     private let loginView = LoginUIView()
     var viewModel: LoginViewModel!
     
-    var didSendEventClosure: ((LoginViewController.Event) -> Void)?
-    
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -55,7 +53,8 @@ final class LoginViewController: UIViewController {
         self.viewModel.errorHandling
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] value in
-                self!.loginView.showToast(message: value)
+                guard let self = self else { return }
+                self.loginView.showToast(message: value)
             } onError: { error in
                 print(error)
             }.disposed(by: bag)
@@ -64,25 +63,26 @@ final class LoginViewController: UIViewController {
     
     private func loginButton() {
         self.loginView.loginButton.rx.tap.bind { [ weak self] in
-            self!.viewModel.authenticationWithLoginPassword(
-                login: self!.loginView.emailTextField.text!,
-                password: self!.loginView.passwordTextField.text!,
-                bag: self!.bag,
-                didSendEventClosure: self?.didSendEventClosure)
+            guard let self = self else { return }
+            self.viewModel.authenticationWithLoginPassword(
+                login: self.loginView.emailTextField.text!,
+                password: self.loginView.passwordTextField.text!,
+                bag: self.bag)
             
             // Add animation
-            self!.loginView.loginButton.animateWhenPressed(disposeBag: self!.bag)
+            self.loginView.loginButton.animateWhenPressed(disposeBag: self.bag)
         }.disposed(by: bag)
     }
     
     private func showHidePasswordButton() {
         self.loginView.showHidePasswordButton.rx.tap.bind { [weak self] in
-            self!.loginView.passwordTextField.isSecureTextEntry.toggle()
-            if self!.loginView.passwordTextField.isSecureTextEntry == true {
-                self!.loginView.showHidePasswordButton.setTitle("SHOW", for: .normal)
-            } else { self!.loginView.showHidePasswordButton.setTitle("HIDE", for: .normal) }
+            guard let self = self else { return }
+            self.loginView.passwordTextField.isSecureTextEntry.toggle()
+            if self.loginView.passwordTextField.isSecureTextEntry == true {
+                self.loginView.showHidePasswordButton.setTitle("SHOW", for: .normal)
+            } else { self.loginView.showHidePasswordButton.setTitle("HIDE", for: .normal) }
             // Add animation
-            self!.loginView.showHidePasswordButton.animateWhenPressed(disposeBag: self!.bag)
+            self.loginView.showHidePasswordButton.animateWhenPressed(disposeBag: self.bag)
         }.disposed(by: bag)
     }
     

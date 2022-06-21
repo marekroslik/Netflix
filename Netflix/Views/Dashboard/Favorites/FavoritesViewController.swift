@@ -2,9 +2,8 @@ import UIKit
 
 final class FavoritesViewController: UIViewController {
     
-    var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
-    
     let favoritesView = FavoritesUIView()
+    var viewModel: FavoritesViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

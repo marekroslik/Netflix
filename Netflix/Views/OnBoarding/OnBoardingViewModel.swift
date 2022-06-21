@@ -2,7 +2,9 @@ import Foundation
 
 final class OnBoardingViewModel {
     
-    func signIn(didSendEventClosure: ((OnBoardingViewController.Event) -> Void)?) {
+    var didSendEventClosure: ((OnBoardingViewController.Event) -> Void)?
+    
+    func signIn() {
         print("SignIn tap")
         didSendEventClosure?(.login)
     }

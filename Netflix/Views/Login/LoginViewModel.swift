@@ -11,6 +11,8 @@ final class LoginViewModel {
     private var token: TokenResponseModel?
     private var login: LoginResponseModel?
     
+    var didSendEventClosure: ((LoginViewController.Event) -> Void)?
+    
     func isValid() -> Observable<Bool> {
         return Observable
             .combineLatest(emailTextPublishSubject.asObserver()
@@ -33,8 +35,7 @@ final class LoginViewModel {
     func authenticationWithLoginPassword(
         login: String,
         password: String,
-        bag: DisposeBag,
-        didSendEventClosure: ((LoginViewController.Event) -> Void)?) {
+        bag: DisposeBag) {
         let loginPost = LoginPostResponseModel(
             username: login,
             password: password,
@@ -44,7 +45,7 @@ final class LoginViewModel {
                 .subscribe(onNext: { [weak self] result in
                 self?.login = result
                 self?.saveKeyChain(login: login, password: password)
-                didSendEventClosure?(.main)
+                    self?.didSendEventClosure?(.main)
             },
             onError: { [weak self] error in
                 switch error {

@@ -8,8 +8,6 @@ final class SplashViewController: UIViewController {
     // Create view
     private let splashView = SplashUIView()
     
-    var didSendEventClosure: ((SplashViewController.Event) -> Void)?
-    
     var viewModel: SplashViewModel!
     
     private let bag = DisposeBag()
@@ -19,7 +17,7 @@ final class SplashViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        viewModel.timer(bag: bag, didSendEventClosure: didSendEventClosure)
+        viewModel.timer(bag: bag)
     }
     
     // Add subviews

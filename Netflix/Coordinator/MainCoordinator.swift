@@ -11,25 +11,25 @@ protocol MainCoordinatorProtocol: Coordinator {
     
     func showMovieDetails()
     
-    func closeView()
+    func closeMovieDetails()
 }
 
 class MainCoordinator: NSObject, MainCoordinatorProtocol {
     weak var finishDelegate: CoordinatorFinishDelegate?
-        
+    
     var childCoordinators: [Coordinator] = []
-
+    
     var navigationController: UINavigationController
     
     var tabBarController: UITabBarController
-
+    
     var type: CoordinatorType { .main }
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.tabBarController = .init()
     }
-
+    
     func start() {
         // Let's define which pages do we want to add into tab bar
         let pages: [TabBarPage] = [.home, .comingSoon, .favorites]
@@ -42,19 +42,20 @@ class MainCoordinator: NSObject, MainCoordinatorProtocol {
     }
     
     func showMovieDetails() {
-        let presentView = MovieDetailsViewController()
-        presentView.viewModel = MovieDetailsViewModel()
-        presentView.didSendEventClosure = { [weak self] event in
+        let movieDetails = MovieDetailsViewController()
+        movieDetails.modalPresentationStyle = .fullScreen
+        movieDetails.viewModel = MovieDetailsViewModel()
+        movieDetails.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
             case .close:
-                self?.closeView()
+                self?.closeMovieDetails()
             }
         }
-        navigationController.pushViewController(presentView, animated: true)
+        navigationController.present(movieDetails, animated: true)
     }
     
-    func closeView() {
-        navigationController.popViewController(animated: true)
+    func closeMovieDetails() {
+        navigationController.dismiss(animated: true)
     }
     
     deinit {
@@ -74,11 +75,11 @@ class MainCoordinator: NSObject, MainCoordinatorProtocol {
         // In this step, we attach tabBarController to navigation controller associated with this coordanator
         navigationController.viewControllers = [tabBarController]
     }
-      
+    
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
         let navController = UINavigationController()
         navController.setNavigationBarHidden(false, animated: false)
-
+        
         navController.tabBarItem = UITabBarItem.init(
             title: page.pageTitleValue(),
             image: UIImage(systemName: page.pageIconValue()),
@@ -86,13 +87,13 @@ class MainCoordinator: NSObject, MainCoordinatorProtocol {
         )
         
         navController.tabBarItem.selectedImage = UIImage(systemName: page.pageSelectIconValue())
-
+        
         switch page {
         case .home:
             // If needed: Each tab bar flow can have it's own Coordinator.
-            let readyVC = HomeViewController()
-            readyVC.viewModel = HomeViewModel()
-            readyVC.didSendEventClosure = { [weak self] event in
+            let home = HomeViewController()
+            home.viewModel = HomeViewModel()
+            home.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails:
                     self?.showMovieDetails()
@@ -100,33 +101,35 @@ class MainCoordinator: NSObject, MainCoordinatorProtocol {
                     self?.finish()
                 }
             }
-            navController.pushViewController(readyVC, animated: true)
-        
+            navController.pushViewController(home, animated: true)
+            
         case .comingSoon:
-            let steadyVC = ComingSoonViewController()
-            steadyVC.didSendEventClosure = { [weak self] event in
+            let comingSoon = ComingSoonViewController()
+            comingSoon.viewModel = ComingSoonViewModel()
+            comingSoon.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails:
                     self?.showMovieDetails()
                 }
             }
-            navController.pushViewController(steadyVC, animated: true)
-        
+            navController.pushViewController(comingSoon, animated: true)
+            
         case .favorites:
-            let goVC = FavoritesViewController()
-            goVC.didSendEventClosure = { [weak self] event in
+            let favorites = FavoritesViewController()
+            favorites.viewModel = FavoritesViewModel()
+            favorites.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails:
                     self?.showMovieDetails()
                 }
             }
-            navController.pushViewController(goVC, animated: true)
+            navController.pushViewController(favorites, animated: true)
         }
         return navController
     }
     
     func currentPage() -> TabBarPage? { TabBarPage.init(index: tabBarController.selectedIndex) }
-
+    
     func selectPage(_ page: TabBarPage) {
         tabBarController.selectedIndex = page.pageOrderNumber()
     }
@@ -142,7 +145,7 @@ enum TabBarPage {
     case home
     case comingSoon
     case favorites
-
+    
     init?(index: Int) {
         switch index {
         case 0:
@@ -166,7 +169,7 @@ enum TabBarPage {
             return "Favorites"
         }
     }
-
+    
     func pageOrderNumber() -> Int {
         switch self {
         case .home:
@@ -177,7 +180,7 @@ enum TabBarPage {
             return 2
         }
     }
-
+    
     func pageIconValue() -> String {
         switch self {
         case .home:
