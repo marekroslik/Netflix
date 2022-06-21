@@ -8,6 +8,11 @@ final class SplashViewModel {
     private var loginAndPassword: (login: String, password: String)?
     private var token: String?
     var didSendEventClosure: ((SplashViewController.Event) -> Void)?
+    private var apiClient: APIClient
+    
+    init(apiClient: APIClient) {
+        self.apiClient = apiClient
+    }
     
     func timer(bag: DisposeBag) {
         Observable<Int>.timer(.seconds(0), period: .seconds(1), scheduler: MainScheduler.instance)
@@ -31,7 +36,7 @@ final class SplashViewModel {
     }
     
     func tryToLogin(bag: DisposeBag) {
-        APIClient.shared.getToken()
+        apiClient.getToken()
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] result in
                 self?.token = result.requestToken
@@ -49,7 +54,7 @@ final class SplashViewModel {
     
     func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag) {
         let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!)
-        APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost)
+        apiClient.authenticationWithLoginPassword(loginModel: loginPost)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 self.didSendEventClosure?(.main)

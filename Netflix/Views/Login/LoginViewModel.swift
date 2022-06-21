@@ -9,9 +9,13 @@ final class LoginViewModel {
     var errorHandling = PublishSubject<String>()
     
     private var token: TokenResponseModel?
-    private var login: LoginResponseModel?
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
+    private var apiClient: APIClient
+    
+    init(apiClient: APIClient) {
+        self.apiClient = apiClient
+    }
     
     func isValid() -> Observable<Bool> {
         return Observable
@@ -23,7 +27,7 @@ final class LoginViewModel {
     }
     
     func getToken(bag: DisposeBag) {
-        APIClient.shared.getToken().subscribe(
+        apiClient.getToken().subscribe(
             onNext: { [weak self] result in
                 self?.token = result
             },
@@ -40,12 +44,11 @@ final class LoginViewModel {
             username: login,
             password: password,
             requestToken: self.token!.requestToken)
-        APIClient.shared.authenticationWithLoginPassword(loginModel: loginPost )
+            apiClient.authenticationWithLoginPassword(loginModel: loginPost )
                 .observe(on: MainScheduler.instance)
-                .subscribe(onNext: { [weak self] result in
-                self?.login = result
+                .subscribe(onNext: { [weak self] _ in
                 self?.saveKeyChain(login: login, password: password)
-                    self?.didSendEventClosure?(.main)
+                self?.didSendEventClosure?(.main)
             },
             onError: { [weak self] error in
                 switch error {

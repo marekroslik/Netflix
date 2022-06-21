@@ -3,6 +3,11 @@ import UIKit
 
 class HomeViewModel {
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
+    private var apiClient: APIClient
+    
+    init(apiClient: APIClient) {
+        self.apiClient = apiClient
+    }
     
     func logOut() {
         deleteKetChain()
