@@ -5,17 +5,12 @@ protocol SplashCoordinatorProtocol: Coordinator {
     func showSplashViewController()
 }
 
-class SplashCoordinator: SplashCoordinatorProtocol {
-    weak var finishDelegate: CoordinatorFinishDelegate?
-    
-    var navigationController: UINavigationController
-    
-    var childCoordinators: [Coordinator] = []
+class SplashCoordinator: BaseCoordinator, SplashCoordinatorProtocol {
     
     var type: CoordinatorType { .splash }
         
     required init(_ navigationController: UINavigationController) {
-        self.navigationController = navigationController
+        super.init(navigationController)
     }
         
     func start() {

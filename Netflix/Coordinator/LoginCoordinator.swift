@@ -6,17 +6,12 @@ protocol LoginCoordinatorProtocol: Coordinator {
     func showLoginViewController()
 }
 
-class LoginCoordinator: LoginCoordinatorProtocol {
-    weak var finishDelegate: CoordinatorFinishDelegate?
-    
-    var navigationController: UINavigationController
-    
-    var childCoordinators: [Coordinator] = []
+class LoginCoordinator: BaseCoordinator, LoginCoordinatorProtocol {
     
     var type: CoordinatorType { .login }
         
     required init(_ navigationController: UINavigationController) {
-        self.navigationController = navigationController
+        super.init(navigationController)
     }
         
     func start() {

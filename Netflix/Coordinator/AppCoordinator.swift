@@ -8,17 +8,12 @@ protocol AppCoordinatorProtocol: Coordinator {
 }
 
 // App coordinator is the only one coordinator which will exist during app's life cycle
-class AppCoordinator: AppCoordinatorProtocol {
-    weak var finishDelegate: CoordinatorFinishDelegate?
-    
-    var navigationController: UINavigationController
-    
-    var childCoordinators = [Coordinator]()
+class AppCoordinator: BaseCoordinator, AppCoordinatorProtocol {
     
     var type: CoordinatorType { .app }
         
     required init(_ navigationController: UINavigationController) {
-        self.navigationController = navigationController
+        super.init(navigationController)
         navigationController.setNavigationBarHidden(true, animated: true)
     }
 
