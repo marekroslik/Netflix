@@ -17,7 +17,17 @@ final class SplashViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
+        
+//        viewModel.getLatestMovie(bag: bag)
+//        viewModel.getLPopularMovies(atPage: 1, bag: bag)
+//        viewModel.getUpcomingMovies(atPage: 1, bag: bag)
+//        viewModel.searchMovies(withTitle: "Spider", atPage: 1, bag: bag)
+//        viewModel.getAccountDetails(withSessionId: "34a37ff87cb7f7e6b42951a0b68731972d5aee63", bag: bag)
+//        viewModel.getFavoritesMovies(withAccountId: "", atPage: 1, bag: bag)
+//        viewModel.markAsFavorite(model: MarkAsFavoritePostResponseModel(mediaType: "", mediaID: 1, favorite: true), withSessionId: "", bag: bag)
+        
         viewModel.timer(bag: bag)
+        
     }
     
     // Add subviews

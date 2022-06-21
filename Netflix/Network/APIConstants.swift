@@ -13,12 +13,22 @@ struct APIConstants {
     }
     
     struct Endpoint {
-        static let getToken = "authentication/token/new?"
-        static let authenticationWithLoginPassword = "authentication/token/validate_with_login?"
+        static let getToken = "authentication/token/new"
+        static let authenticationWithLoginPassword = "authentication/token/validate_with_login"
+        static let latestMovie = "movie/latest"
+        static let popularMovies = "movie/popular"
+        static let upcomingMovies = "movie/upcoming"
+        static let favoritesMovies = "favorite/movies"
+        static let searchMovies = "search/movie"
+        static let account = "account"
+        static let favorite = "favorite"
     }
     
     struct ParamKeys {
-        static let apiKey = "api_key="
+        static let apiKey = "?api_key="
+        static let query = "&query="
+        static let sessionId = "&session_id="
+        static let page = "&page="
     }
     
     enum HTTPHeaderField: String {

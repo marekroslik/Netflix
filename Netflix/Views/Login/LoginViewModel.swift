@@ -43,8 +43,8 @@ final class LoginViewModel {
         let loginPost = LoginPostResponseModel(
             username: login,
             password: password,
-            requestToken: self.token!.requestToken)
-            apiClient.authenticationWithLoginPassword(loginModel: loginPost )
+            requestToken: self.token!.requestToken!)
+            apiClient.authenticationWithLoginPassword(model: loginPost )
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [weak self] _ in
                 self?.saveKeyChain(login: login, password: password)

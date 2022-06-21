@@ -10,6 +10,8 @@ final class SplashViewModel {
     var didSendEventClosure: ((SplashViewController.Event) -> Void)?
     private var apiClient: APIClient
     
+    private var latestMovie: LatestMovieResponseModel?
+    
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
@@ -41,7 +43,7 @@ final class SplashViewModel {
             .subscribe(onNext: { [weak self] result in
                 self?.token = result.requestToken
             },
-            onError: { _ in
+                       onError: { _ in
                 self.didSendEventClosure?(.login)
             }, onCompleted: { [weak self] in
                 guard let self = self else { return }
@@ -54,53 +56,78 @@ final class SplashViewModel {
     
     func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag) {
         let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!)
-        apiClient.authenticationWithLoginPassword(loginModel: loginPost)
+        apiClient.authenticationWithLoginPassword(model: loginPost)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 self.didSendEventClosure?(.main)
             },
-            onError: { _ in
+                       onError: { _ in
                 self.didSendEventClosure?(.login)
             }).disposed(by: bag)
     }
     
-    // Functions to test KeyChain CRUD
-    func saveKeyChain() {
-        do {
-            try KeyChainUseCase().saveLoginAndPassword(login: "marekqq", password: "marekqq".data(using: .utf8)!)
-            print("KeyChain - SAVE")
-            print("---------------")
-        } catch {
-            print("SAVE \(error)")
-        }
-    }
-    func getKeyChain() {
-        do {
-            let loginAndPassword = try KeyChainUseCase().getLoginAndPassword()
-            print("KeyChain - GET / login - \(loginAndPassword.login) password - \(loginAndPassword.password)")
-            print("---------------")
-        } catch {
-            print("GET \(error)")
-        }
+    func getLatestMovie(bag: DisposeBag) {
+        apiClient.getLatestMovie()
+            .subscribe(onNext: { result in
+                print(result)
+            }, onError: { error in
+                print("Error \(error)")
+            }).disposed(by: bag)
+        
     }
     
-    func updateKeyChain() {
-        do {
-            try KeyChainUseCase().updateLoginAndPassword(login: "asdasd", password: "123")
-            print("KeyChain - UPDATE")
-            print("---------------")
-        } catch {
-            print("UPDATE \(error)")
-        }
+    func getLPopularMovies(atPage page: Int, bag: DisposeBag) {
+        apiClient.getPopularMovies(atPage: page)
+            .subscribe(onNext: { result in
+                print(result)
+            }, onError: { error in
+                print("Error \(error)")
+            }).disposed(by: bag)
     }
     
-    func deleteKetChain() {
-        do {
-            try KeyChainUseCase().deleteLoginAndPassword()
-            print("KeyChain - DELETE")
-            print("---------------")
-        } catch {
-            print("DELETE \(error)")
-        }
+    func getUpcomingMovies(atPage page: Int, bag: DisposeBag) {
+        apiClient.getUpcomingMovies(atPage: page)
+            .subscribe(onNext: { result in
+                print(result)
+            }, onError: { error in
+                print("Error \(error)")
+            }).disposed(by: bag)
     }
+    
+    func searchMovies(withTitle title: String, atPage page: Int, bag: DisposeBag) {
+        apiClient.searchMovies(atPage: page, withTitle: title)
+            .subscribe(onNext: { result in
+                print(result)
+            }, onError: { error in
+                print("Error \(error)")
+            }).disposed(by: bag)
+    }
+    
+    func getAccountDetails(withSessionId id: String, bag: DisposeBag) {
+        apiClient.getAccountDetails(withSessionID: id)
+            .subscribe(onNext: { result in
+                print(result)
+            }, onError: { error in
+                print("Error \(error)")
+            }).disposed(by: bag)
+    }
+    
+    func getFavoritesMovies(withAccountId id: String, atPage page: Int, bag: DisposeBag) {
+        apiClient.getFavoritesMovies(atPage: page, withAccountId: id)
+            .subscribe(onNext: { result in
+                print(result)
+            }, onError: { error in
+                print("Error \(error)")
+            }).disposed(by: bag)
+    }
+    
+    func markAsFavorite(model: MarkAsFavoritePostResponseModel, withSessionId id: String, bag: DisposeBag) {
+        apiClient.markAsFavorite(model: model, withSessionId: id)
+            .subscribe(onNext: { result in
+                print(result)
+            }, onError: { error in
+                print("Error \(error)")
+            }).disposed(by: bag)
+    }
+    
 }
