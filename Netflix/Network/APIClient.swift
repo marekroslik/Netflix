@@ -5,6 +5,13 @@ import RxSwift
 protocol APIClientProtocol {
     func getToken() -> Observable<TokenResponseModel>
     func authenticationWithLoginPassword(model: LoginPostResponseModel) -> Observable<LoginResponseModel>
+    func getLatestMovie() -> Observable<LatestMovieResponseModel>
+    func getPopularMovies(atPage page: Int) -> Observable<PopularMoviesResponseModel>
+    func getUpcomingMovies(atPage page: Int) -> Observable<UpcomingMoviesResponseModel>
+    func searchMovies(atPage page: Int, withTitle title: String) -> Observable<SearchMoviesResponseModel>
+    func getAccountDetails(withSessionID id: String) -> Observable<AccountDetailsResponseModel>
+    func getFavoritesMovies(atPage page: Int, withAccountId id: String) -> Observable<FavoritesMoviesResponseModel>
+    func markAsFavorite(model: MarkAsFavoritePostResponseModel, withSessionId id: String) -> Observable<MarkAsFavoriteResponseModel>
 }
 
 class APIClient: APIClientProtocol {
