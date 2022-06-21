@@ -59,7 +59,7 @@ final class LoginViewModel {
     
     func saveKeyChain(login: String, password: String) {
         do {
-            try KeyChainUseCase.saveLoginAndPassword(login: login, password: password.data(using: .utf8)!)
+            try KeyChainUseCase().saveLoginAndPassword(login: login, password: password.data(using: .utf8)!)
         } catch {
             print("KEYCHAIN SAVE \(error)")
         }

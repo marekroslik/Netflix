@@ -20,7 +20,7 @@ final class SplashViewModel {
                 
                 // Trying to get data from KeyChain
                 do {
-                    self.loginAndPassword = try KeyChainUseCase.getLoginAndPassword()
+                    self.loginAndPassword = try KeyChainUseCase().getLoginAndPassword()
                     self.tryToLogin(bag: bag)
                 } catch {
                     // KeyChain error
@@ -62,7 +62,7 @@ final class SplashViewModel {
     // Functions to test KeyChain CRUD
     func saveKeyChain() {
         do {
-            try KeyChainUseCase.saveLoginAndPassword(login: "marekqq", password: "marekqq".data(using: .utf8)!)
+            try KeyChainUseCase().saveLoginAndPassword(login: "marekqq", password: "marekqq".data(using: .utf8)!)
             print("KeyChain - SAVE")
             print("---------------")
         } catch {
@@ -71,7 +71,7 @@ final class SplashViewModel {
     }
     func getKeyChain() {
         do {
-            let loginAndPassword = try KeyChainUseCase.getLoginAndPassword()
+            let loginAndPassword = try KeyChainUseCase().getLoginAndPassword()
             print("KeyChain - GET / login - \(loginAndPassword.login) password - \(loginAndPassword.password)")
             print("---------------")
         } catch {
@@ -81,7 +81,7 @@ final class SplashViewModel {
     
     func updateKeyChain() {
         do {
-            try KeyChainUseCase.updateLoginAndPassword(login: "asdasd", password: "123")
+            try KeyChainUseCase().updateLoginAndPassword(login: "asdasd", password: "123")
             print("KeyChain - UPDATE")
             print("---------------")
         } catch {
@@ -91,7 +91,7 @@ final class SplashViewModel {
     
     func deleteKetChain() {
         do {
-            try KeyChainUseCase.deleteLoginAndPassword()
+            try KeyChainUseCase().deleteLoginAndPassword()
             print("KeyChain - DELETE")
             print("---------------")
         } catch {
