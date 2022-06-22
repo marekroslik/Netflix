@@ -3,6 +3,8 @@ import SnapKit
 
 final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    var cellsData: PopularMoviesResponseModel?
+    
     // Create category name for popular movies view
     private let categoryName: UILabel = {
         let text = UILabel()
@@ -13,7 +15,7 @@ final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollect
     }()
     
     // Create collection view for popular movies view
-    private var popularMoviesCollectionView: UICollectionView?
+    var popularMoviesCollectionView: UICollectionView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +34,7 @@ final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollect
     private func createCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 190)
+        layout.itemSize = CGSize(width: 100, height: 244)
         popularMoviesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         guard let popularMoviesCollectionView = popularMoviesCollectionView else {
             return
@@ -45,6 +47,10 @@ final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollect
         popularMoviesCollectionView.backgroundColor = .black
     }
     
+    func updateUICollectionView(with cellsData: PopularMoviesResponseModel) {
+        self.cellsData = cellsData
+        self.popularMoviesCollectionView?.reloadData()
+    }
     // Set constraints function
     private func applyConstraints() {
         // Set category name constraints
@@ -65,10 +71,18 @@ final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollect
     
     // Confirm protocols functions
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        if let count = self.cellsData?.results?.count {
+            return count
+        } 
+        return 4
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier, for: indexPath)
+            if let cell = cell as? CustomPopularMoviesCollectionViewCell {
+                if let posterPath = self.cellsData?.results?[indexPath.row].posterPath {
+                    cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPath)", loadingView: cell.loading)
+                }
+        }
         return cell
     }
     required init?(coder: NSCoder) {

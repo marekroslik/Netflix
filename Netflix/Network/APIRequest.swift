@@ -6,7 +6,7 @@ public class APIRequest {
     private lazy var jsonDecoder = JSONDecoder()
     private let urlSession: URLSession
     public init(config: URLSessionConfiguration) {
-        urlSession = URLSession(configuration:URLSessionConfiguration.default)
+        urlSession = URLSession(configuration: URLSessionConfiguration.default)
     }
     
     // Function for URLSession takes

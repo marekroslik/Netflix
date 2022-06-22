@@ -5,7 +5,7 @@ struct APIConstants {
     struct Api {
         static let baseUrl = "https://api.themoviedb.org"
         static let apiKey = "978a9c4ffdf0c73cd042eb5cd6607c8e"
-        static let urlImages = "https://image.tmdb.org/t/p/w92"
+        static let urlImages = "https://image.tmdb.org/t/p/w500"
     }
     
     struct Version {

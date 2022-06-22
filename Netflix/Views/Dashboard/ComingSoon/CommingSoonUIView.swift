@@ -3,6 +3,8 @@ import SnapKit
 
 final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    var cellsData: UpcomingMoviesResponseModel?
+    
     // Create category name for coming soon movies view
     private let searchTextField: UITextField = {
         let textField = UITextField()
@@ -35,6 +37,10 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
         addSubview(searchTextField)
         configureCollectionView()
         addSubview(comingSoonCollectionView)
+    }
+    func updateUICollectionView(with cellsData: UpcomingMoviesResponseModel) {
+        self.cellsData = cellsData
+        self.comingSoonCollectionView.reloadData()
     }
     
     // Configure collection view for coming soon movies view
@@ -77,10 +83,18 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
 extension ComingSoonUIView {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        if let count = self.cellsData?.results?.count {
+            return count
+        }
+        return 12
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomComingSoonCollectionViewCell.identifier, for: indexPath)
+        if let cell = cell as? CustomComingSoonCollectionViewCell {
+            if let posterPath = self.cellsData?.results?[indexPath.row].posterPath {
+                cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPath)", loadingView: cell.loading)
+            }
+    }
         return cell
     }
 

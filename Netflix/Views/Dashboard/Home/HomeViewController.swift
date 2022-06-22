@@ -1,5 +1,7 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class HomeViewController: UIViewController {
     
@@ -9,12 +11,18 @@ final class HomeViewController: UIViewController {
     private let latestMovieView = HomeLatestMovieUIView()
     private let popularMovies = HomePopularMoviesUIView()
     
+    private let bag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         addSubviews()
         configNavBar()
         applyConstraints()
+        viewModel.getLatestMovie(bag: bag)
+        viewModel.getLPopularMovies(atPage: 1, bag: bag)
+        getLatestMovie()
+        getPopularMovie()
     }
     
     // Add subviews
@@ -81,6 +89,34 @@ final class HomeViewController: UIViewController {
             make.bottom.left.right.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.4)
         }
+    }
+    
+    private func getLatestMovie() {
+        self.viewModel.latestMovie
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] value in
+                guard let self = self else { return }
+                if let poster = value.posterPath {
+                    self.latestMovieView.movieImage.downloaded(
+                        from: "\(APIConstants.Api.urlImages)\(poster)",
+                        loadingView: self.latestMovieView.loading)
+                }
+                print(value.posterPath ?? "Poster path = nil")
+                self.latestMovieView.filmName.text = value.title
+            } onError: { error in
+                print(error)
+            }.disposed(by: bag)
+    }
+    
+    private func getPopularMovie() {
+        self.viewModel.popularMovie
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] value in
+                guard let self = self else { return }
+                self.popularMovies.updateUICollectionView(with: value)
+            } onError: { error in
+                print(error)
+            }.disposed(by: bag)
     }
 }
 
