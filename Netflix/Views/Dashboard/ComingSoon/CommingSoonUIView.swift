@@ -4,9 +4,10 @@ import SnapKit
 final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var cellsData: UpcomingMoviesResponseModel?
+    var cellsDataSearch: SearchMoviesResponseModel?
     
     // Create category name for coming soon movies view
-    private let searchTextField: UITextField = {
+    let searchTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .darkGray
         textField.textColor = .white
@@ -40,6 +41,16 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
     }
     func updateUICollectionView(with cellsData: UpcomingMoviesResponseModel) {
         self.cellsData = cellsData
+        self.comingSoonCollectionView.reloadData()
+    }
+    
+    func showDefaultData() {
+        self.cellsDataSearch = nil
+        self.comingSoonCollectionView.reloadData()
+    }
+    
+    func updateUICollectionView(with cellsDataSearch: SearchMoviesResponseModel) {
+        self.cellsDataSearch = cellsDataSearch
         self.comingSoonCollectionView.reloadData()
     }
     
@@ -83,6 +94,9 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
 extension ComingSoonUIView {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let count = self.cellsDataSearch?.results?.count {
+            return count
+        }
         if let count = self.cellsData?.results?.count {
             return count
         }
@@ -91,8 +105,13 @@ extension ComingSoonUIView {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomComingSoonCollectionViewCell.identifier, for: indexPath)
         if let cell = cell as? CustomComingSoonCollectionViewCell {
+            if let posterPathSearch = self.cellsDataSearch?.results?[indexPath.row].posterPath {
+                cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPathSearch)", loadingView: cell.loading)
+                return cell
+            }
             if let posterPath = self.cellsData?.results?[indexPath.row].posterPath {
                 cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPath)", loadingView: cell.loading)
+                return cell
             }
     }
         return cell

@@ -8,6 +8,7 @@ final class CustomPopularMoviesCollectionViewCell: UICollectionViewCell {
     // Add image
     let imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.image = nil
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill

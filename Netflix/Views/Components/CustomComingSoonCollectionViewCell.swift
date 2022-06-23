@@ -8,6 +8,7 @@ final class CustomComingSoonCollectionViewCell: UICollectionViewCell {
     // Add image
     let imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.image = nil
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView

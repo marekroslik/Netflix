@@ -14,6 +14,7 @@ final class LoadingUIView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .black
         addSubviews()
         applyConstraints()
     }
