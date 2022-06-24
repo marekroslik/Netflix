@@ -8,6 +8,7 @@ final class LoadingUIView: UIView {
     private let lottieLoading: AnimationView = {
         let lottie = AnimationView(name: "LottieSpinner")
         lottie.loopMode = .loop
+        lottie.backgroundBehavior = .pauseAndRestore
         lottie.play()
         return lottie
     }()

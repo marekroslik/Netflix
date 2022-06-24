@@ -6,8 +6,8 @@ class ComingSoonViewModel {
     var didSendEventClosure: ((ComingSoonViewController.Event) -> Void)?
     private var apiClient: APIClient
     
-    var comingSoon = PublishSubject<UpcomingMoviesResponseModel>()
-    var searchMovies = PublishSubject<SearchMoviesResponseModel>()
+    let comingSoon = PublishSubject<UpcomingMoviesResponseModel>()
+    let searchMovies = PublishSubject<SearchMoviesResponseModel>()
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient

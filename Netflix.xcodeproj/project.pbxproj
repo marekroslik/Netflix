@@ -33,6 +33,9 @@
 		F9489B22283E58DD00677A73 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = F9489B21283E58DD00677A73 /* swiftgen.yml */; };
 		F94E13B3284DE49E008F9B2F /* UIScrollView.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94E13B2284DE49E008F9B2F /* UIScrollView.Extensions.swift */; };
 		F94E13B5284DE4A7008F9B2F /* UITabBarItem.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94E13B4284DE4A7008F9B2F /* UITabBarItem.Extensions.swift */; };
+		F956967D2865A45200146291 /* UserDefaultsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F956967C2865A45200146291 /* UserDefaultsUseCase.swift */; };
+		F956967F2865F54700146291 /* SessionIdResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F956967E2865F54700146291 /* SessionIdResponseModel.swift */; };
+		F95696812865F57900146291 /* SessionIdPostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95696802865F57900146291 /* SessionIdPostResponseModel.swift */; };
 		F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF092844B36900758CE0 /* OnBoardingViewController.swift */; };
 		F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */; };
 		F967AF0F2844B48900758CE0 /* SecondOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */; };
@@ -124,6 +127,9 @@
 		F9489B21283E58DD00677A73 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		F94E13B2284DE49E008F9B2F /* UIScrollView.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.Extensions.swift; sourceTree = "<group>"; };
 		F94E13B4284DE4A7008F9B2F /* UITabBarItem.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarItem.Extensions.swift; sourceTree = "<group>"; };
+		F956967C2865A45200146291 /* UserDefaultsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUseCase.swift; sourceTree = "<group>"; };
+		F956967E2865F54700146291 /* SessionIdResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionIdResponseModel.swift; sourceTree = "<group>"; };
+		F95696802865F57900146291 /* SessionIdPostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionIdPostResponseModel.swift; sourceTree = "<group>"; };
 		F967AF092844B36900758CE0 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstOnBoardingUIView.swift; sourceTree = "<group>"; };
 		F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondOnBoardingUIView.swift; sourceTree = "<group>"; };
@@ -390,6 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				F9B2F41E2858C6DB001AE073 /* KeyChainUseCase.swift */,
+				F956967C2865A45200146291 /* UserDefaultsUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -503,11 +510,13 @@
 				F927041D2861E47200D71CFF /* LatestMovieResponseModel.swift */,
 				F927041F2861EE6100D71CFF /* PopularMoviesResponseModel.swift */,
 				F92704212861F60300D71CFF /* UpcomingMoviesResponseModel.swift */,
+				F92704252861FED400D71CFF /* FavoritesMoviesResponseModel.swift */,
 				F92704232861FC8A00D71CFF /* SearchMoviesResponseModel.swift */,
 				F92704272862003900D71CFF /* AccountDetailsResponseModel.swift */,
-				F92704252861FED400D71CFF /* FavoritesMoviesResponseModel.swift */,
 				F927042928620C5B00D71CFF /* MarkAsFavoriteResponseModel.swift */,
 				F927042B28620C7400D71CFF /* MarkAsFavoritePostResponseModel.swift */,
+				F956967E2865F54700146291 /* SessionIdResponseModel.swift */,
+				F95696802865F57900146291 /* SessionIdPostResponseModel.swift */,
 			);
 			path = ResponseModels;
 			sourceTree = "<group>";
@@ -735,6 +744,7 @@
 				F981DF6E286085CD0066F590 /* MovieDetailsViewModel.swift in Sources */,
 				F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */,
 				F9810549283F69BA005496FD /* UIVerticalButton.swift in Sources */,
+				F956967D2865A45200146291 /* UserDefaultsUseCase.swift in Sources */,
 				F972CC182860BD820050D011 /* FavoritesViewModel.swift in Sources */,
 				F9E0CB6D28533B0200ED9658 /* TokenResponseModel.swift in Sources */,
 				F92704202861EE6100D71CFF /* PopularMoviesResponseModel.swift in Sources */,
@@ -768,6 +778,7 @@
 				F9489B1A283E1D2400677A73 /* FavoritesViewController.swift in Sources */,
 				F983599F28411EB300BD6F8A /* UITextField.Extensions.swift in Sources */,
 				F9C8C6802859D9730067F98F /* OnBoardingViewModel.swift in Sources */,
+				F956967F2865F54700146291 /* SessionIdResponseModel.swift in Sources */,
 				F99D1B602842808A009EE515 /* FavoritesUIView.swift in Sources */,
 				F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */,
 				F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */,
@@ -782,6 +793,7 @@
 				F90CAFD7284631890011E4E5 /* LoginViewController.swift in Sources */,
 				F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */,
 				F981DF6C28607CA60066F590 /* HomeViewModel.swift in Sources */,
+				F95696812865F57900146291 /* SessionIdPostResponseModel.swift in Sources */,
 				F9B280C0285CE1A100AF39FD /* AppCoordinator.swift in Sources */,
 				F9B280C4285CE3CA00AF39FD /* MainCoordinator.swift in Sources */,
 				F9B2F41F2858C6DB001AE073 /* KeyChainUseCase.swift in Sources */,

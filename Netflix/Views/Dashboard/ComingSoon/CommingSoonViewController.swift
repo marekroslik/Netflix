@@ -55,7 +55,7 @@ final class ComingSoonViewController: UIViewController {
             .subscribe({ [weak self] _ in
                 guard let self = self else { return }
                 guard let text = self.comingSoon.searchTextField.text else { return }
-                let textWithoutSpaces = text.replacingOccurrences(of: " ", with: "")
+                let textWithoutSpaces = text.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "%20")
                 if textWithoutSpaces.isEmpty {
                     print("isEmpty")
                     self.comingSoon.showDefaultData()

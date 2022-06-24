@@ -18,6 +18,7 @@ class HomeViewModel {
     
     func logOut() {
         deleteKetChain()
+        UserDefaultsUseCase().resetDefaults()
         didSendEventClosure?(.logout)
     }
     

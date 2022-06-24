@@ -98,7 +98,7 @@ final class HomeViewController: UIViewController {
                 guard let self = self else { return }
                 if let poster = value.posterPath {
                     self.latestMovieView.movieImage.downloaded(
-                        from: "\(APIConstants.Api.urlImages700)\(poster)",
+                        from: "\(APIConstants.Api.urlImages)\(poster)",
                         loadingView: self.latestMovieView.loading)
                 }
                 print(value.posterPath ?? "Poster path = nil")

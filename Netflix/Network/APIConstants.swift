@@ -6,7 +6,6 @@ struct APIConstants {
         static let baseUrl = "https://api.themoviedb.org"
         static let apiKey = "978a9c4ffdf0c73cd042eb5cd6607c8e"
         static let urlImages = "https://image.tmdb.org/t/p/w300"
-        static let urlImages700 = "https://image.tmdb.org/t/p/w700"
     }
     
     struct Version {
@@ -19,10 +18,11 @@ struct APIConstants {
         static let latestMovie = "movie/latest"
         static let popularMovies = "movie/popular"
         static let upcomingMovies = "movie/upcoming"
-        static let favoritesMovies = "favorite/movies"
+        static let favoritesMovies = "account/{account_id}/favorite/movies"
         static let searchMovies = "search/movie"
         static let account = "account"
         static let favorite = "favorite"
+        static let sessionId = "authentication/session/new"
     }
     
     struct ParamKeys {
