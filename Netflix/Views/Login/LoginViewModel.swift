@@ -8,8 +8,6 @@ final class LoginViewModel {
     let passwordTextPublishSubject = PublishSubject<String>()
     var errorHandling = PublishSubject<String>()
     
-    private var token: TokenResponseModel?
-    
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
     private var apiClient: APIClient
     
@@ -28,8 +26,8 @@ final class LoginViewModel {
     
     func getToken(bag: DisposeBag) {
         apiClient.getToken().subscribe(
-            onNext: { [weak self] result in
-                self?.token = result
+            onNext: { result in
+                UserDefaultsUseCase().token = result.requestToken
             },
             onError: { error in
                 print(error.localizedDescription)
@@ -43,12 +41,12 @@ final class LoginViewModel {
         let loginPost = LoginPostResponseModel(
             username: login,
             password: password,
-            requestToken: self.token!.requestToken)
-            apiClient.authenticationWithLoginPassword(loginModel: loginPost )
+            requestToken: UserDefaultsUseCase().token!)
+            apiClient.authenticationWithLoginPassword(model: loginPost )
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [weak self] _ in
                 self?.saveKeyChain(login: login, password: password)
-                self?.didSendEventClosure?(.main)
+                self?.getSessionId(token: UserDefaultsUseCase().token!, bag: bag)
             },
             onError: { [weak self] error in
                 switch error {
@@ -57,6 +55,19 @@ final class LoginViewModel {
                 default:
                     self?.errorHandling.onNext("Login failed. Please try again later")
                 }
+            }).disposed(by: bag)
+    }
+    
+    func getSessionId(token: String, bag: DisposeBag) {
+        let sessionIdPost = SessionIdPostResponseModel(token: token)
+        apiClient.getSessionId(model: sessionIdPost)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { value in
+                UserDefaultsUseCase().sessionId = value.sessionID
+                self.didSendEventClosure?(.main)
+            },
+                       onError: { [weak self] _ in
+                self?.errorHandling.onNext("Login failed. Please try again later")
             }).disposed(by: bag)
     }
     

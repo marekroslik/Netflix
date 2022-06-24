@@ -1,11 +1,12 @@
 import UIKit
+import Lottie
 
 final class CustomFavoritesTableViewCell: UITableViewCell {
     
     static let identifier = "CustomFavoritesTableViewCell"
     
     // Add image
-    private let image: UIImageView = {
+    let image: UIImageView = {
         let image = UIImageView()
         image.image = Asset.latestMovieNetflix.image
         image.clipsToBounds = true
@@ -14,15 +15,19 @@ final class CustomFavoritesTableViewCell: UITableViewCell {
         return image
     }()
     
+    let loading = LoadingUIView()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(image)
+        addSubview(loading)
         self.backgroundColor = .black
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         image.frame = CGRect(x: 5, y: 5, width: 380, height: contentView.frame.size.height - 10)
+        loading.frame = CGRect(x: 5, y: 5, width: 380, height: contentView.frame.size.height - 10)
     }
     
     required init?(coder: NSCoder) {

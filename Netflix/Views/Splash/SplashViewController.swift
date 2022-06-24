@@ -18,6 +18,7 @@ final class SplashViewController: UIViewController {
         addSubviews()
         applyConstraints()
         viewModel.timer(bag: bag)
+        
     }
     
     // Add subviews

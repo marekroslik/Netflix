@@ -6,19 +6,22 @@ final class CustomPopularMoviesCollectionViewCell: UICollectionViewCell {
     static let identifier = "CustomPopularMoviesCollectionViewCell"
     
     // Add image
-    private let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = Asset.latestMovieNetflix.image
+        imageView.image = nil
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
+    let loading = LoadingUIView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .black
         contentView.addSubview(imageView)
+        contentView.addSubview(loading)
     }
     
     required init?(coder: NSCoder) {
@@ -28,5 +31,6 @@ final class CustomPopularMoviesCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         imageView.frame = CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height)
+        loading.frame = CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height)
     }
 }

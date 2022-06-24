@@ -3,6 +3,8 @@ import SnapKit
 
 final class FavoritesUIView: UIView, UITableViewDelegate, UITableViewDataSource {
     
+    var cellsData: FavoritesMoviesResponseModel?
+    
     // Cteate table
     private let table: UITableView = {
         let table = UITableView()
@@ -20,6 +22,11 @@ final class FavoritesUIView: UIView, UITableViewDelegate, UITableViewDataSource 
     // Add subviews
     private func addSubviews() {
         addSubview(table)
+    }
+    
+    func updateUITableView(with cellsData: FavoritesMoviesResponseModel) {
+        self.cellsData = cellsData
+        self.table.reloadData()
     }
     
     // Configuration table function
@@ -47,11 +54,20 @@ final class FavoritesUIView: UIView, UITableViewDelegate, UITableViewDataSource 
 // Set settings functions
 extension FavoritesUIView {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let count = self.cellsData?.results?.count {
+            return count
+        }
         return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomFavoritesTableViewCell.identifier, for: indexPath)
+        if let cell = cell as? CustomFavoritesTableViewCell {
+            if let posterPathSearch = self.cellsData?.results?[indexPath.row].posterPath {
+                cell.image.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPathSearch)", loadingView: cell.loading)
+                return cell
+            }
+    }
         return cell
     }
     

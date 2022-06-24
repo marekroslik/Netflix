@@ -4,13 +4,14 @@ import SnapKit
 final class HomeLatestMovieUIView: UIView {
     
     // Create latest movie IMAGE UI
-    private let movieImage: UIImageView = {
+    let movieImage: UIImageView = {
         let image = UIImageView()
-        image.image = Asset.latestMovieNetflix.image
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         return image
     }()
+    
+    let loading = LoadingUIView()
     
     // Create latest film GRADIENT UI
     private var gradientView = UIView()
@@ -42,9 +43,8 @@ final class HomeLatestMovieUIView: UIView {
     }()
     
     // Create latest film NAME UI
-    private let filmName: UILabel = {
+    let filmName: UILabel = {
         let filmNameText = UILabel()
-        filmNameText.text = "Never Have I Ever"
         filmNameText.numberOfLines = 2
         filmNameText.font = UIFont.systemFont(ofSize: 50, weight: .bold)
         filmNameText.textAlignment = .center
@@ -53,7 +53,7 @@ final class HomeLatestMovieUIView: UIView {
     }()
     
     // Create latest film HASHTAGS UI
-    private let hashtags: UILabel = {
+    let hashtags: UILabel = {
         let hashtagsText = UILabel()
         hashtagsText.text = "Quirky • Youth • Teen • Comedy • Drama • Gal Pals"
         hashtagsText.font = UIFont.systemFont(ofSize: 12)
@@ -73,16 +73,24 @@ final class HomeLatestMovieUIView: UIView {
     private func addSubviews() {
         addSubview(movieImage)
         addSubview(gradientView)
+        addSubview(loading)
         addSubview(likeButton)
         addSubview(playButton)
-        addSubview(filmName)
         addSubview(hashtags)
+        addSubview(filmName)
     }
     // Set constraints function
     private func applyConstraints() {
         
         // Latest movie image constraints
         movieImage.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        loading.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()

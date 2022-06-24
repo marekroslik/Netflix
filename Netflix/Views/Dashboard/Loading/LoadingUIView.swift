@@ -8,12 +8,14 @@ final class LoadingUIView: UIView {
     private let lottieLoading: AnimationView = {
         let lottie = AnimationView(name: "LottieSpinner")
         lottie.loopMode = .loop
+        lottie.backgroundBehavior = .pauseAndRestore
         lottie.play()
         return lottie
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .black
         addSubviews()
         applyConstraints()
     }

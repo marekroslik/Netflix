@@ -6,9 +6,10 @@ final class SplashViewModel {
     
     private let countDown = 2
     private var loginAndPassword: (login: String, password: String)?
-    private var token: String?
     var didSendEventClosure: ((SplashViewController.Event) -> Void)?
     private var apiClient: APIClient
+    
+    private var latestMovie: LatestMovieResponseModel?
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient
@@ -38,10 +39,11 @@ final class SplashViewModel {
     func tryToLogin(bag: DisposeBag) {
         apiClient.getToken()
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] result in
-                self?.token = result.requestToken
+            .subscribe(onNext: { result in
+                // Add token to userdefault
+                UserDefaultsUseCase().token = result.requestToken
             },
-            onError: { _ in
+                       onError: { _ in
                 self.didSendEventClosure?(.login)
             }, onCompleted: { [weak self] in
                 guard let self = self else { return }
@@ -53,54 +55,27 @@ final class SplashViewModel {
     }
     
     func authenticationWithLoginPassword(login: String, password: String, bag: DisposeBag) {
-        let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: self.token!)
-        apiClient.authenticationWithLoginPassword(loginModel: loginPost)
+        let loginPost = LoginPostResponseModel(username: login, password: password, requestToken: UserDefaultsUseCase().token!)
+        apiClient.authenticationWithLoginPassword(model: loginPost)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { _ in
-                self.didSendEventClosure?(.main)
+            .subscribe(onNext: { [weak self] _ in
+                self?.getSessionId(token: UserDefaultsUseCase().token!, bag: bag)
             },
-            onError: { _ in
+                       onError: { _ in
                 self.didSendEventClosure?(.login)
             }).disposed(by: bag)
     }
     
-    // Functions to test KeyChain CRUD
-    func saveKeyChain() {
-        do {
-            try KeyChainUseCase().saveLoginAndPassword(login: "marekqq", password: "marekqq".data(using: .utf8)!)
-            print("KeyChain - SAVE")
-            print("---------------")
-        } catch {
-            print("SAVE \(error)")
-        }
-    }
-    func getKeyChain() {
-        do {
-            let loginAndPassword = try KeyChainUseCase().getLoginAndPassword()
-            print("KeyChain - GET / login - \(loginAndPassword.login) password - \(loginAndPassword.password)")
-            print("---------------")
-        } catch {
-            print("GET \(error)")
-        }
-    }
-    
-    func updateKeyChain() {
-        do {
-            try KeyChainUseCase().updateLoginAndPassword(login: "asdasd", password: "123")
-            print("KeyChain - UPDATE")
-            print("---------------")
-        } catch {
-            print("UPDATE \(error)")
-        }
-    }
-    
-    func deleteKetChain() {
-        do {
-            try KeyChainUseCase().deleteLoginAndPassword()
-            print("KeyChain - DELETE")
-            print("---------------")
-        } catch {
-            print("DELETE \(error)")
-        }
+    func getSessionId(token: String, bag: DisposeBag) {
+        let sessionIdPost = SessionIdPostResponseModel(token: token)
+        apiClient.getSessionId(model: sessionIdPost)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { value in
+                UserDefaultsUseCase().sessionId = value.sessionID
+                self.didSendEventClosure?(.main)
+            },
+                       onError: { _ in
+                self.didSendEventClosure?(.login)
+            }).disposed(by: bag)
     }
 }
