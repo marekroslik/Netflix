@@ -24,8 +24,8 @@ class HomeViewModel {
         didSendEventClosure?(.logout)
     }
     
-    func showMovieDetails() {
-        didSendEventClosure?(.movieDetails)
+    func showMovieDetails(with id: Int) {
+        didSendEventClosure?(.movieDetails(id: id))
     }
     
     func deleteKetChain() {
