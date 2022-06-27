@@ -19,6 +19,7 @@ final class HomeViewController: UIViewController {
         addSubviews()
         configNavBar()
         applyConstraints()
+        addCollectionViewData()
         viewModel.getLatestMovie(bag: bag)
         viewModel.getLPopularMovies(atPage: 1, bag: bag)
         getLatestMovie()
@@ -113,10 +114,40 @@ final class HomeViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] value in
                 guard let self = self else { return }
-                self.popularMovies.updateUICollectionView(with: value)
+                self.updateUICollectionView(with: value)
             } onError: { error in
                 print(error)
             }.disposed(by: bag)
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func addCollectionViewData() {
+        popularMovies.popularMoviesCollectionView?.dataSource = self
+        popularMovies.popularMoviesCollectionView?.delegate = self
+    }
+    
+    func updateUICollectionView(with cellsData: PopularMoviesResponseModel) {
+        viewModel.cellsData = cellsData
+        popularMovies.popularMoviesCollectionView?.reloadData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let count = viewModel.cellsData?.results?.count {
+            return count
+        }
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier, for: indexPath)
+        if let cell = cell as? CustomPopularMoviesCollectionViewCell {
+            if let posterPath = viewModel.cellsData?.results?[indexPath.row].posterPath {
+                cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPath)", loadingView: cell.loading)
+            }
+        }
+        return cell
     }
 }
 

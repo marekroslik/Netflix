@@ -12,6 +12,8 @@ class HomeViewModel {
     var latestMovie = PublishSubject<LatestMovieResponseModel>()
     var popularMovie = PublishSubject<PopularMoviesResponseModel>()
     
+    var cellsData: PopularMoviesResponseModel?
+    
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }

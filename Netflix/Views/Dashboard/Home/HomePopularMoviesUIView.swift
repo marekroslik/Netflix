@@ -1,9 +1,7 @@
 import UIKit
 import SnapKit
 
-final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    var cellsData: PopularMoviesResponseModel?
+final class HomePopularMoviesUIView: UIView {
     
     // Create category name for popular movies view
     private let categoryName: UILabel = {
@@ -41,16 +39,10 @@ final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollect
         }
         popularMoviesCollectionView.register(CustomPopularMoviesCollectionViewCell.self,
                                              forCellWithReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier)
-        popularMoviesCollectionView.dataSource = self
-        popularMoviesCollectionView.delegate = self
         popularMoviesCollectionView.showsHorizontalScrollIndicator = false
         popularMoviesCollectionView.backgroundColor = .black
     }
     
-    func updateUICollectionView(with cellsData: PopularMoviesResponseModel) {
-        self.cellsData = cellsData
-        self.popularMoviesCollectionView?.reloadData()
-    }
     // Set constraints function
     private func applyConstraints() {
         // Set category name constraints
@@ -69,22 +61,6 @@ final class HomePopularMoviesUIView: UIView, UICollectionViewDelegate, UICollect
         }
     }
     
-    // Confirm protocols functions
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = self.cellsData?.results?.count {
-            return count
-        } 
-        return 4
-    }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier, for: indexPath)
-            if let cell = cell as? CustomPopularMoviesCollectionViewCell {
-                if let posterPath = self.cellsData?.results?[indexPath.row].posterPath {
-                    cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPath)", loadingView: cell.loading)
-                }
-        }
-        return cell
-    }
     required init?(coder: NSCoder) {
         fatalError()
     }
