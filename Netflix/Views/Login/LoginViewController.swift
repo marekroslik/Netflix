@@ -54,6 +54,7 @@ final class LoginViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] value in
                 guard let self = self else { return }
+                self.loginView.loading.isHidden = true
                 self.loginView.showToast(message: value)
             } onError: { error in
                 print(error)
@@ -64,11 +65,11 @@ final class LoginViewController: UIViewController {
     private func loginButton() {
         self.loginView.loginButton.rx.tap.bind { [ weak self] in
             guard let self = self else { return }
+            self.loginView.loading.isHidden = false
             self.viewModel.authenticationWithLoginPassword(
                 login: self.loginView.emailTextField.text!,
                 password: self.loginView.passwordTextField.text!,
                 bag: self.bag)
-            
             // Add animation
             self.loginView.loginButton.animateWhenPressed(disposeBag: self.bag)
         }.disposed(by: bag)
