@@ -15,6 +15,7 @@ final class FavoritesViewController: UIViewController {
         view.addSubview(favoritesView)
         navigationController?.isNavigationBarHidden = true
         applyConstraints()
+        addTableViewData()
         viewModel.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!, bag: bag)
         getSearchMovies()
     }
@@ -24,7 +25,7 @@ final class FavoritesViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] value in
                 guard let self = self else { return }
-                self.favoritesView.updateUITableView(with: value)
+                self.updateUITableView(with: value)
             } onError: { error in
                 print(error)
             }.disposed(by: bag)
@@ -34,6 +35,44 @@ final class FavoritesViewController: UIViewController {
         favoritesView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func addTableViewData() {
+        favoritesView.table.dataSource = self
+        favoritesView.table.delegate = self
+    }
+    
+    func updateUITableView(with cellsData: FavoritesMoviesResponseModel) {
+        viewModel.cellsData = cellsData
+        favoritesView.table.reloadData()
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let count = viewModel.cellsData?.results?.count {
+            return count
+        }
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: CustomFavoritesTableViewCell.identifier, for: indexPath)
+        if let cell = cell as? CustomFavoritesTableViewCell {
+            if let posterPathSearch = viewModel.cellsData?.results?[indexPath.row].posterPath {
+                cell.image.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPathSearch)", loadingView: cell.loading)
+                return cell
+            }
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteButton = UIContextualAction(style: .destructive, title: "DELETE") {_, _, _ in
+        }
+        return UISwipeActionsConfiguration(actions: [deleteButton])
+        
     }
 }
 

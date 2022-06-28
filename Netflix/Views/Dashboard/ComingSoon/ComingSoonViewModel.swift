@@ -9,6 +9,9 @@ class ComingSoonViewModel {
     let comingSoon = PublishSubject<UpcomingMoviesResponseModel>()
     let searchMovies = PublishSubject<SearchMoviesResponseModel>()
     
+    var cellsData: UpcomingMoviesResponseModel?
+    var cellsDataSearch: SearchMoviesResponseModel?
+    
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }

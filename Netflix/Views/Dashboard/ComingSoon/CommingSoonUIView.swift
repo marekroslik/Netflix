@@ -1,10 +1,7 @@
 import UIKit
 import SnapKit
 
-final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    var cellsData: UpcomingMoviesResponseModel?
-    var cellsDataSearch: SearchMoviesResponseModel?
+final class ComingSoonUIView: UIView {
     
     // Create category name for coming soon movies view
     let searchTextField: UITextField = {
@@ -25,7 +22,7 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
     }()
     
     // Create collection view for coming soon movies view
-    private lazy var comingSoonCollectionView = UICollectionView()
+    lazy var comingSoonCollectionView = UICollectionView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,20 +36,6 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
         configureCollectionView()
         addSubview(comingSoonCollectionView)
     }
-    func updateUICollectionView(with cellsData: UpcomingMoviesResponseModel) {
-        self.cellsData = cellsData
-        self.comingSoonCollectionView.reloadData()
-    }
-    
-    func showDefaultData() {
-        self.cellsDataSearch = nil
-        self.comingSoonCollectionView.reloadData()
-    }
-    
-    func updateUICollectionView(with cellsDataSearch: SearchMoviesResponseModel) {
-        self.cellsDataSearch = cellsDataSearch
-        self.comingSoonCollectionView.reloadData()
-    }
     
     // Configure collection view for coming soon movies view
     private func configureCollectionView() {
@@ -61,9 +44,7 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
         comingSoonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         comingSoonCollectionView.register(CustomComingSoonCollectionViewCell.self,
-                                             forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
-        comingSoonCollectionView.dataSource = self
-        comingSoonCollectionView.delegate = self
+                                          forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
         comingSoonCollectionView.showsVerticalScrollIndicator = false
         comingSoonCollectionView.backgroundColor = .black
     }
@@ -88,33 +69,4 @@ final class ComingSoonUIView: UIView, UICollectionViewDelegate, UICollectionView
     required init?(coder: NSCoder) {
         fatalError()
     }
-}
-
-// Set settings functions
-extension ComingSoonUIView {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = self.cellsDataSearch?.results?.count {
-            return count
-        }
-        if let count = self.cellsData?.results?.count {
-            return count
-        }
-        return 12
-    }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomComingSoonCollectionViewCell.identifier, for: indexPath)
-        if let cell = cell as? CustomComingSoonCollectionViewCell {
-            if let posterPathSearch = self.cellsDataSearch?.results?[indexPath.row].posterPath {
-                cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPathSearch)", loadingView: cell.loading)
-                return cell
-            }
-            if let posterPath = self.cellsData?.results?[indexPath.row].posterPath {
-                cell.imageView.downloaded(from: "\(APIConstants.Api.urlImages)\(posterPath)", loadingView: cell.loading)
-                return cell
-            }
-    }
-        return cell
-    }
-
 }
