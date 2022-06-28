@@ -7,8 +7,6 @@ class HomeViewModel {
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
     private var apiClient: APIClient
     
-    private let bag = DisposeBag()
-    
     var latestMovie = PublishSubject<LatestMovieResponseModel>()
     var popularMovie = PublishSubject<PopularMoviesResponseModel>()
     
