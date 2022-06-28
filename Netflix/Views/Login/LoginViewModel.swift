@@ -2,80 +2,49 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class LoginViewModel {
+final class LoginViewModel: ViewModelType {
     
-    let emailTextPublishSubject = PublishSubject<String>()
-    let passwordTextPublishSubject = PublishSubject<String>()
-    var errorHandling = PublishSubject<String>()
+    let input: Input
+    let output: Output
+    
+    struct Input {
+        let email: AnyObserver<String>
+        let password: AnyObserver<String>
+        let loginTrigger: AnyObserver<Void>
+        let showHidePasswordTrigger: AnyObserver<Void>
+    }
+    
+    struct Output {
+        let inputValidating: Driver<Bool>
+//        let showHidePassword: Driver<Bool>
+//        let accessAccept: Driver<Void>
+//        let accessDenied: Driver<String>
+    }
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
     private var apiClient: APIClient
     
+    private let email = ReplaySubject<String>.create(bufferSize: 1)
+    private let password = ReplaySubject<String>.create(bufferSize: 1)
+    private let loginTrigger = PublishSubject<Void>()
+    private let showHidePasswordTrigger = PublishSubject<Void>()
+    
     init(apiClient: APIClient) {
         self.apiClient = apiClient
-    }
-    
-    func isValid() -> Observable<Bool> {
-        return Observable
-            .combineLatest(emailTextPublishSubject.asObserver()
-                .startWith(""), passwordTextPublishSubject.asObserver().startWith(""))
-            .map { username, password in
-                return username.count >= 1 && password.count >= 4
-            }.startWith(false)
-    }
-    
-    func getToken(bag: DisposeBag) {
-        apiClient.getToken().subscribe(
-            onNext: { result in
-                UserDefaultsUseCase().token = result.requestToken
-            },
-            onError: { error in
-                print(error.localizedDescription)
-            }).disposed(by: bag)
-    }
-    
-    func authenticationWithLoginPassword(
-        login: String,
-        password: String,
-        bag: DisposeBag) {
-        let loginPost = LoginPostResponseModel(
-            username: login,
-            password: password,
-            requestToken: UserDefaultsUseCase().token!)
-            apiClient.authenticationWithLoginPassword(model: loginPost )
-                .observe(on: MainScheduler.instance)
-                .subscribe(onNext: { [weak self] _ in
-                self?.saveKeyChain(login: login, password: password)
-                self?.getSessionId(token: UserDefaultsUseCase().token!, bag: bag)
-            },
-            onError: { [weak self] error in
-                switch error {
-                case APIError.wrongPassword:
-                    self?.errorHandling.onNext("Invalid username or password")
-                default:
-                    self?.errorHandling.onNext("Login failed. Please try again later")
-                }
-            }).disposed(by: bag)
-    }
-    
-    func getSessionId(token: String, bag: DisposeBag) {
-        let sessionIdPost = SessionIdPostResponseModel(token: token)
-        apiClient.getSessionId(model: sessionIdPost)
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { value in
-                UserDefaultsUseCase().sessionId = value.sessionID
-                self.didSendEventClosure?(.main)
-            },
-                       onError: { [weak self] _ in
-                self?.errorHandling.onNext("Login failed. Please try again later")
-            }).disposed(by: bag)
-    }
-    
-    func saveKeyChain(login: String, password: String) {
-        do {
-            try KeyChainUseCase().saveLoginAndPassword(login: login, password: password.data(using: .utf8)!)
-        } catch {
-            print("KEYCHAIN SAVE \(error)")
+        
+        let inputValidating = Observable
+            .combineLatest(email.startWith(""), password.startWith("")) { email, password  in
+            return email.count >= 1  && password.count >= 4
         }
+            .startWith(false)
+            .asDriver(onErrorJustReturn: (false))
+        
+        
+        self.input = Input(
+            email: email.asObserver(),
+            password: password.asObserver(),
+            loginTrigger: loginTrigger.asObserver(), showHidePasswordTrigger: showHidePasswordTrigger.asObserver()
+        )
+        self.output = Output(inputValidating: inputValidating)
     }
 }

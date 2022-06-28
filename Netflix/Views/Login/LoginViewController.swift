@@ -16,11 +16,71 @@ final class LoginViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        validating()
-        viewModel.getToken(bag: bag)
-        loginButton()
-        showHidePasswordButton()
-        errorHandling()
+        bindViewModelInputs()
+        bindViewModelOutputs()
+    }
+    
+    private func bindViewModelInputs() {
+        loginView.emailTextField
+            .rx
+            .text
+            .orEmpty
+            .bind(to: viewModel.input.email)
+            .disposed(by: bag)
+        
+        loginView.passwordTextField
+            .rx
+            .text
+            .orEmpty
+            .bind(to: viewModel.input.password)
+            .disposed(by: bag)
+        
+        loginView.loginButton
+            .rx
+            .tap
+            .bind(to: viewModel.input.loginTrigger)
+            .disposed(by: bag)
+        
+        loginView
+            .showHidePasswordButton
+            .rx
+            .tap
+            .bind(to: viewModel.input.showHidePasswordTrigger)
+            .disposed(by: bag)
+    }
+    
+    private func bindViewModelOutputs() {
+        
+        viewModel
+            .output
+            .inputValidating
+            .drive(loginView.loginButton.rx.isEnabled)
+            .disposed(by: bag)
+        
+        viewModel
+            .output
+            .inputValidating
+            .map { $0 ? 1 : 0.5 }
+            .drive(loginView.loginButton.rx.alpha)
+            .disposed(by: bag)
+        
+//        viewModel
+//            .output
+//            .showHidePassword
+//            .drive(loginView.passwordTextField.isSecureTextEntry)
+//            .disposed(by: bag)
+    }
+    
+    // Add subviews
+    private func addSubviews() {
+        view.addSubview(loginView)
+    }
+    
+    // Set Constraints
+    private func applyConstraints() {
+        loginView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     // Move view when keyboard is shown
@@ -32,66 +92,6 @@ final class LoginViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.removeKeyboardObserver()
-    }
-    
-    // Add subviews
-    private func addSubviews() {
-        view.addSubview(loginView)
-    }
-    
-    // Validating email and password
-    private func validating() {
-        loginView.emailTextField.becomeFirstResponder()
-        loginView.emailTextField.rx.text.map { $0 ?? "" }.bind(to: viewModel.emailTextPublishSubject).disposed(by: bag)
-        loginView.passwordTextField.rx.text.map { $0 ?? "" }.bind(to: viewModel.passwordTextPublishSubject).disposed(by: bag)
-        
-        viewModel.isValid().bind(to: loginView.loginButton.rx.isEnabled).disposed(by: bag)
-        viewModel.isValid().map { $0 ? 1 : 0.5}.bind(to: loginView.loginButton.rx.alpha).disposed(by: bag)
-    }
-    
-    private func errorHandling() {
-        self.viewModel.errorHandling
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] value in
-                guard let self = self else { return }
-                self.loginView.loading.isHidden = true
-                self.loginView.showToast(message: value)
-            } onError: { error in
-                print(error)
-            }.disposed(by: bag)
-        
-    }
-    
-    private func loginButton() {
-        self.loginView.loginButton.rx.tap.bind { [ weak self] in
-            guard let self = self else { return }
-            self.loginView.loading.isHidden = false
-            self.viewModel.authenticationWithLoginPassword(
-                login: self.loginView.emailTextField.text!,
-                password: self.loginView.passwordTextField.text!,
-                bag: self.bag)
-            // Add animation
-            self.loginView.loginButton.animateWhenPressed(disposeBag: self.bag)
-        }.disposed(by: bag)
-    }
-    
-    private func showHidePasswordButton() {
-        self.loginView.showHidePasswordButton.rx.tap.bind { [weak self] in
-            guard let self = self else { return }
-            self.loginView.passwordTextField.isSecureTextEntry.toggle()
-            if self.loginView.passwordTextField.isSecureTextEntry == true {
-                self.loginView.showHidePasswordButton.setTitle("SHOW", for: .normal)
-            } else { self.loginView.showHidePasswordButton.setTitle("HIDE", for: .normal) }
-            // Add animation
-            self.loginView.showHidePasswordButton.animateWhenPressed(disposeBag: self.bag)
-        }.disposed(by: bag)
-    }
-    
-    // Set Constraints
-    private func applyConstraints() {
-        loginView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
     }
 }
 
