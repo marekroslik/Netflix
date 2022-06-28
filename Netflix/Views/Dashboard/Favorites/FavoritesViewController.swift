@@ -17,10 +17,11 @@ final class FavoritesViewController: UIViewController {
         applyConstraints()
         addTableViewData()
         viewModel.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!, bag: bag)
-        getSearchMovies()
+        getFavoritesMovies()
+        getFavoritesMovieInfo()
     }
     
-    private func getSearchMovies() {
+    private func getFavoritesMovies() {
         self.viewModel.favoritesMovies
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] value in
@@ -48,6 +49,13 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     func updateUITableView(with cellsData: FavoritesMoviesResponseModel) {
         viewModel.cellsData = cellsData
         favoritesView.table.reloadData()
+    }
+    
+    func getFavoritesMovieInfo() {
+        self.favoritesView.table.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.viewModel.showMovieDetails(with: indexPath.row)
+            }).disposed(by: bag)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,6 +86,6 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension FavoritesViewController {
     enum Event {
-        case movieDetails
+        case movieDetails(id: Int)
     }
 }

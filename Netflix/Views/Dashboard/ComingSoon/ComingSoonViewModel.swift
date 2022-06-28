@@ -16,6 +16,10 @@ class ComingSoonViewModel {
         self.apiClient = apiClient
     }
     
+    func showMovieDetails(with id: Int) {
+        didSendEventClosure?(.movieDetails(id: id))
+    }
+    
     func getUpcomingMovies(atPage page: Int, bag: DisposeBag) {
         apiClient.getUpcomingMovies(atPage: page)
             .subscribe(onNext: { [weak self] result in

@@ -9,7 +9,7 @@ protocol MainCoordinatorProtocol: Coordinator {
     
     func currentPage() -> TabBarPage?
     
-    func showMovieDetails()
+    func showMovieDetails(posterPath: String?, title: String?, duration: String?, score: Double?, release: String?, synopsis: String?)
     
     func closeMovieDetails()
 }
@@ -36,8 +36,13 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
         prepareTabBarController(withTabControllers: controllers)
     }
     
-    func showMovieDetails() {
-        let movieDetails = MovieDetailsViewController()
+    func showMovieDetails(posterPath: String?, title: String?, duration: String?, score: Double?, release: String?, synopsis: String?) {
+        let movieDetails = MovieDetailsViewController(posterPath: posterPath,
+                                                      title: title,
+                                                      duration: duration,
+                                                      score: score,
+                                                      release: release,
+                                                      synopsis: synopsis)
         movieDetails.modalPresentationStyle = .fullScreen
         movieDetails.viewModel = MovieDetailsViewModel()
         movieDetails.viewModel.didSendEventClosure = { [weak self] event in
@@ -90,8 +95,14 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             home.viewModel = HomeViewModel(apiClient: APIClient())
             home.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
-                case .movieDetails:
-                    self?.showMovieDetails()
+                case .movieDetails(let index):
+                    print(index)
+                    self?.showMovieDetails(posterPath: home.viewModel.cellsData?.results?[index].posterPath,
+                                            title: home.viewModel.cellsData?.results?[index].title,
+                                            duration: "0",
+                                            score: home.viewModel.cellsData?.results?[index].voteAverage,
+                                            release: home.viewModel.cellsData?.results?[index].releaseDate,
+                                            synopsis: home.viewModel.cellsData?.results?[index].overview)
                 case .logout:
                     self?.finish()
                 }
@@ -103,8 +114,23 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             comingSoon.viewModel = ComingSoonViewModel(apiClient: APIClient())
             comingSoon.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
-                case .movieDetails:
-                    self?.showMovieDetails()
+                case .movieDetails(let index):
+                    if comingSoon.viewModel.cellsDataSearch == nil {
+                        self?.showMovieDetails(posterPath: comingSoon.viewModel.cellsData?.results?[index].posterPath,
+                                                title: comingSoon.viewModel.cellsData?.results?[index].title,
+                                                duration: "0",
+                                                score: comingSoon.viewModel.cellsData?.results?[index].voteAverage,
+                                                release: comingSoon.viewModel.cellsData?.results?[index].releaseDate,
+                                                synopsis: comingSoon.viewModel.cellsData?.results?[index].overview)
+                    } else {
+                        self?.showMovieDetails(posterPath: comingSoon.viewModel.cellsDataSearch?.results?[index].posterPath,
+                                                title: comingSoon.viewModel.cellsDataSearch?.results?[index].title,
+                                                duration: "0",
+                                                score: comingSoon.viewModel.cellsDataSearch?.results?[index].voteAverage,
+                                                release: comingSoon.viewModel.cellsDataSearch?.results?[index].releaseDate,
+                                                synopsis: comingSoon.viewModel.cellsDataSearch?.results?[index].overview)
+                    }
+                    
                 }
             }
             navController.pushViewController(comingSoon, animated: true)
@@ -114,8 +140,13 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             favorites.viewModel = FavoritesViewModel(apiClient: APIClient())
             favorites.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
-                case .movieDetails:
-                    self?.showMovieDetails()
+                case .movieDetails(let index):
+                    self?.showMovieDetails(posterPath: favorites.viewModel.cellsData?.results?[index].posterPath,
+                                            title: favorites.viewModel.cellsData?.results?[index].title,
+                                            duration: "0",
+                                            score: favorites.viewModel.cellsData?.results?[index].voteAverage,
+                                            release: favorites.viewModel.cellsData?.results?[index].releaseDate,
+                                            synopsis: favorites.viewModel.cellsData?.results?[index].overview)
                 }
             }
             navController.pushViewController(favorites, animated: true)

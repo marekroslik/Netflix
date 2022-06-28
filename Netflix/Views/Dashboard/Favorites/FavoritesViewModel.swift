@@ -13,6 +13,10 @@ class FavoritesViewModel {
         self.apiClient = apiClient
     }
     
+    func showMovieDetails(with id: Int) {
+        didSendEventClosure?(.movieDetails(id: id))
+    }
+    
     func getFavoritesMovies(atPage page: Int, withSessionId id: String, bag: DisposeBag) {
         apiClient.getFavoritesMovies(atPage: page, withSessionId: id)
             .subscribe(onNext: { result in

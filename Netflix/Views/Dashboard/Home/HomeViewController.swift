@@ -24,6 +24,7 @@ final class HomeViewController: UIViewController {
         viewModel.getLPopularMovies(atPage: 1, bag: bag)
         getLatestMovie()
         getPopularMovie()
+        getPopularMovieInfo()
     }
     
     // Add subviews
@@ -47,8 +48,6 @@ final class HomeViewController: UIViewController {
         currentWidth?.isActive = true
         let currentHeight = logoBarItem.customView?.heightAnchor.constraint(equalToConstant: 35)
         currentHeight?.isActive = true
-        
-        logoButton.addTarget(self, action: #selector(logoButtonAction), for: .touchUpInside)
         // Add button to navigation bar
         navigationItem.leftBarButtonItem = logoBarItem
         
@@ -72,10 +71,6 @@ final class HomeViewController: UIViewController {
     
     @objc func accountButtonAction(sender: UIButton!) {
         viewModel.logOut()
-    }
-    
-    @objc func logoButtonAction(sender: UIButton!) {
-        viewModel.showMovieDetails()
     }
     
     // Set Constraints
@@ -133,6 +128,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         popularMovies.popularMoviesCollectionView?.reloadData()
     }
     
+    func getPopularMovieInfo() {
+        popularMovies.popularMoviesCollectionView?.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.viewModel.showMovieDetails(with: indexPath.row)
+                print(self?.viewModel.cellsData?.results?[indexPath.row].title ?? "")
+            }).disposed(by: bag)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = viewModel.cellsData?.results?.count {
             return count
@@ -153,7 +156,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension HomeViewController {
     enum Event {
-        case movieDetails
+        case movieDetails(id: Int)
         case logout
     }
 }

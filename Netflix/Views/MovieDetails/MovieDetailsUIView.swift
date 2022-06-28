@@ -4,13 +4,14 @@ import SnapKit
 final class MovieDetailsUIView: UIView {
     
     // Create big image
-    private let imageMovieDetails: UIImageView = {
+    let imageMovieDetails: UIImageView = {
         let image = UIImageView()
-        image.image = Asset.latestMovieNetflix.image
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         return image
     }()
+    
+    let loading = LoadingUIView()
     
     // Create back button
     let topBackButton: UIButton = {
@@ -45,9 +46,8 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create movie title
-    private let movieTitle: UILabel = {
+    let movieTitle: UILabel = {
         let label = UILabel()
-        label.text = "Never Have I Ever"
         label.font = UIFont.systemFont(ofSize: 25, weight: .medium)
         label.textColor = .white
         return label
@@ -63,9 +63,8 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create duration data
-    private let movieDuration: UILabel = {
+    let movieDuration: UILabel = {
         let label = UILabel()
-        label.text = "111 minutes"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
         return label
@@ -81,9 +80,8 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create score data
-    private let movieScore: UILabel = {
+    let movieScore: UILabel = {
         let label = UILabel()
-        label.text = "7.8 (IMDb)"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
         return label
@@ -99,9 +97,8 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create release date data
-    private let releaseDateData: UILabel = {
+    let releaseDateData: UILabel = {
         let label = UILabel()
-        label.text = "April 27, 2020"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
         return label
@@ -117,10 +114,9 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create synopsis data
-    private let synopsisData: UILabel = {
+    let synopsisData: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = "After a traumatic year, a first-generation Indian-American teenager wants to improve her status at school, but friends..."
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
         return label
@@ -149,6 +145,7 @@ final class MovieDetailsUIView: UIView {
     // Add subviews
     private func addSubviews() {
         addSubview(imageMovieDetails)
+        addSubview(loading)
         addSubview(topBackButton)
         addSubview(toplikeButton)
         addSubview(playButton)
@@ -173,6 +170,9 @@ final class MovieDetailsUIView: UIView {
             make.centerX.equalToSuperview()
             make.height.equalTo(300)
             make.width.equalToSuperview()
+        }
+        loading.snp.makeConstraints { make in
+            make.edges.equalTo(imageMovieDetails)
         }
         
         topBackButton.snp.makeConstraints { make in
