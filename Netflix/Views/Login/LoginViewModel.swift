@@ -16,7 +16,7 @@ final class LoginViewModel: ViewModelType {
     
     struct Output {
         let inputValidating: Driver<Bool>
-//        let showHidePassword: Driver<Bool>
+        let showHidePassword: Driver<Bool>
 //        let accessAccept: Driver<Void>
 //        let accessDenied: Driver<String>
     }
@@ -39,12 +39,15 @@ final class LoginViewModel: ViewModelType {
             .startWith(false)
             .asDriver(onErrorJustReturn: (false))
         
+        // IDK how to bind a button click here and get access to the text ((((
+        let showHidePassword = 
+        
         
         self.input = Input(
             email: email.asObserver(),
             password: password.asObserver(),
             loginTrigger: loginTrigger.asObserver(), showHidePasswordTrigger: showHidePasswordTrigger.asObserver()
         )
-        self.output = Output(inputValidating: inputValidating)
+        self.output = Output(inputValidating: inputValidating, showHidePassword: showHidePassword)
     }
 }

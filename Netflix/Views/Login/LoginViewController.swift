@@ -64,11 +64,11 @@ final class LoginViewController: UIViewController {
             .drive(loginView.loginButton.rx.alpha)
             .disposed(by: bag)
         
-//        viewModel
-//            .output
-//            .showHidePassword
-//            .drive(loginView.passwordTextField.isSecureTextEntry)
-//            .disposed(by: bag)
+        viewModel
+            .output
+            .showHidePassword
+            .drive(loginView.passwordTextField.rx.isSecureTextEntry)
+            .disposed(by: bag)
     }
     
     // Add subviews
