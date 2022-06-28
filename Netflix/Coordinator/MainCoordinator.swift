@@ -71,6 +71,16 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
         tabBarController.selectedIndex = TabBarPage.home.pageOrderNumber()
         // Styling
         tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.tintColor = .red
+        tabBarController.tabBar.backgroundColor = .black
+        
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .black
+            tabBarController.tabBar.standardAppearance = appearance
+            tabBarController.tabBar.scrollEdgeAppearance = tabBarController.tabBar.standardAppearance
+        }
         
         // In this step, we attach tabBarController to navigation controller associated with this coordanator
         navigationController.viewControllers = [tabBarController]
@@ -98,11 +108,11 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
                 case .movieDetails(let index):
                     print(index)
                     self?.showMovieDetails(posterPath: home.viewModel.cellsData?.results?[index].posterPath,
-                                            title: home.viewModel.cellsData?.results?[index].title,
-                                            duration: "0",
-                                            score: home.viewModel.cellsData?.results?[index].voteAverage,
-                                            release: home.viewModel.cellsData?.results?[index].releaseDate,
-                                            synopsis: home.viewModel.cellsData?.results?[index].overview)
+                                           title: home.viewModel.cellsData?.results?[index].title,
+                                           duration: "0",
+                                           score: home.viewModel.cellsData?.results?[index].voteAverage,
+                                           release: home.viewModel.cellsData?.results?[index].releaseDate,
+                                           synopsis: home.viewModel.cellsData?.results?[index].overview)
                 case .logout:
                     self?.finish()
                 }
@@ -117,18 +127,18 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
                 case .movieDetails(let index):
                     if comingSoon.viewModel.cellsDataSearch == nil {
                         self?.showMovieDetails(posterPath: comingSoon.viewModel.cellsData?.results?[index].posterPath,
-                                                title: comingSoon.viewModel.cellsData?.results?[index].title,
-                                                duration: "0",
-                                                score: comingSoon.viewModel.cellsData?.results?[index].voteAverage,
-                                                release: comingSoon.viewModel.cellsData?.results?[index].releaseDate,
-                                                synopsis: comingSoon.viewModel.cellsData?.results?[index].overview)
+                                               title: comingSoon.viewModel.cellsData?.results?[index].title,
+                                               duration: "0",
+                                               score: comingSoon.viewModel.cellsData?.results?[index].voteAverage,
+                                               release: comingSoon.viewModel.cellsData?.results?[index].releaseDate,
+                                               synopsis: comingSoon.viewModel.cellsData?.results?[index].overview)
                     } else {
                         self?.showMovieDetails(posterPath: comingSoon.viewModel.cellsDataSearch?.results?[index].posterPath,
-                                                title: comingSoon.viewModel.cellsDataSearch?.results?[index].title,
-                                                duration: "0",
-                                                score: comingSoon.viewModel.cellsDataSearch?.results?[index].voteAverage,
-                                                release: comingSoon.viewModel.cellsDataSearch?.results?[index].releaseDate,
-                                                synopsis: comingSoon.viewModel.cellsDataSearch?.results?[index].overview)
+                                               title: comingSoon.viewModel.cellsDataSearch?.results?[index].title,
+                                               duration: "0",
+                                               score: comingSoon.viewModel.cellsDataSearch?.results?[index].voteAverage,
+                                               release: comingSoon.viewModel.cellsDataSearch?.results?[index].releaseDate,
+                                               synopsis: comingSoon.viewModel.cellsDataSearch?.results?[index].overview)
                     }
                     
                 }
@@ -142,11 +152,11 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
                 switch event {
                 case .movieDetails(let index):
                     self?.showMovieDetails(posterPath: favorites.viewModel.cellsData?.results?[index].posterPath,
-                                            title: favorites.viewModel.cellsData?.results?[index].title,
-                                            duration: "0",
-                                            score: favorites.viewModel.cellsData?.results?[index].voteAverage,
-                                            release: favorites.viewModel.cellsData?.results?[index].releaseDate,
-                                            synopsis: favorites.viewModel.cellsData?.results?[index].overview)
+                                           title: favorites.viewModel.cellsData?.results?[index].title,
+                                           duration: "0",
+                                           score: favorites.viewModel.cellsData?.results?[index].voteAverage,
+                                           release: favorites.viewModel.cellsData?.results?[index].releaseDate,
+                                           synopsis: favorites.viewModel.cellsData?.results?[index].overview)
                 }
             }
             navController.pushViewController(favorites, animated: true)
