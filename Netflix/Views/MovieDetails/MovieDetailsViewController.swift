@@ -16,6 +16,21 @@ final class MovieDetailsViewController: UIViewController {
         closeView()
     }
     
+    init(posterPath: String?, title: String?, duration: String?, score: Double?, release: String?, synopsis: String?) {
+        super.init(nibName: nil, bundle: nil)
+        self.movieDetailsView.imageMovieDetails.downloaded(from: APIConstants.Api.urlImages + (posterPath ?? ""), loadingView: self.movieDetailsView.loading)
+        self.movieDetailsView.movieTitle.text = title
+        self.movieDetailsView.movieDuration.text = duration
+        self.movieDetailsView.movieScore.text = score?.description
+        self.movieDetailsView.releaseDateData.text = release
+        self.movieDetailsView.synopsisData.text = synopsis
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // Add subviews
     private func addSubviews() {
         view.addSubview(movieDetailsView)

@@ -19,6 +19,7 @@ final class ComingSoonViewController: UIViewController {
         getUpcomingMovies()
         getSearchMovies()
         checkSearchTextField()
+        getMovieInfo()
     }
     
     private func applyConstraints() {
@@ -93,6 +94,13 @@ extension ComingSoonViewController: UICollectionViewDelegate, UICollectionViewDa
         comingSoon.comingSoonCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
+    func getMovieInfo() {
+        self.comingSoon.comingSoonCollectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.viewModel.showMovieDetails(with: indexPath.row)
+            }).disposed(by: bag)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = viewModel.cellsDataSearch?.results?.count {
             return count
@@ -121,6 +129,6 @@ extension ComingSoonViewController: UICollectionViewDelegate, UICollectionViewDa
 
 extension ComingSoonViewController {
     enum Event {
-        case movieDetails
+        case movieDetails(id: Int)
     }
 }
