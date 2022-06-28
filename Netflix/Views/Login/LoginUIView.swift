@@ -61,6 +61,12 @@ final class LoginUIView: UIView {
         return button
     }()
     
+    let loading: LoadingUIView = {
+        let loading = LoadingUIView()
+        loading.isHidden = true
+        return loading
+    }()
+    
     // Create show/hide password button
     let showHidePasswordButton: UIButton = {
         let button = UIButton()
@@ -97,6 +103,7 @@ final class LoginUIView: UIView {
         addSubview(guestButton)
         addSubview(showHidePasswordButton)
         addSubview(showAlert)
+        addSubview(loading)
     }
     
     func showToast(message: String) {
@@ -151,6 +158,10 @@ final class LoginUIView: UIView {
             make.bottom.equalTo(emailTextField.snp.top).offset(-20)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.9)
+        }
+        
+        loading.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
