@@ -18,6 +18,9 @@ final class LoginViewController: UIViewController {
         applyConstraints()
         bindViewModelInputs()
         bindViewModelOutputs()
+        addButtonsAnimation(self.loginView.loginButton,
+                            self.loginView.showHidePasswordButton,
+                            disposeBag: bag)
     }
     
     private func bindViewModelInputs() {
@@ -50,7 +53,6 @@ final class LoginViewController: UIViewController {
     }
     
     private func bindViewModelOutputs() {
-        
         viewModel
             .output
             .inputValidating

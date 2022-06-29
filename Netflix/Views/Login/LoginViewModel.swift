@@ -12,6 +12,7 @@ final class LoginViewModel: ViewModelType {
         let password: AnyObserver<String>
         let loginTrigger: AnyObserver<Void>
         let showHidePasswordTrigger: AnyObserver<Void>
+        let error: AnyObserver<String>
     }
     
     struct Output {
@@ -28,6 +29,7 @@ final class LoginViewModel: ViewModelType {
     private let password = ReplaySubject<String>.create(bufferSize: 1)
     private let loginTrigger = PublishSubject<Void>()
     private let showHidePasswordTrigger = PublishSubject<Void>()
+    private let error = PublishSubject<String>()
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient
@@ -39,14 +41,20 @@ final class LoginViewModel: ViewModelType {
             .startWith(false)
             .asDriver(onErrorJustReturn: (false))
         
-        // IDK how to bind a button click here and get access to the text ((((
-        let showHidePassword = 
-        
+        let showHidePassword = showHidePasswordTrigger
+            .map { () -> Bool in
+                print("tap")
+                return false
+            }
+            .startWith(true)
+            .asDriver(onErrorJustReturn: (true))
         
         self.input = Input(
             email: email.asObserver(),
             password: password.asObserver(),
-            loginTrigger: loginTrigger.asObserver(), showHidePasswordTrigger: showHidePasswordTrigger.asObserver()
+            loginTrigger: loginTrigger.asObserver(),
+            showHidePasswordTrigger: showHidePasswordTrigger.asObserver(),
+            error: error.asObserver()
         )
         self.output = Output(inputValidating: inputValidating, showHidePassword: showHidePassword)
     }

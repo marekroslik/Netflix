@@ -1,4 +1,5 @@
 import UIKit
+import RxSwift
 
 extension UIViewController {
     
@@ -14,6 +15,12 @@ extension UIViewController {
             self,
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil)
+    }
+    
+    func addButtonsAnimation(_ buttons: UIButton..., disposeBag: DisposeBag) {
+        for button in buttons {
+            button.animateWhenPressed(disposeBag: disposeBag)
+        }
     }
     
     // Will notify when keyboard show / hide
