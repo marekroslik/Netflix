@@ -12,13 +12,12 @@ final class LoginViewModel: ViewModelType {
         let password: AnyObserver<String>
         let loginTrigger: AnyObserver<Void>
         let showHidePasswordTrigger: AnyObserver<Void>
-        let error: AnyObserver<String>
     }
     
     struct Output {
         let inputValidating: Driver<Bool>
-        let showHidePassword: Driver<Bool>
-//        let accessAccept: Driver<Void>
+        let showHidePassword: Driver<Void>
+        let accessCheck: Driver<Void>
 //        let accessDenied: Driver<String>
     }
     
@@ -29,7 +28,6 @@ final class LoginViewModel: ViewModelType {
     private let password = ReplaySubject<String>.create(bufferSize: 1)
     private let loginTrigger = PublishSubject<Void>()
     private let showHidePasswordTrigger = PublishSubject<Void>()
-    private let error = PublishSubject<String>()
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient
@@ -41,21 +39,33 @@ final class LoginViewModel: ViewModelType {
             .startWith(false)
             .asDriver(onErrorJustReturn: (false))
         
-        let showHidePassword = showHidePasswordTrigger
-            .map { () -> Bool in
-                print("tap")
-                return false
-            }
-            .startWith(true)
-            .asDriver(onErrorJustReturn: (true))
+        let showHidePassword = showHidePasswordTrigger.asDriver(onErrorJustReturn: ())
+        
+        let accessCheck = loginTrigger
+            .map({ _ in
+                print("tapLoginButton")
+        })
+            .asDriver(onErrorJustReturn: ())
         
         self.input = Input(
             email: email.asObserver(),
             password: password.asObserver(),
             loginTrigger: loginTrigger.asObserver(),
-            showHidePasswordTrigger: showHidePasswordTrigger.asObserver(),
-            error: error.asObserver()
+            showHidePasswordTrigger: showHidePasswordTrigger.asObserver()
         )
-        self.output = Output(inputValidating: inputValidating, showHidePassword: showHidePassword)
+        
+        self.output = Output(inputValidating: inputValidating,
+                             showHidePassword: showHidePassword,
+                             accessCheck: accessCheck)
     }
+    
+    func getToken(bag: DisposeBag) {
+            apiClient.getToken().subscribe(
+                onNext: { result in
+                    UserDefaultsUseCase().token = result.requestToken
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                }).disposed(by: bag)
+        }
 }

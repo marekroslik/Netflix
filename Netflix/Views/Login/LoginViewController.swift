@@ -24,21 +24,24 @@ final class LoginViewController: UIViewController {
     }
     
     private func bindViewModelInputs() {
-        loginView.emailTextField
+        loginView
+            .emailTextField
             .rx
             .text
             .orEmpty
             .bind(to: viewModel.input.email)
             .disposed(by: bag)
         
-        loginView.passwordTextField
+        loginView
+            .passwordTextField
             .rx
             .text
             .orEmpty
             .bind(to: viewModel.input.password)
             .disposed(by: bag)
         
-        loginView.loginButton
+        loginView
+            .loginButton
             .rx
             .tap
             .bind(to: viewModel.input.loginTrigger)
@@ -53,24 +56,36 @@ final class LoginViewController: UIViewController {
     }
     
     private func bindViewModelOutputs() {
-        viewModel
-            .output
-            .inputValidating
-            .drive(loginView.loginButton.rx.isEnabled)
-            .disposed(by: bag)
         
         viewModel
             .output
             .inputValidating
-            .map { $0 ? 1 : 0.5 }
-            .drive(loginView.loginButton.rx.alpha)
+            .drive(onNext: { [weak self] value in
+                self?.loginView.loginButton.isEnabled = value
+                self?.loginView.loginButton.alpha = (value ? 1 : 0.5)
+            })
             .disposed(by: bag)
         
         viewModel
             .output
             .showHidePassword
-            .drive(loginView.passwordTextField.rx.isSecureTextEntry)
+            .drive(onNext: { [weak self] _ in
+                self?.loginView.passwordTextField.isSecureTextEntry.toggle()
+                if self?.loginView.passwordTextField.isSecureTextEntry == true {
+                    self?.loginView.showHidePasswordButton.setTitle("SHOW", for: .normal)
+                } else {
+                    self?.loginView.showHidePasswordButton.setTitle("HIDE", for: .normal)
+                }
+            })
             .disposed(by: bag)
+        
+        viewModel
+            .output
+            .accessCheck
+            .drive(onNext: { [weak self] _ in
+                self?.loginView.loading.isHidden = false
+        })
+        .disposed(by: bag)
     }
     
     // Add subviews
