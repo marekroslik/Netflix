@@ -16,59 +16,33 @@ final class LoginViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        bindViewModelInputs()
-        bindViewModelOutputs()
-        addButtonsAnimation(self.loginView.loginButton,
-                            self.loginView.showHidePasswordButton,
-                            disposeBag: bag)
+        bindViewModel()
+        addAnimation()
     }
     
-    private func bindViewModelInputs() {
-        loginView
-            .emailTextField
-            .rx
-            .text
-            .orEmpty
-            .bind(to: viewModel.input.email)
-            .disposed(by: bag)
+    private func bindViewModel() {
+        let inputs = LoginViewModel.Input(
+            login: loginView.loginTextField.rx.text.orEmpty.asObservable(),
+            password: loginView.passwordTextField.rx.text.orEmpty.asObservable(),
+            loginTrigger: loginView.loginButton.rx.tap.asObservable(),
+            showHidePasswordTrigger: loginView.showHidePasswordButton.rx.tap.asObservable()
+        )
+        let outputs = viewModel.transform(input: inputs)
         
-        loginView
-            .passwordTextField
-            .rx
-            .text
-            .orEmpty
-            .bind(to: viewModel.input.password)
-            .disposed(by: bag)
+        outputs.accessCheck
+            .drive(onNext: { [weak self] _ in
+                self?.loginView.loading.isHidden = false
+        })
+        .disposed(by: bag)
         
-        loginView
-            .loginButton
-            .rx
-            .tap
-            .bind(to: viewModel.input.loginTrigger)
-            .disposed(by: bag)
-        
-        loginView
-            .showHidePasswordButton
-            .rx
-            .tap
-            .bind(to: viewModel.input.showHidePasswordTrigger)
-            .disposed(by: bag)
-    }
-    
-    private func bindViewModelOutputs() {
-        
-        viewModel
-            .output
-            .inputValidating
+        outputs.inputValidating
             .drive(onNext: { [weak self] value in
                 self?.loginView.loginButton.isEnabled = value
                 self?.loginView.loginButton.alpha = (value ? 1 : 0.5)
             })
             .disposed(by: bag)
         
-        viewModel
-            .output
-            .showHidePassword
+        outputs.showHidePassword
             .drive(onNext: { [weak self] _ in
                 self?.loginView.passwordTextField.isSecureTextEntry.toggle()
                 if self?.loginView.passwordTextField.isSecureTextEntry == true {
@@ -79,13 +53,19 @@ final class LoginViewController: UIViewController {
             })
             .disposed(by: bag)
         
-        viewModel
-            .output
-            .accessCheck
-            .drive(onNext: { [weak self] _ in
-                self?.loginView.loading.isHidden = false
-        })
-        .disposed(by: bag)
+        outputs.accessDenied
+            .drive(onNext: { [weak self] text in
+                self?.loginView.loading.isHidden = true
+                self?.loginView.showToast(message: text)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func addAnimation() {
+        addButtonsAnimation(self.loginView.loginButton,
+                            self.loginView.showHidePasswordButton,
+                            self.loginView.guestButton,
+                            disposeBag: bag)
     }
     
     // Add subviews
