@@ -3,6 +3,7 @@ import RxSwift
 import RxCocoa
 
 final class LoginViewModel: ViewModelType {
+    
     struct Input {
         let login: Observable<String>
         let password: Observable<String>
@@ -38,42 +39,44 @@ final class LoginViewModel: ViewModelType {
             .startWith(false)
             .asDriver(onErrorJustReturn: false)
         
+        let showHidePassword = input.showHidePasswordTrigger
+            .asDriver(onErrorJustReturn: ())
+        
+        let accessDenied = errorHandling
+            .asDriver(onErrorJustReturn: "")
+        
         let accessCheck = input.loginTrigger
             .withLatestFrom(inputValidating)
             .filter { $0 }
             .flatMapLatest { [apiClient] _ in
                 apiClient.getToken()
             }
-            .flatMapLatest { tokenResponse in
+            .do(onNext: { tokenResponse in
                 UserDefaultsUseCase().token = tokenResponse.requestToken
-            }
+            })
             .withLatestFrom(Observable.combineLatest(
                 input.login.startWith(""),
                 input.password.startWith("")
             ))
-            .flatMapLatest({ [apiClient] (login, password) in
+            .flatMapLatest { [apiClient] login, password -> Observable<LoginResponseModel> in
                 let model = LoginPostResponseModel(
                     username: login,
                     password: password,
-                    requestToken: UserDefaultsUseCase().token)
-                apiClient.authenticationWithLoginPassword(model: model)
-            })
-            .flatMapLatest({ [apiClient] _ in
+                    requestToken: UserDefaultsUseCase().token!)
+                return apiClient.authenticationWithLoginPassword(model: model)
+            }
+            .flatMapLatest { [apiClient] _ -> Observable<SessionIdResponseModel> in
                 let model = SessionIdPostResponseModel(
-                    token: UserDefaultsUseCase().token)
-                apiClient.getSessionId(model: SessionIdPostResponseModel)
+                    token: UserDefaultsUseCase().token!)
+                return apiClient.getSessionId(model: model)
+            }
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [didSendEventClosure] sessionIdResponse in
+                UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
+                didSendEventClosure?(.main)
             })
-            .flatMapLatest({ sessionIDResponse in
-                UserDefaultsUseCase().sessionId = sessionIDResponse.sessionID
-                self.didSendEventClosure?(.main)
-            })
+            .map { _ in () }
             .asDriver(onErrorJustReturn: ())
-        
-        let showHidePassword = input.showHidePasswordTrigger
-            .asDriver(onErrorJustReturn: ())
-        
-        let accessDenied = errorHandling
-            .asDriver(onErrorJustReturn: "")
         
         return Output(
             inputValidating: inputValidating,
@@ -88,5 +91,10 @@ final class LoginViewModel: ViewModelType {
         } catch {
             print("KEYCHAIN SAVE \(error)")
         }
+    }
+    
+    enum LoginError: Error {
+        case credentialsError
+        case serverError
     }
 }
