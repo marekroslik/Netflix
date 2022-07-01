@@ -91,7 +91,7 @@ final class OnBoardingViewController: UIViewController {
         }
         pageControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-80)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-70)
         }
     }
 }
