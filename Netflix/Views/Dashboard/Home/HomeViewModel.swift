@@ -13,7 +13,7 @@ class HomeViewModel: ViewModelType {
     }
     struct Output {
         var showLatestMovie: Driver<LatestMovieResponseModel?>
-        let showPopularMovies: Driver<PopularMoviesResponseModel?>
+        let showPopularMovies: Driver<[PopularMoviesResponseModel.Result]>
         let playLatestMovie: Driver<Void>
         let likeLatestMovie: Driver<Void>
         let showAccount: Driver<Void>
@@ -40,7 +40,8 @@ class HomeViewModel: ViewModelType {
                 apiClient.getPopularMovies(atPage: 1)
             })
             .map { $0 as PopularMoviesResponseModel }
-            .asDriver(onErrorJustReturn: nil)
+            .map { $0.results as [PopularMoviesResponseModel.Result] }
+            .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
         
         let playLatestMovie = input.playLatestMovieTrigger
             .asDriver(onErrorJustReturn: ())

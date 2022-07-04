@@ -48,10 +48,11 @@ final class HomeViewController: UIViewController {
         
         outputs.showPopularMovies.drive((popularMoviesView.popularMoviesCollectionView?.rx.items(
             cellIdentifier: "CustomPopularMoviesCollectionViewCell",
-            cellType: CustomPopularMoviesCollectionViewCell.self))!) { (_, target, cell) in
+            cellType: CustomPopularMoviesCollectionViewCell.self))!) { (index, element, cell) in
                 cell.imageView.downloaded(
-                    from: "\(APIConstants.Api.urlImages)\(target)",
+                    from: "\(APIConstants.Api.urlImages)\(element.posterPath!)",
                     loadingView: cell.loading)
+                print("\(APIConstants.Api.urlImages)\(element.posterPath!)")
             }
         .disposed(by: bag)
     }
