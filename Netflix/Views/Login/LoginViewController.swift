@@ -30,10 +30,8 @@ final class LoginViewController: UIViewController {
         let outputs = viewModel.transform(input: inputs)
         
         outputs.accessCheck
-            .drive(onNext: { [weak self] _ in
-                self?.loginView.loading.isHidden = false
-        })
-        .disposed(by: bag)
+            .drive()
+            .disposed(by: bag)
         
         outputs.inputValidating
             .drive(onNext: { [weak self] value in
@@ -59,6 +57,13 @@ final class LoginViewController: UIViewController {
                 self?.loginView.showToast(message: text)
             })
             .disposed(by: bag)
+        
+        outputs.showLoading
+            .drive(onNext: { [weak self] _ in
+                self?.loginView.loading.isHidden = false
+            })
+            .disposed(by: bag)
+        
     }
     
     private func addAnimation() {

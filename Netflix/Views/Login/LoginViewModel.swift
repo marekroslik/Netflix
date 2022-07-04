@@ -16,6 +16,7 @@ final class LoginViewModel: ViewModelType {
         let accessCheck: Driver<Void>
         let showHidePassword: Driver<Void>
         let accessDenied: Driver<String>
+        let showLoading: Driver<Void>
     }
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
@@ -45,11 +46,18 @@ final class LoginViewModel: ViewModelType {
         let accessDenied = errorHandling
             .asDriver(onErrorJustReturn: "")
         
+        let showLoading = input.loginTrigger
+            .asDriver(onErrorJustReturn: ())
+        
         let accessCheck = input.loginTrigger
             .withLatestFrom(inputValidating)
             .filter { $0 }
-            .flatMapLatest { [apiClient] _ in
+            .flatMapLatest { [apiClient, errorHandling] _ in
                 apiClient.getToken()
+                    .catch { _ in
+                        errorHandling.onNext("Login failed. Please try again later")
+                        return Observable.never()
+                    }
             }
             .do(onNext: { tokenResponse in
                 UserDefaultsUseCase().token = tokenResponse.requestToken
@@ -58,43 +66,53 @@ final class LoginViewModel: ViewModelType {
                 input.login.startWith(""),
                 input.password.startWith("")
             ))
-            .flatMapLatest { [apiClient] login, password -> Observable<LoginResponseModel> in
-                let model = LoginPostResponseModel(
-                    username: login,
-                    password: password,
-                    requestToken: UserDefaultsUseCase().token!)
-                return apiClient.authenticationWithLoginPassword(model: model)
-            }
-            .flatMapLatest { [apiClient] _ -> Observable<SessionIdResponseModel> in
-                let model = SessionIdPostResponseModel(
-                    token: UserDefaultsUseCase().token!)
-                return apiClient.getSessionId(model: model)
-            }
-            .observe(on: MainScheduler.instance)
-            .do(onNext: { [didSendEventClosure] sessionIdResponse in
-                UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
-                didSendEventClosure?(.main)
-            })
-            .map { _ in () }
-            .asDriver(onErrorJustReturn: ())
+                .flatMapLatest { [apiClient, errorHandling] login, password -> Observable<LoginResponseModel> in
+                    let model = LoginPostResponseModel(
+                        username: login,
+                        password: password,
+                        requestToken: UserDefaultsUseCase().token!)
+                    return apiClient.authenticationWithLoginPassword(model: model)
+                        .catch { error in
+                            switch error {
+                            case APIError.wrongPassword:
+                                errorHandling.onNext("Invalid username or password")
+                                return Observable.never()
+                            default:
+                                errorHandling.onNext("Login failed. Please try again later")
+                                return Observable.never()
+                            }
+                        }
+                }
+                .flatMapLatest { [apiClient, errorHandling] _ -> Observable<SessionIdResponseModel> in
+                    let model = SessionIdPostResponseModel(
+                        token: UserDefaultsUseCase().token!)
+                    return apiClient.getSessionId(model: model)
+                        .catch { _ in
+                            errorHandling.onNext("Login failed. Please try again later")
+                            return Observable.never()
+                        }
+                }
+                .observe(on: MainScheduler.instance)
+                .do(onNext: { [didSendEventClosure] sessionIdResponse in
+                    UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
+                    didSendEventClosure?(.main)
+                })
+                    .map { _ in () }
+                    .asDriver(onErrorJustReturn: ())
         
         return Output(
             inputValidating: inputValidating,
             accessCheck: accessCheck,
             showHidePassword: showHidePassword,
-            accessDenied: accessDenied)
+            accessDenied: accessDenied,
+            showLoading: showLoading)
     }
     
     func saveKeyChain(login: String, password: String) {
         do {
             try KeyChainUseCase().saveLoginAndPassword(login: login, password: password.data(using: .utf8)!)
         } catch {
-            print("KEYCHAIN SAVE \(error)")
+            errorHandling.onNext("Login failed. Please try again later")
         }
-    }
-    
-    enum LoginError: Error {
-        case credentialsError
-        case serverError
     }
 }
