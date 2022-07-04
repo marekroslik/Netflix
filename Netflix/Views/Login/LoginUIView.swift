@@ -12,7 +12,7 @@ final class LoginUIView: UIView {
     }()
     
     // Create email text field
-    let emailTextField: UITextField = {
+    let loginTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .darkGray
         textField.layer.cornerRadius = 5
@@ -53,7 +53,7 @@ final class LoginUIView: UIView {
     }()
     
     // Create guest mode button
-    private let guestButton: UIButton = {
+    let guestButton: UIButton = {
         let button = UIButton()
         button.setTitle("Guest Mode", for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
@@ -97,7 +97,7 @@ final class LoginUIView: UIView {
     // Add subviews
     private func addSubviews() {
         addSubview(fullLogo)
-        addSubview(emailTextField)
+        addSubview(loginTextField)
         addSubview(passwordTextField)
         addSubview(loginButton)
         addSubview(guestButton)
@@ -121,7 +121,7 @@ final class LoginUIView: UIView {
     private func applyConstraints() {
         
         fullLogo.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(50)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.3)
             
@@ -131,7 +131,7 @@ final class LoginUIView: UIView {
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalTo(50)
         }
-        emailTextField.snp.makeConstraints { make in
+        loginTextField.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.size.equalTo(passwordTextField)
             make.bottom.equalTo(passwordTextField.snp.top).offset(-20)
@@ -155,7 +155,7 @@ final class LoginUIView: UIView {
         }
         
         showAlert.snp.makeConstraints { make in
-            make.bottom.equalTo(emailTextField.snp.top).offset(-20)
+            make.bottom.equalTo(loginTextField.snp.top).offset(-20)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.9)
         }

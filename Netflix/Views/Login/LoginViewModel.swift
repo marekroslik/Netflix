@@ -2,80 +2,117 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class LoginViewModel {
+final class LoginViewModel: ViewModelType {
     
-    let emailTextPublishSubject = PublishSubject<String>()
-    let passwordTextPublishSubject = PublishSubject<String>()
-    var errorHandling = PublishSubject<String>()
+    struct Input {
+        let login: Observable<String>
+        let password: Observable<String>
+        let loginTrigger: Observable<Void>
+        let showHidePasswordTrigger: Observable<Void>
+    }
+    
+    struct Output {
+        let inputValidating: Driver<Bool>
+        let accessCheck: Driver<Void>
+        let showHidePassword: Driver<Void>
+        let accessDenied: Driver<String>
+        let showLoading: Driver<Void>
+    }
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
     private var apiClient: APIClient
+    private let bag = DisposeBag()
+    
+    private let errorHandling = PublishSubject<String>()
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
     
-    func isValid() -> Observable<Bool> {
-        return Observable
-            .combineLatest(emailTextPublishSubject.asObserver()
-                .startWith(""), passwordTextPublishSubject.asObserver().startWith(""))
-            .map { username, password in
-                return username.count >= 1 && password.count >= 4
-            }.startWith(false)
-    }
-    
-    func getToken(bag: DisposeBag) {
-        apiClient.getToken().subscribe(
-            onNext: { result in
-                UserDefaultsUseCase().token = result.requestToken
-            },
-            onError: { error in
-                print(error.localizedDescription)
-            }).disposed(by: bag)
-    }
-    
-    func authenticationWithLoginPassword(
-        login: String,
-        password: String,
-        bag: DisposeBag) {
-        let loginPost = LoginPostResponseModel(
-            username: login,
-            password: password,
-            requestToken: UserDefaultsUseCase().token!)
-            apiClient.authenticationWithLoginPassword(model: loginPost )
-                .observe(on: MainScheduler.instance)
-                .subscribe(onNext: { [weak self] _ in
-                self?.saveKeyChain(login: login, password: password)
-                self?.getSessionId(token: UserDefaultsUseCase().token!, bag: bag)
-            },
-            onError: { [weak self] error in
-                switch error {
-                case APIError.wrongPassword:
-                    self?.errorHandling.onNext("Invalid username or password")
-                default:
-                    self?.errorHandling.onNext("Login failed. Please try again later")
+    func transform(input: Input) -> Output {
+        
+        let inputValidating = Observable.combineLatest(
+            input.login.startWith(""),
+            input.password.startWith("")
+        ) { login, password in
+            return login.count >= 1  && password.count >= 4
+        }
+            .startWith(false)
+            .asDriver(onErrorJustReturn: false)
+        
+        let showHidePassword = input.showHidePasswordTrigger
+            .asDriver(onErrorJustReturn: ())
+        
+        let accessDenied = errorHandling
+            .asDriver(onErrorJustReturn: "")
+        
+        let showLoading = input.loginTrigger
+            .asDriver(onErrorJustReturn: ())
+        
+        let accessCheck = input.loginTrigger
+            .withLatestFrom(inputValidating)
+            .filter { $0 }
+            .flatMapLatest { [apiClient, errorHandling] _ in
+                apiClient.getToken()
+                    .catch { _ in
+                        errorHandling.onNext("Login failed. Please try again later")
+                        return Observable.never()
+                    }
+            }
+            .do(onNext: { tokenResponse in
+                UserDefaultsUseCase().token = tokenResponse.requestToken
+            })
+            .withLatestFrom(Observable.combineLatest(
+                input.login.startWith(""),
+                input.password.startWith("")
+            ))
+                .flatMapLatest { [apiClient, errorHandling] login, password -> Observable<LoginResponseModel> in
+                    let model = LoginPostResponseModel(
+                        username: login,
+                        password: password,
+                        requestToken: UserDefaultsUseCase().token!)
+                    return apiClient.authenticationWithLoginPassword(model: model)
+                        .catch { error in
+                            switch error {
+                            case APIError.wrongPassword:
+                                errorHandling.onNext("Invalid username or password")
+                                return Observable.never()
+                            default:
+                                errorHandling.onNext("Login failed. Please try again later")
+                                return Observable.never()
+                            }
+                        }
                 }
-            }).disposed(by: bag)
-    }
-    
-    func getSessionId(token: String, bag: DisposeBag) {
-        let sessionIdPost = SessionIdPostResponseModel(token: token)
-        apiClient.getSessionId(model: sessionIdPost)
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { value in
-                UserDefaultsUseCase().sessionId = value.sessionID
-                self.didSendEventClosure?(.main)
-            },
-                       onError: { [weak self] _ in
-                self?.errorHandling.onNext("Login failed. Please try again later")
-            }).disposed(by: bag)
+                .flatMapLatest { [apiClient, errorHandling] _ -> Observable<SessionIdResponseModel> in
+                    let model = SessionIdPostResponseModel(
+                        token: UserDefaultsUseCase().token!)
+                    return apiClient.getSessionId(model: model)
+                        .catch { _ in
+                            errorHandling.onNext("Login failed. Please try again later")
+                            return Observable.never()
+                        }
+                }
+                .observe(on: MainScheduler.instance)
+                .do(onNext: { [didSendEventClosure] sessionIdResponse in
+                    UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
+                    didSendEventClosure?(.main)
+                })
+                    .map { _ in () }
+                    .asDriver(onErrorJustReturn: ())
+        
+        return Output(
+            inputValidating: inputValidating,
+            accessCheck: accessCheck,
+            showHidePassword: showHidePassword,
+            accessDenied: accessDenied,
+            showLoading: showLoading)
     }
     
     func saveKeyChain(login: String, password: String) {
         do {
             try KeyChainUseCase().saveLoginAndPassword(login: login, password: password.data(using: .utf8)!)
         } catch {
-            print("KEYCHAIN SAVE \(error)")
+            errorHandling.onNext("Login failed. Please try again later")
         }
     }
 }

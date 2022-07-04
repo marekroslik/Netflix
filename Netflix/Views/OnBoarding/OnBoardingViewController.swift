@@ -33,7 +33,7 @@ final class OnBoardingViewController: UIViewController {
         pageControl.numberOfPages = views.count
         pageControl.currentPage = 0
         pageControl.currentPageIndicatorTintColor = .red
-        pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender: )), for: .touchUpInside)
+        pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender: )), for: .valueChanged)
         return pageControl
     }()
     

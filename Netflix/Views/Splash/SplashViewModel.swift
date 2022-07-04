@@ -23,16 +23,8 @@ final class SplashViewModel {
                 print(count)
             }, onCompleted: { [weak self] in
                 guard let self = self else { return }
-                
+                self.tryToLogin(bag: bag)
                 // Trying to get data from KeyChain
-                do {
-                    self.loginAndPassword = try KeyChainUseCase().getLoginAndPassword()
-                    self.tryToLogin(bag: bag)
-                } catch {
-                    // KeyChain error
-                    self.didSendEventClosure?(.login)
-                    return
-                }
             }).disposed(by: bag)
     }
     
@@ -47,6 +39,13 @@ final class SplashViewModel {
                 self.didSendEventClosure?(.login)
             }, onCompleted: { [weak self] in
                 guard let self = self else { return }
+                do {
+                    self.loginAndPassword = try KeyChainUseCase().getLoginAndPassword()
+                } catch {
+                    // KeyChain error
+                    self.didSendEventClosure?(.login)
+                    return
+                }
                 self.authenticationWithLoginPassword(
                     login: self.loginAndPassword!.login,
                     password: self.loginAndPassword!.password,

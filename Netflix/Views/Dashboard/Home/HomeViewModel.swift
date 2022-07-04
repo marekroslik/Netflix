@@ -12,6 +12,8 @@ class HomeViewModel {
     
     var cellsData: PopularMoviesResponseModel?
     
+    private var bag = DisposeBag()
+    
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
@@ -19,12 +21,23 @@ class HomeViewModel {
     func logOut() {
         deleteKetChain()
         UserDefaultsUseCase().resetDefaults()
+        getToken(bag: bag)
         didSendEventClosure?(.logout)
     }
     
     func showMovieDetails(with id: Int) {
         didSendEventClosure?(.movieDetails(id: id))
     }
+    
+    func getToken(bag: DisposeBag) {
+            apiClient.getToken().subscribe(
+                onNext: { result in
+                    UserDefaultsUseCase().token = result.requestToken
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                }).disposed(by: bag)
+        }
     
     func deleteKetChain() {
         do {
