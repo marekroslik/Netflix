@@ -55,7 +55,7 @@ final class OnBoardingUIView: UIView, UIScrollViewDelegate {
         signInButton.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalTo(40)
-            make.bottom.equalToSuperview().offset(-50)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.centerX.equalToSuperview()
         }
     }

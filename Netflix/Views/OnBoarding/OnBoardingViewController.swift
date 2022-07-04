@@ -19,10 +19,15 @@ final class OnBoardingViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isPagingEnabled = true
-        scrollView.contentSize = CGSize(width: view.frame.width * CGFloat(views.count), height: view.frame.height - 100)
+        scrollView.contentSize = CGSize(
+            width: view.frame.width * CGFloat(views.count),
+            height: view.safeAreaLayoutGuide.layoutFrame.size.height - 141)
         for index in 0..<views.count {
             scrollView.addSubview(views[index])
-            views[index].frame = CGRect(x: view.frame.width * CGFloat(index), y: 0, width: view.frame.width, height: view.frame.height)
+            views[index].frame = CGRect(x: view.frame.width * CGFloat(index),
+                                        y: 0,
+                                        width: view.frame.width,
+                                        height: view.safeAreaLayoutGuide.layoutFrame.size.height - 141)
         }
         scrollView.delegate = self
         return scrollView
@@ -47,32 +52,23 @@ final class OnBoardingViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        singInButton()
-        singUpButton()
+        bindViewModel()
+        addAnimation()
     }
     
-    // SignInButton
-    private func singInButton() {
-        self.backGround.signInButton.rx.tap.bind { [ weak self] in
-            guard let self = self else { return }
-            // Open Login View
-            self.viewModel.signIn()
-           
-            // Add animation
-            self.backGround.signInButton.animateWhenPressed(disposeBag: self.bag)
-        }.disposed(by: bag)
+    private func bindViewModel() {
+        let inputs = OnBoardingViewModel.Input(
+            singInTrigger: backGround.signInButton.rx.tap.asObservable(),
+            signUpTrigger: secondView.signUpButton.rx.tap.asObservable()
+        )
+        let outputs = viewModel.transform(input: inputs)
+        
+        outputs.singIn.drive().disposed(by: bag)
+        outputs.signUp.drive().disposed(by: bag)
     }
     
-    private func singUpButton() {
-        self.secondView.signUpButton.rx.tap.bind { [ weak self] in
-            guard let self = self else { return }
-            // Open URL
-            if let url = URL(string: "https://www.themoviedb.org/signup?") {
-                UIApplication.shared.open(url)
-            }
-            // Add animation
-            self.secondView.signUpButton.animateWhenPressed(disposeBag: self.bag)
-        }.disposed(by: bag)
+    private func addAnimation() {
+        addButtonsAnimation(backGround.signInButton, secondView.signUpButton, disposeBag: bag)
     }
     
     // Add subviews
@@ -88,15 +84,14 @@ final class OnBoardingViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         scrollView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-60)
         }
         pageControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-70)
         }
     }
 }
