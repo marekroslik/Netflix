@@ -88,7 +88,7 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
     
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
         let navController = UINavigationController()
-        navController.setNavigationBarHidden(false, animated: false)
+        navController.setNavigationBarHidden(true, animated: false)
         
         navController.tabBarItem = UITabBarItem.init(
             title: page.pageTitleValue(),
@@ -107,12 +107,12 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
                 switch event {
                 case .movieDetails(let index):
                     print(index)
-                    self?.showMovieDetails(posterPath: home.viewModel.cellsData?.results?[index].posterPath,
-                                           title: home.viewModel.cellsData?.results?[index].title,
-                                           duration: "0",
-                                           score: home.viewModel.cellsData?.results?[index].voteAverage,
-                                           release: home.viewModel.cellsData?.results?[index].releaseDate,
-                                           synopsis: home.viewModel.cellsData?.results?[index].overview)
+//                    self?.showMovieDetails(posterPath: home.viewModel.cellsData?.results?[index].posterPath,
+//                                           title: home.viewModel.cellsData?.results?[index].title,
+//                                           duration: "0",
+//                                           score: home.viewModel.cellsData?.results?[index].voteAverage,
+//                                           release: home.viewModel.cellsData?.results?[index].releaseDate,
+//                                           synopsis: home.viewModel.cellsData?.results?[index].overview)
                 case .logout:
                     self?.finish()
                 }
