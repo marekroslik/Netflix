@@ -10,6 +10,7 @@ class HomeViewModel: ViewModelType {
         let playLatestMovieTrigger: Observable<Void>
         let likeLatestMovieTrigger: Observable<Void>
         let showAccountTrigger: Observable<Void>
+        let movieCellTrigger: Observable<IndexPath>
     }
     struct Output {
         var showLatestMovie: Driver<LatestMovieResponseModel?>
@@ -17,6 +18,7 @@ class HomeViewModel: ViewModelType {
         let playLatestMovie: Driver<Void>
         let likeLatestMovie: Driver<Void>
         let showAccount: Driver<Void>
+        let showMovieInfo: Driver<Void>
     }
     
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
@@ -39,7 +41,6 @@ class HomeViewModel: ViewModelType {
             .flatMapLatest({ [apiClient] _ -> Observable<PopularMoviesResponseModel> in
                 apiClient.getPopularMovies(atPage: 1)
             })
-            .map { $0 as PopularMoviesResponseModel }
             .map { $0.results as [PopularMoviesResponseModel.Result] }
             .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
         
@@ -52,11 +53,19 @@ class HomeViewModel: ViewModelType {
         let showAccount = input.showAccountTrigger
             .asDriver(onErrorJustReturn: ())
         
+        let showMovieInfo = input.movieCellTrigger
+            .map({ indexPath in
+                print(indexPath)
+                return ()
+            })
+            .asDriver(onErrorJustReturn: ())
+        
         return Output(
             showLatestMovie: showLatestMovie,
             showPopularMovies: showPopularMovies,
             playLatestMovie: playLatestMovie,
             likeLatestMovie: likeLatestMovie,
-            showAccount: showAccount)
+            showAccount: showAccount,
+            showMovieInfo: showMovieInfo)
     }
 }

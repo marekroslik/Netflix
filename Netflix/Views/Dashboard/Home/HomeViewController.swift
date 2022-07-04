@@ -28,7 +28,8 @@ final class HomeViewController: UIViewController {
             loadingPopularMovies: viewDidLoadRelay.asObservable(),
             playLatestMovieTrigger: latestMovieView.playButton.rx.tap.asObservable(),
             likeLatestMovieTrigger: latestMovieView.likeButton.rx.tap.asObservable(),
-            showAccountTrigger: latestMovieView.accountButton.rx.tap.asObservable()
+            showAccountTrigger: latestMovieView.accountButton.rx.tap.asObservable(),
+            movieCellTrigger: popularMoviesView.popularMoviesCollectionView.rx.itemSelected.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
@@ -46,15 +47,18 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: bag)
         
-        outputs.showPopularMovies.drive((popularMoviesView.popularMoviesCollectionView?.rx.items(
-            cellIdentifier: "CustomPopularMoviesCollectionViewCell",
-            cellType: CustomPopularMoviesCollectionViewCell.self))!) { (index, element, cell) in
+        outputs.showPopularMovies.drive(popularMoviesView.popularMoviesCollectionView.rx.items(
+            cellIdentifier: CustomPopularMoviesCollectionViewCell.identifier,
+            cellType: CustomPopularMoviesCollectionViewCell.self)) { (_, element, cell) in
                 cell.imageView.downloaded(
                     from: "\(APIConstants.Api.urlImages)\(element.posterPath!)",
                     loadingView: cell.loading)
                 print("\(APIConstants.Api.urlImages)\(element.posterPath!)")
             }
         .disposed(by: bag)
+        
+        outputs.showMovieInfo
+            .drive().disposed(by: bag)
     }
     
     private func addAnimation() {
