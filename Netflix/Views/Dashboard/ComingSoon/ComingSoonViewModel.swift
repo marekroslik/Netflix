@@ -44,7 +44,8 @@ class ComingSoonViewModel: ViewModelType {
         let showSearchMovies = input.searchText
             .debounce(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .flatMapLatest({ [apiClient] searchText -> Observable<SearchMoviesResponseModel> in
-                apiClient.searchMovies(atPage: 1, withTitle: searchText)
+                let textWithoutSpaces = searchText.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "%20")
+                return apiClient.searchMovies(atPage: 1, withTitle: textWithoutSpaces)
             })
             .do(onNext: { [weak self] model in
                 self?.searchMovies = model.results
