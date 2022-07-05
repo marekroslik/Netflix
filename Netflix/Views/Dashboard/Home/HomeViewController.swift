@@ -29,7 +29,7 @@ final class HomeViewController: UIViewController {
             playLatestMovieTrigger: latestMovieView.playButton.rx.tap.asObservable(),
             likeLatestMovieTrigger: latestMovieView.likeButton.rx.tap.asObservable(),
             showAccountTrigger: latestMovieView.accountButton.rx.tap.asObservable(),
-            movieCellTrigger: popularMoviesView.popularMoviesCollectionView.rx.itemSelected.asObservable()
+            popularMovieCellTrigger: popularMoviesView.popularMoviesCollectionView.rx.itemSelected.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
@@ -53,9 +53,8 @@ final class HomeViewController: UIViewController {
                 cell.imageView.downloaded(
                     from: "\(APIConstants.Api.urlImages)\(element.posterPath!)",
                     loadingView: cell.loading)
-                print("\(APIConstants.Api.urlImages)\(element.posterPath!)")
             }
-        .disposed(by: bag)
+            .disposed(by: bag)
         
         outputs.showMovieInfo
             .drive().disposed(by: bag)
@@ -75,7 +74,7 @@ final class HomeViewController: UIViewController {
         view.addSubview(latestMovieView)
         view.addSubview(popularMoviesView)
     }
- 
+    
     private func applyConstraints() {
         latestMovieView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
@@ -92,7 +91,7 @@ final class HomeViewController: UIViewController {
 
 extension HomeViewController {
     enum Event {
-        case movieDetails(id: Int)
+        case movieDetails(model: MovieDetailsModel)
         case logout
     }
 }

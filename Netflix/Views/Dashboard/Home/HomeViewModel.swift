@@ -10,7 +10,7 @@ class HomeViewModel: ViewModelType {
         let playLatestMovieTrigger: Observable<Void>
         let likeLatestMovieTrigger: Observable<Void>
         let showAccountTrigger: Observable<Void>
-        let movieCellTrigger: Observable<IndexPath>
+        let popularMovieCellTrigger: Observable<IndexPath>
     }
     struct Output {
         var showLatestMovie: Driver<LatestMovieResponseModel?>
@@ -24,6 +24,10 @@ class HomeViewModel: ViewModelType {
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
     private var apiClient: APIClient
     
+    private var latestMovie: LatestMovieResponseModel?
+    private var popularMovies: [PopularMoviesResponseModel.Result]?
+    private var popularMoviesPage = 1
+    
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
@@ -34,12 +38,18 @@ class HomeViewModel: ViewModelType {
             .flatMapLatest({ [apiClient] _ -> Observable<LatestMovieResponseModel> in
                 apiClient.getLatestMovie()
             })
+            .do(onNext: { [weak self] model in
+                self?.latestMovie = model
+            })
             .map { $0 as LatestMovieResponseModel }
             .asDriver(onErrorJustReturn: nil)
         
         let showPopularMovies = input.loadingPopularMovies
             .flatMapLatest({ [apiClient] _ -> Observable<PopularMoviesResponseModel> in
                 apiClient.getPopularMovies(atPage: 1)
+            })
+            .do(onNext: { [weak self] model in
+                self?.popularMovies = model.results
             })
             .map { $0.results as [PopularMoviesResponseModel.Result] }
             .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
@@ -53,10 +63,17 @@ class HomeViewModel: ViewModelType {
         let showAccount = input.showAccountTrigger
             .asDriver(onErrorJustReturn: ())
         
-        let showMovieInfo = input.movieCellTrigger
-            .map({ indexPath in
-                print(indexPath)
-                return ()
+        let showMovieInfo = input.popularMovieCellTrigger
+            .map({ [weak self] indexPath in
+                if let film = self?.popularMovies?[indexPath.row] {
+                    self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                        posterPath: film.posterPath,
+                        title: film.title,
+                        duration: "0",
+                        score: film.voteAverage,
+                        release: film.releaseDate,
+                        synopsis: film.overview)))
+                }
             })
             .asDriver(onErrorJustReturn: ())
         
@@ -66,6 +83,7 @@ class HomeViewModel: ViewModelType {
             playLatestMovie: playLatestMovie,
             likeLatestMovie: likeLatestMovie,
             showAccount: showAccount,
-            showMovieInfo: showMovieInfo)
+            showMovieInfo: showMovieInfo
+        )
     }
 }
