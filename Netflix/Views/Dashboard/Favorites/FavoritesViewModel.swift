@@ -32,7 +32,6 @@ class FavoritesViewModel: ViewModelType {
                 return apiClient.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!)
             })
             .do(onNext: { [weak self] model in
-                print(model)
                 self?.favoritesMovies = model.results
             })
             .map { $0.results as [FavoritesMoviesResponseModel.Result] }

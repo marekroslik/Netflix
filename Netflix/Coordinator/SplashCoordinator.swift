@@ -17,10 +17,6 @@ class SplashCoordinator: BaseCoordinator, SplashCoordinatorProtocol {
         showSplashViewController()
     }
     
-    deinit {
-        print("SplashCoordinator deinit")
-    }
-    
     func showSplashViewController() {
         let loginVC: SplashViewController = .init()
         loginVC.viewModel = SplashViewModel(apiClient: APIClient())

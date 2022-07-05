@@ -18,10 +18,6 @@ class LoginCoordinator: BaseCoordinator, LoginCoordinatorProtocol {
         showOnBoardingViewController()
     }
     
-    deinit {
-        print("LoginCoordinator deinit")
-    }
-    
     func showOnBoardingViewController() {
         let loginVC: OnBoardingViewController = .init()
         loginVC.viewModel = OnBoardingViewModel()

@@ -53,10 +53,6 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
         navigationController.dismiss(animated: true)
     }
     
-    deinit {
-        print("MainCoordinator deinit")
-    }
-    
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
         // Set delegate for UITabBarController
         tabBarController.delegate = self

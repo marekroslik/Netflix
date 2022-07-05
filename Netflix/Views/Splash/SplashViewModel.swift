@@ -19,8 +19,7 @@ final class SplashViewModel {
         Observable<Int>.timer(.seconds(0), period: .seconds(1), scheduler: MainScheduler.instance)
             .take(countDown+1)
             .subscribe(onNext: { timePassed in
-                let count = self.countDown - timePassed
-                print(count)
+                _ = self.countDown - timePassed
             }, onCompleted: { [weak self] in
                 guard let self = self else { return }
                 self.tryToLogin(bag: bag)
