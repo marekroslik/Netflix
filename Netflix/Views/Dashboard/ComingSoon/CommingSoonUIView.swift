@@ -21,8 +21,9 @@ final class ComingSoonUIView: UIView {
         return textField
     }()
     
-    // Create collection view for coming soon movies view
     lazy var comingSoonCollectionView = UICollectionView()
+    
+    lazy var searchMoviesCollectionView = UICollectionView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,6 +36,7 @@ final class ComingSoonUIView: UIView {
         addSubview(searchTextField)
         configureCollectionView()
         addSubview(comingSoonCollectionView)
+        addSubview(searchMoviesCollectionView)
     }
     
     // Configure collection view for coming soon movies view
@@ -42,9 +44,19 @@ final class ComingSoonUIView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
+        
+        searchMoviesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        searchMoviesCollectionView.isHidden = true
+        searchMoviesCollectionView.register(
+            CustomComingSoonCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
+        searchMoviesCollectionView.showsVerticalScrollIndicator = false
+        searchMoviesCollectionView.backgroundColor = .black
+        
         comingSoonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        comingSoonCollectionView.register(CustomComingSoonCollectionViewCell.self,
-                                          forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
+        comingSoonCollectionView.register(
+            CustomComingSoonCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
         comingSoonCollectionView.showsVerticalScrollIndicator = false
         comingSoonCollectionView.backgroundColor = .black
     }
@@ -60,6 +72,12 @@ final class ComingSoonUIView: UIView {
         }
         // Set coming soon movies collection view
         comingSoonCollectionView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(searchTextField.snp.bottom).offset(15)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        searchMoviesCollectionView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalTo(searchTextField.snp.bottom).offset(15)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
