@@ -1,28 +1,67 @@
 import Foundation
 import RxSwift
+import RxCocoa
 
-class FavoritesViewModel {
+class FavoritesViewModel: ViewModelType {
+    
+    struct Input {
+        let loadingFavoritesMovies: Observable<Void>
+        let favoritesMovieCellTrigger: Observable<IndexPath>
+        let favoritesMoviesDeleteTrigger: Observable<IndexPath>
+    }
+    
+    struct Output {
+        let showFavoritesMovies: Driver<[FavoritesMoviesResponseModel.Result]>
+        let deleteFavoritesMovie: Driver<Void>
+        let showMovieInfo: Driver<Void>
+    }
+    
     var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
     private var apiClient: APIClient
     
-    let favoritesMovies = PublishSubject<FavoritesMoviesResponseModel>()
-    
-    var cellsData: FavoritesMoviesResponseModel?
+    private var favoritesMovies: [FavoritesMoviesResponseModel.Result]?
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
     
-    func showMovieDetails(with id: Int) {
-        didSendEventClosure?(.movieDetails(id: id))
-    }
-    
-    func getFavoritesMovies(atPage page: Int, withSessionId id: String, bag: DisposeBag) {
-        apiClient.getFavoritesMovies(atPage: page, withSessionId: id)
-            .subscribe(onNext: { result in
-                self.favoritesMovies.onNext(result)
-            }, onError: { error in
-                print("Error \(error)")
-            }).disposed(by: bag)
+    func transform(input: Input) -> Output {
+        
+        let showFavoritesMovies = input.loadingFavoritesMovies
+            .flatMapLatest({ [apiClient] _ -> Observable<FavoritesMoviesResponseModel> in
+                return apiClient.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!)
+            })
+            .do(onNext: { [weak self] model in
+                print(model)
+                self?.favoritesMovies = model.results
+            })
+            .map { $0.results as [FavoritesMoviesResponseModel.Result] }
+            .asDriver(onErrorJustReturn: [FavoritesMoviesResponseModel.Result]())
+        
+        let deleteFavoritesMovie = input.favoritesMoviesDeleteTrigger
+            .map({ indexPath in
+                print(indexPath)
+                return ()
+            })
+            .asDriver(onErrorJustReturn: ())
+        
+        let showMovieInfo = input.favoritesMovieCellTrigger
+            .map({ [weak self] indexPath in
+                if let film = self?.favoritesMovies?[indexPath.row] {
+                    self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                        posterPath: film.posterPath,
+                        title: film.title,
+                        duration: "0",
+                        score: film.voteAverage,
+                        release: film.releaseDate,
+                        synopsis: film.overview)))
+                }
+            })
+            .asDriver(onErrorJustReturn: ())
+        
+        return Output(
+            showFavoritesMovies: showFavoritesMovies,
+            deleteFavoritesMovie: deleteFavoritesMovie,
+            showMovieInfo: showMovieInfo)
     }
 }
