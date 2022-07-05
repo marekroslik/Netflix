@@ -13,7 +13,19 @@ final class HomePopularMoviesUIView: UIView {
     }()
     
     // Create collection view for popular movies view
-    var popularMoviesCollectionView: UICollectionView?
+    let popularMoviesCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 100, height: 244)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .black
+        collectionView.register(
+            CustomPopularMoviesCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier
+        )
+        return collectionView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,23 +36,8 @@ final class HomePopularMoviesUIView: UIView {
     // Add subviews fucntion
     private func addSubviews() {
         addSubview(categoryName)
-        createCollectionView()
-        addSubview(popularMoviesCollectionView!)
-    }
-    
-    // Create collection view for popular movies view
-    private func createCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 244)
-        popularMoviesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        guard let popularMoviesCollectionView = popularMoviesCollectionView else {
-            return
-        }
-        popularMoviesCollectionView.register(CustomPopularMoviesCollectionViewCell.self,
-                                             forCellWithReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier)
-        popularMoviesCollectionView.showsHorizontalScrollIndicator = false
-        popularMoviesCollectionView.backgroundColor = .black
+        //        createCollectionView()
+        addSubview(popularMoviesCollectionView)
     }
     
     // Set constraints function
@@ -54,7 +51,7 @@ final class HomePopularMoviesUIView: UIView {
         }
         
         // Set popular moveies collection view
-        popularMoviesCollectionView!.snp.makeConstraints { make in
+        popularMoviesCollectionView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalTo(categoryName.snp.bottom)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)

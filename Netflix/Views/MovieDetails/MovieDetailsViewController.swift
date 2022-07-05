@@ -16,16 +16,16 @@ final class MovieDetailsViewController: UIViewController {
         closeView()
     }
     
-    init(posterPath: String?, title: String?, duration: String?, score: Double?, release: String?, synopsis: String?) {
+    init(model: MovieDetailsModel) {
         super.init(nibName: nil, bundle: nil)
         self.movieDetailsView.imageMovieDetails.downloaded(
-            from: APIConstants.Api.urlImages + (posterPath ?? ""),
+            from: APIConstants.Api.urlImages + (model.posterPath ?? ""),
             loadingView: self.movieDetailsView.loading)
-        self.movieDetailsView.movieTitle.text = title
-        self.movieDetailsView.movieDuration.text = duration
-        self.movieDetailsView.movieScore.text = score?.description
-        self.movieDetailsView.releaseDateData.text = release
-        self.movieDetailsView.synopsisData.text = synopsis
+        self.movieDetailsView.movieTitle.text = model.title
+        self.movieDetailsView.movieDuration.text = model.duration
+        self.movieDetailsView.movieScore.text = model.score?.description
+        self.movieDetailsView.releaseDateData.text = model.release
+        self.movieDetailsView.synopsisData.text = model.synopsis
         
     }
     

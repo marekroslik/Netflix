@@ -66,53 +66,51 @@ final class LoginViewModel: ViewModelType {
                 input.login.startWith(""),
                 input.password.startWith("")
             ))
-                .flatMapLatest { [apiClient, errorHandling] login, password -> Observable<LoginResponseModel> in
-                    let model = LoginPostResponseModel(
-                        username: login,
-                        password: password,
-                        requestToken: UserDefaultsUseCase().token!)
-                    return apiClient.authenticationWithLoginPassword(model: model)
-                        .catch { error in
-                            switch error {
-                            case APIError.wrongPassword:
-                                errorHandling.onNext("Invalid username or password")
-                                return Observable.never()
-                            default:
-                                errorHandling.onNext("Login failed. Please try again later")
-                                return Observable.never()
-                            }
-                        }
-                }
-                .flatMapLatest { [apiClient, errorHandling] _ -> Observable<SessionIdResponseModel> in
-                    let model = SessionIdPostResponseModel(
-                        token: UserDefaultsUseCase().token!)
-                    return apiClient.getSessionId(model: model)
-                        .catch { _ in
+            .flatMapLatest { [apiClient, errorHandling] login, password -> Observable<LoginResponseModel> in
+                let model = LoginPostResponseModel(
+                    username: login,
+                    password: password,
+                    requestToken: UserDefaultsUseCase().token!
+                )
+//                try KeyChainUseCase().saveLoginAndPassword(
+//                    login: login,
+//                    password: password.data(using: .utf8)!
+//                )
+                return apiClient.authenticationWithLoginPassword(model: model)
+                    .catch { error in
+                        switch error {
+                        case APIError.wrongPassword:
+                            errorHandling.onNext("Invalid username or password")
+                            return Observable.never()
+                        default:
                             errorHandling.onNext("Login failed. Please try again later")
                             return Observable.never()
                         }
-                }
-                .observe(on: MainScheduler.instance)
-                .do(onNext: { [didSendEventClosure] sessionIdResponse in
-                    UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
-                    didSendEventClosure?(.main)
-                })
-                    .map { _ in () }
-                    .asDriver(onErrorJustReturn: ())
+                    }
+            }
+            .flatMapLatest { [apiClient, errorHandling] _ -> Observable<SessionIdResponseModel> in
+                let model = SessionIdPostResponseModel(
+                    token: UserDefaultsUseCase().token!)
+                return apiClient.getSessionId(model: model)
+                    .catch { _ in
+                        errorHandling.onNext("Login failed. Please try again later")
+                        return Observable.never()
+                    }
+            }
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [didSendEventClosure] sessionIdResponse in
+                UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
+                didSendEventClosure?(.main)
+            })
+                .map { _ in () }
+                .asDriver(onErrorJustReturn: ())
         
         return Output(
             inputValidating: inputValidating,
             accessCheck: accessCheck,
             showHidePassword: showHidePassword,
             accessDenied: accessDenied,
-            showLoading: showLoading)
-    }
-    
-    func saveKeyChain(login: String, password: String) {
-        do {
-            try KeyChainUseCase().saveLoginAndPassword(login: login, password: password.data(using: .utf8)!)
-        } catch {
-            errorHandling.onNext("Login failed. Please try again later")
-        }
+            showLoading: showLoading
+        )
     }
 }

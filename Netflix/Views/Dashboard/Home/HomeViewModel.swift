@@ -3,66 +3,87 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class HomeViewModel {
+class HomeViewModel: ViewModelType {
+    struct Input {
+        let loadingLatestMovie: Observable<Void>
+        let loadingPopularMovies: Observable<Void>
+        let playLatestMovieTrigger: Observable<Void>
+        let likeLatestMovieTrigger: Observable<Void>
+        let showAccountTrigger: Observable<Void>
+        let popularMovieCellTrigger: Observable<IndexPath>
+    }
+    struct Output {
+        var showLatestMovie: Driver<LatestMovieResponseModel?>
+        let showPopularMovies: Driver<[PopularMoviesResponseModel.Result]>
+        let playLatestMovie: Driver<Void>
+        let likeLatestMovie: Driver<Void>
+        let showAccount: Driver<Void>
+        let showMovieInfo: Driver<Void>
+    }
+    
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
     private var apiClient: APIClient
     
-    var latestMovie = PublishSubject<LatestMovieResponseModel>()
-    var popularMovie = PublishSubject<PopularMoviesResponseModel>()
-    
-    var cellsData: PopularMoviesResponseModel?
-    
-    private var bag = DisposeBag()
+    private var latestMovie: LatestMovieResponseModel?
+    private var popularMovies: [PopularMoviesResponseModel.Result]?
+    private var popularMoviesPage = 1
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
     
-    func logOut() {
-        deleteKetChain()
-        UserDefaultsUseCase().resetDefaults()
-        getToken(bag: bag)
-        didSendEventClosure?(.logout)
-    }
-    
-    func showMovieDetails(with id: Int) {
-        didSendEventClosure?(.movieDetails(id: id))
-    }
-    
-    func getToken(bag: DisposeBag) {
-            apiClient.getToken().subscribe(
-                onNext: { result in
-                    UserDefaultsUseCase().token = result.requestToken
-                },
-                onError: { error in
-                    print(error.localizedDescription)
-                }).disposed(by: bag)
-        }
-    
-    func deleteKetChain() {
-        do {
-            try KeyChainUseCase().deleteLoginAndPassword()
-        } catch {
-            print("KEYCHAIN DELETE \(error)")
-        }
-    }
-    
-    func getLatestMovie(bag: DisposeBag) {
-        apiClient.getLatestMovie()
-            .subscribe(onNext: { [weak self] result in
-                self?.latestMovie.onNext(result)
-            }, onError: { error in
-                print("Error \(error)")
-            }).disposed(by: bag)
+    func transform(input: Input) -> Output {
         
-    }
-    
-    func getLPopularMovies(atPage page: Int, bag: DisposeBag) {
-        apiClient.getPopularMovies(atPage: page)
-            .subscribe(onNext: { [weak self] result in
-                self?.popularMovie.onNext(result)
-            }, onError: { error in
-                print("Error \(error)")
-            }).disposed(by: bag)
+        let showLatestMovie = input.loadingLatestMovie
+            .flatMapLatest({ [apiClient] _ -> Observable<LatestMovieResponseModel> in
+                apiClient.getLatestMovie()
+            })
+            .do(onNext: { [weak self] model in
+                self?.latestMovie = model
+            })
+            .map { $0 as LatestMovieResponseModel }
+            .asDriver(onErrorJustReturn: nil)
+        
+        let showPopularMovies = input.loadingPopularMovies
+            .flatMapLatest({ [apiClient] _ -> Observable<PopularMoviesResponseModel> in
+                apiClient.getPopularMovies(atPage: 1)
+            })
+            .do(onNext: { [weak self] model in
+                self?.popularMovies = model.results
+            })
+            .map { $0.results as [PopularMoviesResponseModel.Result] }
+            .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
+        
+        let playLatestMovie = input.playLatestMovieTrigger
+            .asDriver(onErrorJustReturn: ())
+        
+        let likeLatestMovie = input.likeLatestMovieTrigger
+            .asDriver(onErrorJustReturn: ())
+        
+        let showAccount = input.showAccountTrigger
+            .asDriver(onErrorJustReturn: ())
+        
+        let showMovieInfo = input.popularMovieCellTrigger
+            .map({ [weak self] indexPath in
+                if let film = self?.popularMovies?[indexPath.row] {
+                    self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                        posterPath: film.posterPath,
+                        title: film.title,
+                        duration: "0",
+                        score: film.voteAverage,
+                        release: film.releaseDate,
+                        synopsis: film.overview)))
+                }
+            })
+            .asDriver(onErrorJustReturn: ())
+        
+        return Output(
+            showLatestMovie: showLatestMovie,
+            showPopularMovies: showPopularMovies,
+            playLatestMovie: playLatestMovie,
+            likeLatestMovie: likeLatestMovie,
+            showAccount: showAccount,
+            showMovieInfo: showMovieInfo
+        )
     }
 }

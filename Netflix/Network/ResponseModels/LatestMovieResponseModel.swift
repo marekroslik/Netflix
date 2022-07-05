@@ -1,7 +1,7 @@
 import Foundation
 
 struct LatestMovieResponseModel: Codable {
-    let id: Int?
+    let id: Int
     let imdbID: String?
     let originalTitle: String?
     let posterPath: String?

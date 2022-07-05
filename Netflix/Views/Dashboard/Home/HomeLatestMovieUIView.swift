@@ -17,7 +17,7 @@ final class HomeLatestMovieUIView: UIView {
     private var gradientView = UIView()
     
     // Create latest film LIKE BUTTON UI (custom vertical button)
-    private let likeButton: UIVerticalButton = {
+    let likeButton: UIVerticalButton = {
         let button = UIVerticalButton()
         button.setTitle("Like", for: .normal)
         button.setImage(UIImage(systemName: "heart"),
@@ -29,7 +29,7 @@ final class HomeLatestMovieUIView: UIView {
     }()
     
     // Create latest film PLAY BUTTON UI
-    private let playButton: UIButton = {
+    let playButton: UIButton = {
         let button = UIButton()
         button.setTitle(" Play", for: .normal)
         button.setImage(UIImage(systemName: "play.fill"),
@@ -49,17 +49,32 @@ final class HomeLatestMovieUIView: UIView {
         filmNameText.font = UIFont.systemFont(ofSize: 50, weight: .bold)
         filmNameText.textAlignment = .center
         filmNameText.textColor = .white
+        filmNameText.adjustsFontSizeToFitWidth = true
         return filmNameText
     }()
     
     // Create latest film HASHTAGS UI
-    let hashtags: UILabel = {
+    private let hashtags: UILabel = {
         let hashtagsText = UILabel()
         hashtagsText.text = "Quirky • Youth • Teen • Comedy • Drama • Gal Pals"
         hashtagsText.font = UIFont.systemFont(ofSize: 12)
         hashtagsText.textAlignment = .center
         hashtagsText.textColor = .white
         return hashtagsText
+    }()
+    
+    let logoButton: UIButton = {
+        let button = UIButton()
+        button.setImage(Asset.smallLogoNetflix.image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        return button
+    }()
+    
+    let accountButton: UIButton = {
+        let button = UIButton()
+        button.setImage(Asset.accountLogoNetflix.image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        return button
     }()
     
     override init(frame: CGRect) {
@@ -78,6 +93,8 @@ final class HomeLatestMovieUIView: UIView {
         addSubview(playButton)
         addSubview(hashtags)
         addSubview(filmName)
+        addSubview(logoButton)
+        addSubview(accountButton)
     }
     // Set constraints function
     private func applyConstraints() {
@@ -133,6 +150,19 @@ final class HomeLatestMovieUIView: UIView {
             make.height.equalTo(50)
             make.left.right.equalToSuperview()
         }
+        
+        logoButton.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.left.equalToSuperview()
+            make.width.height.equalTo(40)
+        }
+        
+        accountButton.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.right.equalToSuperview()
+            make.width.height.equalTo(40)
+        }
+        
     }
     
     // Add gradient to gradient view function
