@@ -21,9 +21,33 @@ final class ComingSoonUIView: UIView {
         return textField
     }()
     
-    lazy var comingSoonCollectionView = UICollectionView()
+    let comingSoonCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = .black
+        collectionView.register(
+            CustomComingSoonCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier
+        )
+        return collectionView
+    }()
     
-    lazy var searchMoviesCollectionView = UICollectionView()
+    let searchMoviesCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = .black
+        collectionView.register(
+            CustomComingSoonCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier
+        )
+        return collectionView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,31 +58,8 @@ final class ComingSoonUIView: UIView {
     // Add subviews function
     private func addSubviews() {
         addSubview(searchTextField)
-        configureCollectionView()
         addSubview(comingSoonCollectionView)
         addSubview(searchMoviesCollectionView)
-    }
-    
-    // Configure collection view for coming soon movies view
-    private func configureCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
-        
-        searchMoviesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        searchMoviesCollectionView.isHidden = true
-        searchMoviesCollectionView.register(
-            CustomComingSoonCollectionViewCell.self,
-            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
-        searchMoviesCollectionView.showsVerticalScrollIndicator = false
-        searchMoviesCollectionView.backgroundColor = .black
-        
-        comingSoonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        comingSoonCollectionView.register(
-            CustomComingSoonCollectionViewCell.self,
-            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier)
-        comingSoonCollectionView.showsVerticalScrollIndicator = false
-        comingSoonCollectionView.backgroundColor = .black
     }
     
     // Set constraints function
