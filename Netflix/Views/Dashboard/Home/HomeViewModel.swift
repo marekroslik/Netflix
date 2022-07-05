@@ -12,8 +12,9 @@ class HomeViewModel: ViewModelType {
         let showAccountTrigger: Observable<Void>
         let popularMovieCellTrigger: Observable<IndexPath>
     }
+    
     struct Output {
-        var showLatestMovie: Driver<LatestMovieResponseModel?>
+        let showLatestMovie: Driver<LatestMovieResponseModel?>
         let showPopularMovies: Driver<[PopularMoviesResponseModel.Result]>
         let playLatestMovie: Driver<Void>
         let likeLatestMovie: Driver<Void>
@@ -26,7 +27,6 @@ class HomeViewModel: ViewModelType {
     
     private var latestMovie: LatestMovieResponseModel?
     private var popularMovies: [PopularMoviesResponseModel.Result]?
-    private var popularMoviesPage = 1
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient

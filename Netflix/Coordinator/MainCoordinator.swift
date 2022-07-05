@@ -124,8 +124,8 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             favorites.viewModel = FavoritesViewModel(apiClient: APIClient())
             favorites.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
-                case .movieDetails(let index):
-                    print("show movie details", index)
+                case .movieDetails(let model):
+                    self?.showMovieDetails(model: model)
                 }
             }
             navController.pushViewController(favorites, animated: true)
