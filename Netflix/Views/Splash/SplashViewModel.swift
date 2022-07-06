@@ -9,7 +9,7 @@ final class SplashViewModel: ViewModelType {
     }
     
     struct Output {
-        let getAccess: Driver<Void?>
+        let getAccess: Driver<Void>
     }
     
     var didSendEventClosure: ((SplashViewController.Event) -> Void)?
@@ -21,48 +21,59 @@ final class SplashViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let getAccess = input.checkAccess
+            .do(onNext: { [didSendEventClosure] _ in
+                do {
+                    _ = try KeyChainUseCase().getLoginAndPassword()
+                } catch {
+                    didSendEventClosure?(.login)
+                }
+            })
             .flatMapLatest { [apiClient] _ -> Observable<TokenResponseModel>in
-                print("try to get token")
                 return apiClient.getToken()
-                    .catch { error in
-                        print("token error - \(error)")
+                    .catch { _ in
+                        print("Internet error")
                         return Observable.never()
                     }
             }
             .do(onNext: { tokenResponse in
-                print("save token")
                 UserDefaultsUseCase().token = tokenResponse.requestToken
             })
             .flatMapLatest { [apiClient] model -> Observable<LoginResponseModel> in
-                print("try to login")
                 let model = LoginPostResponseModel(
                     username: try KeyChainUseCase().getLoginAndPassword().login,
                     password: try KeyChainUseCase().getLoginAndPassword().password,
                     requestToken: model.requestToken!
                 )
                 return apiClient.authenticationWithLoginPassword(model: model)
-                    .catch { error in
-                        print("login error - \(error)")
-                        return Observable.never()
+                    .catch { [weak self] error in
+                        switch error {
+                        case APIError.wrongPassword:
+                            print("Invalid username or password")
+                            self?.didSendEventClosure?(.login)
+                            return Observable.never()
+                        default:
+                            print("Internet error")
+                            return Observable.never()
+                        }
                     }
             }
             .flatMapLatest { [apiClient] _ -> Observable<SessionIdResponseModel> in
-                print("try to get sessionId")
                 let model = SessionIdPostResponseModel(
                     token: UserDefaultsUseCase().token!)
                 return apiClient.getSessionId(model: model)
-                    .catch { error in
-                        print("sessin error - \(error)")
+                    .catch { _ in
+                        print("Internet error")
                         return Observable.never()
                     }
             }
+            .observe(on: MainScheduler.instance)
             .do(onNext: { [didSendEventClosure] sessionIdResponse in
                 print("save sessionId")
                 UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
                 didSendEventClosure?(.main)
             })
                 .map({ _ in () })
-                .asDriver(onErrorJustReturn: (self.didSendEventClosure?(.login)))
+                .asDriver(onErrorJustReturn: ())
         return Output(getAccess: getAccess)
     }
 }
