@@ -72,7 +72,6 @@ final class SplashViewModel: ViewModelType {
             }
             .observe(on: MainScheduler.instance)
             .do(onNext: { [didSendEventClosure, userDefaultsUseCase] sessionIdResponse in
-                print("save sessionId")
                 userDefaultsUseCase.sessionId = sessionIdResponse.sessionID
                 didSendEventClosure?(.main)
             })
