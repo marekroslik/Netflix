@@ -21,12 +21,20 @@ final class LoginViewModel: ViewModelType {
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
     private var apiClient: APIClient
-    private let bag = DisposeBag()
+    private let keyChainUseCase: KeyChainUseCase
+    private let userDefaultsUseCase: UserDefaultsUseCase
     
+    private let bag = DisposeBag()
     private let errorHandling = PublishSubject<String>()
     
-    init(apiClient: APIClient) {
+    init(
+        apiClient: APIClient,
+        keyChainUseCase: KeyChainUseCase,
+        userDefaultsUseCase: UserDefaultsUseCase
+    ) {
         self.apiClient = apiClient
+        self.keyChainUseCase = keyChainUseCase
+        self.userDefaultsUseCase = userDefaultsUseCase
     }
     
     func transform(input: Input) -> Output {
@@ -59,21 +67,21 @@ final class LoginViewModel: ViewModelType {
                         return Observable.never()
                     }
             }
-            .do(onNext: { tokenResponse in
-                UserDefaultsUseCase().token = tokenResponse.requestToken
+            .do(onNext: { [userDefaultsUseCase] tokenResponse in
+                userDefaultsUseCase.token = tokenResponse.requestToken
             })
             .withLatestFrom(Observable.combineLatest(
                 input.login.startWith(""),
                 input.password.startWith("")
             ))
-            .flatMapLatest { [apiClient, errorHandling] login, password -> Observable<LoginResponseModel> in
+            .flatMapLatest { [apiClient, errorHandling, keyChainUseCase, userDefaultsUseCase] login, password -> Observable<LoginResponseModel> in
                 let model = LoginPostResponseModel(
                     username: login,
                     password: password,
-                    requestToken: UserDefaultsUseCase().token!
+                    requestToken: userDefaultsUseCase.token!
                 )
-                try KeyChainUseCase().deleteLoginAndPassword()
-                try KeyChainUseCase().saveLoginAndPassword(
+                try keyChainUseCase.deleteLoginAndPassword()
+                try keyChainUseCase.saveLoginAndPassword(
                     login: login,
                     password: password.data(using: .utf8)!
                 )
@@ -89,9 +97,9 @@ final class LoginViewModel: ViewModelType {
                         }
                     }
             }
-            .flatMapLatest { [apiClient, errorHandling] _ -> Observable<SessionIdResponseModel> in
+            .flatMapLatest { [apiClient, errorHandling, userDefaultsUseCase] _ -> Observable<SessionIdResponseModel> in
                 let model = SessionIdPostResponseModel(
-                    token: UserDefaultsUseCase().token!)
+                    token: userDefaultsUseCase.token!)
                 return apiClient.getSessionId(model: model)
                     .catch { _ in
                         errorHandling.onNext("Login failed. Please try again later")
@@ -99,12 +107,12 @@ final class LoginViewModel: ViewModelType {
                     }
             }
             .observe(on: MainScheduler.instance)
-            .do(onNext: { [didSendEventClosure] sessionIdResponse in
-                UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
+            .do(onNext: { [didSendEventClosure, userDefaultsUseCase] sessionIdResponse in
+                userDefaultsUseCase.sessionId = sessionIdResponse.sessionID
                 didSendEventClosure?(.main)
             })
-            .map { _ in () }
-            .asDriver(onErrorJustReturn: ())
+                .map { _ in () }
+                .asDriver(onErrorJustReturn: ())
         
         return Output(
             inputValidating: inputValidating,

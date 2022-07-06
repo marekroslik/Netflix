@@ -51,7 +51,11 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
     
     func showProfile() {
         let profile = ProfileViewController()
-        profile.viewModel = ProfileViewModel(apiClient: APIClient())
+        profile.viewModel = ProfileViewModel(
+            apiClient: APIClient(),
+            keyChainUseCase: KeyChainUseCase(),
+            userDefaultsUseCase: UserDefaultsUseCase()
+        )
         profile.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
             case .close:
@@ -132,7 +136,10 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             
         case .favorites:
             let favorites = FavoritesViewController()
-            favorites.viewModel = FavoritesViewModel(apiClient: APIClient())
+            favorites.viewModel = FavoritesViewModel(
+                apiClient: APIClient(),
+                userDefaultsUseCase: UserDefaultsUseCase()
+            )
             favorites.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails(let model):

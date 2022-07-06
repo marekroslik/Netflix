@@ -19,7 +19,11 @@ class SplashCoordinator: BaseCoordinator, SplashCoordinatorProtocol {
     
     func showSplashViewController() {
         let loginVC: SplashViewController = .init()
-        loginVC.viewModel = SplashViewModel(apiClient: APIClient())
+        loginVC.viewModel = SplashViewModel(
+            apiClient: APIClient(),
+            keyChainUseCase: KeyChainUseCase(),
+            userDefaultsUseCase: UserDefaultsUseCase()
+        )
         loginVC.viewModel.didSendEventClosure = { [weak self] event in
             self?.finishWith(splashEvent: event)
         }

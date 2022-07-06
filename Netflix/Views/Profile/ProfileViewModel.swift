@@ -19,9 +19,13 @@ class ProfileViewModel: ViewModelType {
     var didSendEventClosure: ((ProfileViewController.Event) -> Void)?
     
     private var apiClient: APIClient
+    private let keyChainUseCase: KeyChainUseCase
+    private let userDefaultsUseCase: UserDefaultsUseCase
     
-    init(apiClient: APIClient) {
+    init(apiClient: APIClient, keyChainUseCase: KeyChainUseCase, userDefaultsUseCase: UserDefaultsUseCase) {
         self.apiClient = apiClient
+        self.keyChainUseCase = keyChainUseCase
+        self.userDefaultsUseCase = userDefaultsUseCase
     }
     
     func transform(input: Input) -> Output {
@@ -34,21 +38,21 @@ class ProfileViewModel: ViewModelType {
             .asDriver(onErrorJustReturn: ())
         
         let logout = input.logoutTrigger
-            .map({ [didSendEventClosure] _ in
+            .map({ [didSendEventClosure, keyChainUseCase, userDefaultsUseCase] _ in
                 do {
-                    try KeyChainUseCase().deleteLoginAndPassword()
+                    try keyChainUseCase.deleteLoginAndPassword()
                 } catch {
                     print("KEYCHAIN DELETE \(error)")
                 }
-                UserDefaultsUseCase().resetDefaults()
+                userDefaultsUseCase.resetDefaults()
                 didSendEventClosure?(.logout)
                 return ()
             })
             .asDriver(onErrorJustReturn: ())
         
         let showInfo = input.getInfo
-            .flatMapLatest({ [apiClient] _ -> Observable<AccountDetailsResponseModel> in
-                apiClient.getAccountDetails(withSessionID: UserDefaultsUseCase().sessionId!)
+            .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<AccountDetailsResponseModel> in
+                apiClient.getAccountDetails(withSessionID: userDefaultsUseCase.sessionId!)
             })
             .map { $0 as AccountDetailsResponseModel }
             .asDriver(onErrorJustReturn: nil)

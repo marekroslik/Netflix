@@ -18,18 +18,20 @@ class FavoritesViewModel: ViewModelType {
     
     var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
     private var apiClient: APIClient
+    private let userDefaultsUseCase: UserDefaultsUseCase
     
     private var favoritesMovies: [FavoritesMoviesResponseModel.Result]?
     
-    init(apiClient: APIClient) {
+    init(apiClient: APIClient, userDefaultsUseCase: UserDefaultsUseCase) {
         self.apiClient = apiClient
+        self.userDefaultsUseCase = userDefaultsUseCase
     }
     
     func transform(input: Input) -> Output {
         
         let showFavoritesMovies = input.loadingFavoritesMovies
-            .flatMapLatest({ [apiClient] _ -> Observable<FavoritesMoviesResponseModel> in
-                return apiClient.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!)
+            .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
+                return apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
             })
             .do(onNext: { [weak self] model in
                 self?.favoritesMovies = model.results

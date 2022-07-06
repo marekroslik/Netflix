@@ -13,17 +13,21 @@ final class SplashViewModel: ViewModelType {
     }
     
     var didSendEventClosure: ((SplashViewController.Event) -> Void)?
-    private var apiClient: APIClient
+    private let apiClient: APIClient
+    private let keyChainUseCase: KeyChainUseCase
+    private let userDefaultsUseCase: UserDefaultsUseCase
     
-    init(apiClient: APIClient) {
+    init(apiClient: APIClient, keyChainUseCase: KeyChainUseCase, userDefaultsUseCase: UserDefaultsUseCase) {
         self.apiClient = apiClient
+        self.keyChainUseCase = keyChainUseCase
+        self.userDefaultsUseCase = userDefaultsUseCase
     }
     
     func transform(input: Input) -> Output {
         let getAccess = input.checkAccess
-            .do(onNext: { [didSendEventClosure] _ in
+            .do(onNext: { [didSendEventClosure, keyChainUseCase] _ in
                 do {
-                    _ = try KeyChainUseCase().getLoginAndPassword()
+                    _ = try keyChainUseCase.getLoginAndPassword()
                 } catch {
                     didSendEventClosure?(.login)
                 }
@@ -35,13 +39,13 @@ final class SplashViewModel: ViewModelType {
                         return Observable.never()
                     }
             }
-            .do(onNext: { tokenResponse in
-                UserDefaultsUseCase().token = tokenResponse.requestToken
+            .do(onNext: { [userDefaultsUseCase] tokenResponse in
+                userDefaultsUseCase.token = tokenResponse.requestToken
             })
-            .flatMapLatest { [apiClient] model -> Observable<LoginResponseModel> in
+            .flatMapLatest { [apiClient, keyChainUseCase] model -> Observable<LoginResponseModel> in
                 let model = LoginPostResponseModel(
-                    username: try KeyChainUseCase().getLoginAndPassword().login,
-                    password: try KeyChainUseCase().getLoginAndPassword().password,
+                    username: try keyChainUseCase.getLoginAndPassword().login,
+                    password: try keyChainUseCase.getLoginAndPassword().password,
                     requestToken: model.requestToken!
                 )
                 return apiClient.authenticationWithLoginPassword(model: model)
@@ -57,9 +61,9 @@ final class SplashViewModel: ViewModelType {
                         }
                     }
             }
-            .flatMapLatest { [apiClient] _ -> Observable<SessionIdResponseModel> in
+            .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<SessionIdResponseModel> in
                 let model = SessionIdPostResponseModel(
-                    token: UserDefaultsUseCase().token!)
+                    token: userDefaultsUseCase.token!)
                 return apiClient.getSessionId(model: model)
                     .catch { _ in
                         print("Internet error")
@@ -67,9 +71,9 @@ final class SplashViewModel: ViewModelType {
                     }
             }
             .observe(on: MainScheduler.instance)
-            .do(onNext: { [didSendEventClosure] sessionIdResponse in
+            .do(onNext: { [didSendEventClosure, userDefaultsUseCase] sessionIdResponse in
                 print("save sessionId")
-                UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
+                userDefaultsUseCase.sessionId = sessionIdResponse.sessionID
                 didSendEventClosure?(.main)
             })
                 .map({ _ in () })
