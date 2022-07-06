@@ -9,7 +9,7 @@ final class SplashViewModel: ViewModelType {
     }
     
     struct Output {
-        let getAccess: Driver<Void>
+        let getAccess: Driver<Void?>
     }
     
     var didSendEventClosure: ((SplashViewController.Event) -> Void)?
@@ -56,13 +56,13 @@ final class SplashViewModel: ViewModelType {
                         return Observable.never()
                     }
             }
-            .do(onNext: { sessionIdResponse in
+            .do(onNext: { [didSendEventClosure] sessionIdResponse in
                 print("save sessionId")
                 UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
+                didSendEventClosure?(.main)
             })
-            .observe(on: MainScheduler.instance)
-            .map { [didSendEventClosure] _ in didSendEventClosure!(.main) }
-            .asDriver(onErrorJustReturn: (didSendEventClosure!(.login)))
+                .map({ _ in () })
+                .asDriver(onErrorJustReturn: (self.didSendEventClosure?(.login)))
         return Output(getAccess: getAccess)
     }
 }
