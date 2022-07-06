@@ -41,8 +41,11 @@ final class HomeViewController: UIViewController {
                     latestMovieView.movieImage.downloaded(
                         from: "\(APIConstants.Api.urlImages)\(poster)",
                         loadingView: latestMovieView.loading)
-                } else {
-                    print("Latest movie poster = nil")
+                }
+                if let tags = model?.tagline {
+                    if !tags.isEmpty {
+                        latestMovieView.hashtags.text = tags
+                    }
                 }
             })
             .disposed(by: bag)

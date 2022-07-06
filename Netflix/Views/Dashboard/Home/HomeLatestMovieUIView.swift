@@ -54,9 +54,9 @@ final class HomeLatestMovieUIView: UIView {
     }()
     
     // Create latest film HASHTAGS UI
-    private let hashtags: UILabel = {
+    let hashtags: UILabel = {
         let hashtagsText = UILabel()
-        hashtagsText.text = "Quirky • Youth • Teen • Comedy • Drama • Gal Pals"
+        hashtagsText.text = "tag1 • tag2 • tag3 • tag4 • tag5"
         hashtagsText.font = UIFont.systemFont(ofSize: 12)
         hashtagsText.textAlignment = .center
         hashtagsText.textColor = .white
