@@ -1,5 +1,7 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class MovieDetailsViewController: UIViewController {
     
@@ -8,25 +10,53 @@ final class MovieDetailsViewController: UIViewController {
     
     var viewModel: MovieDetailsViewModel!
     
+    private let bag = DisposeBag()
+    let viewDidLoadRelay = PublishRelay<Void>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        closeView()
+        bindViewModel()
+        addAnimation()
+        viewDidLoadRelay.accept(())
     }
     
-    init(model: MovieDetailsModel) {
+    init() {
         super.init(nibName: nil, bundle: nil)
-        self.movieDetailsView.imageMovieDetails.downloaded(
-            from: APIConstants.Api.urlImages + (model.posterPath ?? ""),
-            loadingView: self.movieDetailsView.loading)
-        self.movieDetailsView.movieTitle.text = model.title
-        self.movieDetailsView.movieDuration.text = model.duration
-        self.movieDetailsView.movieScore.text = model.score?.description
-        self.movieDetailsView.releaseDateData.text = model.release
-        self.movieDetailsView.synopsisData.text = model.synopsis
+    }
+    
+    private func bindViewModel() {
+        let inputs = MovieDetailsViewModel.Input(
+            closeViewTrigger: movieDetailsView.topBackButton.rx.tap.asObservable(),
+            getMovieInfo: viewDidLoadRelay.asObservable())
         
+        let outputs = viewModel.transform(input: inputs)
+        
+        outputs.showMovieInfo
+            .drive(onNext: { [movieDetailsView] model in
+                movieDetailsView.imageMovieDetails.downloaded(
+                    from: APIConstants.Api.urlImages + (model?.posterPath ?? ""),
+                    loadingView: movieDetailsView.loading)
+                movieDetailsView.movieTitle.text = model?.title
+                movieDetailsView.movieDuration.text = model?.duration
+                movieDetailsView.movieScore.text = model?.score?.description
+                movieDetailsView.releaseDateData.text = model?.release
+                movieDetailsView.synopsisData.text = model?.synopsis
+                
+            })
+            .disposed(by: bag)
+        
+        outputs.closeView.drive().disposed(by: bag)
+    }
+    
+    private func addAnimation() {
+        addButtonsAnimation(
+            movieDetailsView.topBackButton,
+            movieDetailsView.topLikeButton,
+            disposeBag: bag
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -38,13 +68,6 @@ final class MovieDetailsViewController: UIViewController {
         view.addSubview(movieDetailsView)
     }
     
-    func closeView() {
-        movieDetailsView.topBackButton.addTarget(self, action: #selector(topBacButtonAction), for: .touchUpInside)
-    }
-    
-    @objc func topBacButtonAction() {
-        viewModel.closeView()
-    }
     // Set Constraints
     private func applyConstraints() {
         movieDetailsView.snp.makeConstraints { make in

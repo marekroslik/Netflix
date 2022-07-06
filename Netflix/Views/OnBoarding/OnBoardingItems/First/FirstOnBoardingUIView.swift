@@ -48,7 +48,7 @@ Scroll > to learn more
             make.centerY.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.8)
         }
-      
+        
         mainLabel.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.bottom.equalTo(infoLabel.snp.top).offset(-30)

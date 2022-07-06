@@ -11,7 +11,7 @@ protocol MainCoordinatorProtocol: Coordinator {
     
     func showMovieDetails(model: MovieDetailsModel)
     
-    func closeMovieDetails()
+    func closePresentView()
 }
 
 class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
@@ -37,19 +37,34 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
     }
     
     func showMovieDetails(model: MovieDetailsModel) {
-        let movieDetails = MovieDetailsViewController(model: model)
+        let movieDetails = MovieDetailsViewController()
+        movieDetails.viewModel = MovieDetailsViewModel(model: model)
         movieDetails.modalPresentationStyle = .fullScreen
-        movieDetails.viewModel = MovieDetailsViewModel()
         movieDetails.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
             case .close:
-                self?.closeMovieDetails()
+                self?.closePresentView()
             }
         }
         navigationController.present(movieDetails, animated: true)
     }
     
-    func closeMovieDetails() {
+    func showProfile() {
+        let profile = ProfileViewController()
+        profile.viewModel = ProfileViewModel(apiClient: APIClient())
+        profile.viewModel.didSendEventClosure = { [weak self] event in
+            switch event {
+            case .close:
+                self?.closePresentView()
+            case .logout:
+                self?.navigationController.dismiss(animated: false, completion: nil)
+                self?.finish()
+            }
+        }
+        navigationController.present(profile, animated: true)
+    }
+    
+    func closePresentView() {
         navigationController.dismiss(animated: true)
     }
     
@@ -98,8 +113,8 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
                 switch event {
                 case .movieDetails(let model):
                     self?.showMovieDetails(model: model)
-                case .logout:
-                    self?.finish()
+                case .profile:
+                    self?.showProfile()
                 }
             }
             navController.pushViewController(home, animated: true)

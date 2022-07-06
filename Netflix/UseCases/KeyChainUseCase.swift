@@ -23,7 +23,7 @@ class KeyChainUseCase {
     }
     
     func getLoginAndPassword() throws -> (login: String, password: String) {
-       
+        
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrServer as String: "Netflix",
@@ -37,9 +37,9 @@ class KeyChainUseCase {
         guard status == errSecSuccess else { throw KeyChainError.unknown(status) }
         
         guard let existingItem = item as? [String: Any],
-            let passwordData = existingItem[kSecValueData as String] as? Data,
-            let password = String(data: passwordData, encoding: String.Encoding.utf8),
-            let account = existingItem[kSecAttrAccount as String] as? String
+              let passwordData = existingItem[kSecValueData as String] as? Data,
+              let password = String(data: passwordData, encoding: String.Encoding.utf8),
+              let account = existingItem[kSecAttrAccount as String] as? String
         else {
             throw KeyChainError.unexpectedPasswordData
         }

@@ -12,7 +12,7 @@ public class APIRequest {
     // Function for URLSession takes
     public func callAPI<ItemModel: Decodable>(request: URLRequest)
     -> Observable<ItemModel> {
-       
+        
         // Creating our observable
         return Observable.create { observer in
             
@@ -24,7 +24,7 @@ public class APIRequest {
                         let data = data ?? Data()
                         if (200...399).contains(statusCode) {
                             let objs = try self?.jsonDecoder.decode(ItemModel.self, from:
-                                                                    data)
+                                                                        data)
                             // Observer onNext event
                             observer.onNext(objs!)
                         } else if statusCode == 401 {

@@ -23,8 +23,8 @@ extension UIButton {
                        initialSpringVelocity: 3,
                        options: [.curveEaseInOut],
                        animations: {
-                        self.transform = transform
-            }, completion: nil)
+            self.transform = transform
+        }, completion: nil)
     }
     
 }

@@ -8,11 +8,11 @@ protocol SplashCoordinatorProtocol: Coordinator {
 class SplashCoordinator: BaseCoordinator, SplashCoordinatorProtocol {
     
     var type: CoordinatorType { .splash }
-        
+    
     required init(_ navigationController: UINavigationController) {
         super.init(navigationController)
     }
-        
+    
     func start() {
         showSplashViewController()
     }

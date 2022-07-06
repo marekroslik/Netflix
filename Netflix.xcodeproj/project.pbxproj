@@ -26,6 +26,9 @@
 		F92704282862003900D71CFF /* AccountDetailsResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92704272862003900D71CFF /* AccountDetailsResponseModel.swift */; };
 		F927042A28620C5B00D71CFF /* MarkAsFavoriteResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F927042928620C5B00D71CFF /* MarkAsFavoriteResponseModel.swift */; };
 		F927042C28620C7400D71CFF /* MarkAsFavoritePostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F927042B28620C7400D71CFF /* MarkAsFavoritePostResponseModel.swift */; };
+		F935D179287482BA00FF8109 /* ProfileUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F935D178287482BA00FF8109 /* ProfileUIView.swift */; };
+		F935D17B28748A4600FF8109 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F935D17A28748A4600FF8109 /* ProfileViewController.swift */; };
+		F935D17D28748A6200FF8109 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F935D17C28748A6200FF8109 /* ProfileViewModel.swift */; };
 		F941AD70285E510300BBCBA1 /* SplashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F941AD6F285E510300BBCBA1 /* SplashCoordinator.swift */; };
 		F9489B16283E1CD100677A73 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B15283E1CD100677A73 /* HomeViewController.swift */; };
 		F9489B18283E1CFD00677A73 /* CommingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */; };
@@ -122,6 +125,9 @@
 		F92704272862003900D71CFF /* AccountDetailsResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailsResponseModel.swift; sourceTree = "<group>"; };
 		F927042928620C5B00D71CFF /* MarkAsFavoriteResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAsFavoriteResponseModel.swift; sourceTree = "<group>"; };
 		F927042B28620C7400D71CFF /* MarkAsFavoritePostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAsFavoritePostResponseModel.swift; sourceTree = "<group>"; };
+		F935D178287482BA00FF8109 /* ProfileUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUIView.swift; sourceTree = "<group>"; };
+		F935D17A28748A4600FF8109 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		F935D17C28748A6200FF8109 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		F941AD6F285E510300BBCBA1 /* SplashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashCoordinator.swift; sourceTree = "<group>"; };
 		F9489B15283E1CD100677A73 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F9489B17283E1CFD00677A73 /* CommingSoonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingSoonViewController.swift; sourceTree = "<group>"; };
@@ -250,6 +256,16 @@
 			path = Generated;
 			sourceTree = "<group>";
 		};
+		F935D1772874828B00FF8109 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F935D178287482BA00FF8109 /* ProfileUIView.swift */,
+				F935D17A28748A4600FF8109 /* ProfileViewController.swift */,
+				F935D17C28748A6200FF8109 /* ProfileViewModel.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		F9489B0D283E111300677A73 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,6 +273,7 @@
 				F98359A6284128DA00BD6F8A /* OnBoarding */,
 				F983599B284110A300BD6F8A /* Login */,
 				F99F54C9284261E200302337 /* Dashboard */,
+				F935D1772874828B00FF8109 /* Profile */,
 				F9C73AAF2843D908004EF079 /* MovieDetails */,
 				F981054A283F7E93005496FD /* Components */,
 			);
@@ -766,17 +783,20 @@
 				F91BF498287421DA007AEA7B /* MovieDetailsModel.swift in Sources */,
 				F941AD70285E510300BBCBA1 /* SplashCoordinator.swift in Sources */,
 				F9B280C2285CE26500AF39FD /* LoginCoordinator.swift in Sources */,
+				F935D179287482BA00FF8109 /* ProfileUIView.swift in Sources */,
 				F9C73AAE2843A67F004EF079 /* CustomFavoritesTableViewCell.swift in Sources */,
 				F90CAFD5284630070011E4E5 /* SplashViewController.swift in Sources */,
 				F927041E2861E47300D71CFF /* LatestMovieResponseModel.swift in Sources */,
 				F972CC1A2860BDA80050D011 /* ComingSoonViewModel.swift in Sources */,
 				F927042C28620C7400D71CFF /* MarkAsFavoritePostResponseModel.swift in Sources */,
+				F935D17D28748A6200FF8109 /* ProfileViewModel.swift in Sources */,
 				F98359A32841278800BD6F8A /* SplashUIView.swift in Sources */,
 				F99AA54A2840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift in Sources */,
 				F94E13B5284DE4A7008F9B2F /* UITabBarItem.Extensions.swift in Sources */,
 				F98359A5284128D100BD6F8A /* OnBoardingUIView.swift in Sources */,
 				F9962FF42850B79C0072DF08 /* LoginViewModel.swift in Sources */,
 				F97E8E73284F337D00461380 /* LoadingUIView.swift in Sources */,
+				F935D17B28748A4600FF8109 /* ProfileViewController.swift in Sources */,
 				F92704282862003900D71CFF /* AccountDetailsResponseModel.swift in Sources */,
 				F9942AB32852014B0055DB56 /* APIClient.swift in Sources */,
 				F9C3C23F2850F2DC001E2BF8 /* APIRequest.swift in Sources */,

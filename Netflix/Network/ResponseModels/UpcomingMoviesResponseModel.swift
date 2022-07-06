@@ -5,7 +5,7 @@ struct UpcomingMoviesResponseModel: Codable {
     let results: [Result]?
     let dates: Dates?
     let totalPages, totalResults: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case page, results, dates
         case totalPages = "total_pages"
@@ -14,7 +14,7 @@ struct UpcomingMoviesResponseModel: Codable {
     struct Dates: Codable {
         let maximum, minimum: String?
     }
-
+    
     struct Result: Codable {
         let id: Int?
         let posterPath: String?

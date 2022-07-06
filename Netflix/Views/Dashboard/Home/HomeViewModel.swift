@@ -61,6 +61,9 @@ class HomeViewModel: ViewModelType {
             .asDriver(onErrorJustReturn: ())
         
         let showAccount = input.showAccountTrigger
+            .do(onNext: { [weak self] _ in
+                self?.didSendEventClosure?(.profile)
+            })
             .asDriver(onErrorJustReturn: ())
         
         let showMovieInfo = input.popularMovieCellTrigger

@@ -54,7 +54,7 @@ final class SecondOnBoardingUIView: UIView {
             make.centerY.equalToSuperview().offset(-30)
             make.width.equalToSuperview().multipliedBy(0.8)
         }
-      
+        
         mainLabel.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.bottom.equalTo(infoLabel.snp.top).offset(-30)

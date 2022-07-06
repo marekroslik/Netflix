@@ -9,11 +9,11 @@ protocol LoginCoordinatorProtocol: Coordinator {
 class LoginCoordinator: BaseCoordinator, LoginCoordinatorProtocol {
     
     var type: CoordinatorType { .login }
-        
+    
     required init(_ navigationController: UINavigationController) {
         super.init(navigationController)
     }
-        
+    
     func start() {
         showOnBoardingViewController()
     }

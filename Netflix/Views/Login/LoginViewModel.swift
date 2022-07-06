@@ -72,10 +72,11 @@ final class LoginViewModel: ViewModelType {
                     password: password,
                     requestToken: UserDefaultsUseCase().token!
                 )
-//                try KeyChainUseCase().saveLoginAndPassword(
-//                    login: login,
-//                    password: password.data(using: .utf8)!
-//                )
+                try KeyChainUseCase().deleteLoginAndPassword()
+                try KeyChainUseCase().saveLoginAndPassword(
+                    login: login,
+                    password: password.data(using: .utf8)!
+                )
                 return apiClient.authenticationWithLoginPassword(model: model)
                     .catch { error in
                         switch error {
@@ -102,8 +103,8 @@ final class LoginViewModel: ViewModelType {
                 UserDefaultsUseCase().sessionId = sessionIdResponse.sessionID
                 didSendEventClosure?(.main)
             })
-                .map { _ in () }
-                .asDriver(onErrorJustReturn: ())
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         
         return Output(
             inputValidating: inputValidating,

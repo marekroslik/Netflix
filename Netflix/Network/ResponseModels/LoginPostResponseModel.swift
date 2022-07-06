@@ -10,7 +10,7 @@ struct LoginPostResponseModel: Codable {
         self.password = password
         self.requestToken = requestToken
     }
-
+    
     enum CodingKeys: String, CodingKey {
         case username = "username"
         case password = "password"

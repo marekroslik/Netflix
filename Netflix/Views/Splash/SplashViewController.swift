@@ -11,14 +11,23 @@ final class SplashViewController: UIViewController {
     var viewModel: SplashViewModel!
     
     private let bag = DisposeBag()
-
+    let viewDidLoadRelay = PublishRelay<Void>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        viewModel.timer(bag: bag)
+        bindViewModel()
+        viewDidLoadRelay.accept(())
+    }
+    
+    private func bindViewModel() {
+        let inputs = SplashViewModel.Input(checkAccess: viewDidLoadRelay.asObservable())
         
+        let outputs = viewModel.transform(input: inputs)
+        
+        outputs.getAccess.drive().disposed(by: bag)
     }
     
     // Add subviews

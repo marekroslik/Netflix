@@ -6,7 +6,7 @@ struct AccountDetailsResponseModel: Codable {
     let iso6391, iso31661, name: String?
     let includeAdult: Bool?
     let username: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case avatar, id
         case iso6391 = "iso_639_1"
@@ -15,7 +15,7 @@ struct AccountDetailsResponseModel: Codable {
         case includeAdult = "include_adult"
         case username
     }
-   
+    
     struct Avatar: Codable {
         let gravatar: Gravatar?
     }

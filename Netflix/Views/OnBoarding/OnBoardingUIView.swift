@@ -51,7 +51,7 @@ final class OnBoardingUIView: UIView, UIScrollViewDelegate {
         blurView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-       
+        
         signInButton.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalTo(40)

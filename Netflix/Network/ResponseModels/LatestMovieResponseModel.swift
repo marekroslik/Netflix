@@ -6,7 +6,7 @@ struct LatestMovieResponseModel: Codable {
     let originalTitle: String?
     let posterPath: String?
     let tagline, title: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case id
         case imdbID = "imdb_id"

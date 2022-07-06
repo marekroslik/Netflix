@@ -35,7 +35,7 @@ extension UIViewController {
         var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         
         if let activeTextField = UIResponder.currentFirst() as? UITextField ?? UIResponder.currentFirst() as? UITextView {
-           
+            
             // Will get accurate frame of textField
             frame = self.view.convert(activeTextField.frame, from: activeTextField.superview)
             txtFieldY = frame.origin.y + frame.size.height

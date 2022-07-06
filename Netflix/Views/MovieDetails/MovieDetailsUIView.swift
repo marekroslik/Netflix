@@ -23,7 +23,7 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create like button
-    private let toplikeButton: UIButton = {
+    let topLikeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = .red
@@ -147,7 +147,7 @@ final class MovieDetailsUIView: UIView {
         addSubview(imageMovieDetails)
         addSubview(loading)
         addSubview(topBackButton)
-        addSubview(toplikeButton)
+        addSubview(topLikeButton)
         addSubview(playButton)
         addSubview(movieTitle)
         addSubview(movieDurationImage)
@@ -182,7 +182,7 @@ final class MovieDetailsUIView: UIView {
             make.width.equalTo(50)
         }
         
-        toplikeButton.snp.makeConstraints { make in
+        topLikeButton.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(30)
             make.height.width.equalTo(50)

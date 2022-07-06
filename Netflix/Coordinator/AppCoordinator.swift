@@ -11,16 +11,16 @@ protocol AppCoordinatorProtocol: Coordinator {
 class AppCoordinator: BaseCoordinator, AppCoordinatorProtocol {
     
     var type: CoordinatorType { .app }
-        
+    
     required init(_ navigationController: UINavigationController) {
         super.init(navigationController)
         navigationController.setNavigationBarHidden(true, animated: true)
     }
-
+    
     func start() {
         showSplashFlow()
     }
-        
+    
     func showSplashFlow() {
         let splashCoordinator = SplashCoordinator.init(navigationController)
         splashCoordinator.finishDelegate = self
@@ -48,7 +48,7 @@ class AppCoordinator: BaseCoordinator, AppCoordinatorProtocol {
 extension AppCoordinator: CoordinatorFinishDelegate {
     func coordinatorDidFinish(childCoordinator: Coordinator) {
         childCoordinators = childCoordinators.filter({ $0.type != childCoordinator.type })
-
+        
         switch childCoordinator.type {
         case .splash:
             navigationController.viewControllers.removeAll()

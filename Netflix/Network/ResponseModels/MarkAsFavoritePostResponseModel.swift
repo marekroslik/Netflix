@@ -10,7 +10,7 @@ struct MarkAsFavoritePostResponseModel: Codable {
         self.mediaID = mediaID
         self.favorite = favorite
     }
-
+    
     enum CodingKeys: String, CodingKey {
         case mediaType = "media_type"
         case mediaID = "media_id"

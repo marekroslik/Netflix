@@ -50,8 +50,8 @@ class ComingSoonViewModel: ViewModelType {
             .do(onNext: { [weak self] model in
                 self?.searchMovies = model.results
             })
-                .map { $0.results as [SearchMoviesResponseModel.Result] }
-                .asDriver(onErrorJustReturn: [SearchMoviesResponseModel.Result]())
+            .map { $0.results as [SearchMoviesResponseModel.Result] }
+            .asDriver(onErrorJustReturn: [SearchMoviesResponseModel.Result]())
         
         let showComingSoonMovieInfo = input.comingSoonMovieCellTrigger
             .map({ [weak self] indexPath in
@@ -87,14 +87,14 @@ class ComingSoonViewModel: ViewModelType {
             .do(onNext: { [weak self] _ in
                 self?.searchMovies?.removeAll()
             })
-            .startWith(true)
-            .asDriver(onErrorJustReturn: true)
-        
-        return Output(
-            showComingSoonMovies: showComingSoonMovies,
-            showSearchMovies: showSearchMovies,
-            showComingSoonMovieInfo: showComingSoonMovieInfo,
-            showSearchMovieInfo: showSearchMovieInfo,
-            showHideSearch: showHideSearch)
-    }
+                .startWith(true)
+                .asDriver(onErrorJustReturn: true)
+                
+                return Output(
+                    showComingSoonMovies: showComingSoonMovies,
+                    showSearchMovies: showSearchMovies,
+                    showComingSoonMovieInfo: showComingSoonMovieInfo,
+                    showSearchMovieInfo: showSearchMovieInfo,
+                    showHideSearch: showHideSearch)
+                }
 }

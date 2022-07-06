@@ -58,6 +58,8 @@ final class HomeViewController: UIViewController {
         
         outputs.showMovieInfo
             .drive().disposed(by: bag)
+        
+        outputs.showAccount.drive().disposed(by: bag)
     }
     
     private func addAnimation() {
@@ -92,6 +94,6 @@ final class HomeViewController: UIViewController {
 extension HomeViewController {
     enum Event {
         case movieDetails(model: MovieDetailsModel)
-        case logout
+        case profile
     }
 }
