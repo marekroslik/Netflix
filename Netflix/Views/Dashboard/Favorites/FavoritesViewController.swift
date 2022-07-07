@@ -8,19 +8,22 @@ final class FavoritesViewController: UIViewController {
     var viewModel: FavoritesViewModel!
     
     private let bag = DisposeBag()
-    let viewDidLoadRelay = PublishRelay<Void>()
+    let updateFavorites = PublishRelay<Void>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(favoritesView)
         applyConstraints()
         bindViewModel()
-        viewDidLoadRelay.accept(())
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        updateFavorites.accept(())
     }
     
     private func bindViewModel() {
         let inputs = FavoritesViewModel.Input(
-            loadingFavoritesMovies: viewDidLoadRelay.asObservable(),
+            loadingFavoritesMovies: updateFavorites.asObservable(),
             favoritesMovieCellTrigger: favoritesView.table.rx.itemSelected.asObservable(),
             favoritesMoviesDeleteTrigger: favoritesView.table.rx.itemDeleted.asObservable()
         )
@@ -38,7 +41,9 @@ final class FavoritesViewController: UIViewController {
             .disposed(by: bag)
         
         outputs.deleteFavoritesMovie
-            .drive()
+            .drive(onNext: { [updateFavorites] _ in
+                updateFavorites.accept(())
+            })
             .disposed(by: bag)
         
         outputs.showMovieInfo

@@ -1,6 +1,7 @@
 import Foundation
 
 struct MovieDetailsModel {
+    let id: Int
     let posterPath: String?
     let title: String?
     let duration: String?

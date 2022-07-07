@@ -177,7 +177,9 @@ class APIClient: APIClientProtocol {
         APIConstants.ParamKeys.sessionId +
         id
         
-        var request = URLRequest(url: URL(string: urlRequest)!)
+        print(urlRequest)
+        
+        var request = URLRequest(url: URL(string: urlRequest.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!)
         request.httpMethod = APIConstants.RequestType.POST.rawValue
         request.addValue(APIConstants.ContentType.json.rawValue, forHTTPHeaderField:
                             APIConstants.HTTPHeaderField.contentType.rawValue)

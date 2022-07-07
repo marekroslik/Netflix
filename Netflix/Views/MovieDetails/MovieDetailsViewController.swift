@@ -30,7 +30,8 @@ final class MovieDetailsViewController: UIViewController {
     private func bindViewModel() {
         let inputs = MovieDetailsViewModel.Input(
             closeViewTrigger: movieDetailsView.topBackButton.rx.tap.asObservable(),
-            getMovieInfo: viewDidLoadRelay.asObservable())
+            getMovieInfo: viewDidLoadRelay.asObservable(),
+            setAsFavoriteTrigger: movieDetailsView.topLikeButton.rx.tap.asObservable())
         
         let outputs = viewModel.transform(input: inputs)
         
@@ -47,6 +48,13 @@ final class MovieDetailsViewController: UIViewController {
                 
             })
             .disposed(by: bag)
+        
+        outputs.setAsFavorite.drive(onNext: { [movieDetailsView] _ in
+            movieDetailsView.topLikeButton.setImage(
+                UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysTemplate),
+                for: .normal
+            )
+        }).disposed(by: bag)
         
         outputs.closeView.drive().disposed(by: bag)
     }

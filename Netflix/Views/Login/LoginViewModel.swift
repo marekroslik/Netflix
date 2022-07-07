@@ -16,7 +16,7 @@ final class LoginViewModel: ViewModelType {
         let accessCheck: Driver<Void>
         let showHidePassword: Driver<Void>
         let accessDenied: Driver<String>
-        let showLoading: Driver<Void>
+        let showLoading: Driver<Bool>
     }
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
@@ -39,6 +39,8 @@ final class LoginViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
+        let showLoading = ActivityIndicator()
+        
         let inputValidating = Observable.combineLatest(
             input.login.startWith(""),
             input.password.startWith("")
@@ -54,10 +56,8 @@ final class LoginViewModel: ViewModelType {
         let accessDenied = errorHandling
             .asDriver(onErrorJustReturn: "")
         
-        let showLoading = input.loginTrigger
-            .asDriver(onErrorJustReturn: ())
-        
         let accessCheck = input.loginTrigger
+            .trackActivity(showLoading)
             .withLatestFrom(inputValidating)
             .filter { $0 }
             .flatMapLatest { [apiClient, errorHandling] _ in
@@ -119,7 +119,7 @@ final class LoginViewModel: ViewModelType {
             accessCheck: accessCheck,
             showHidePassword: showHidePassword,
             accessDenied: accessDenied,
-            showLoading: showLoading
+            showLoading: showLoading.asDriver()
         )
     }
 }

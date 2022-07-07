@@ -40,6 +40,7 @@
 		F956967D2865A45200146291 /* UserDefaultsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F956967C2865A45200146291 /* UserDefaultsUseCase.swift */; };
 		F956967F2865F54700146291 /* SessionIdResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F956967E2865F54700146291 /* SessionIdResponseModel.swift */; };
 		F95696812865F57900146291 /* SessionIdPostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95696802865F57900146291 /* SessionIdPostResponseModel.swift */; };
+		F9674F89287704900053D0F4 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9674F88287704900053D0F4 /* ActivityIndicator.swift */; };
 		F967AF0A2844B36900758CE0 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF092844B36900758CE0 /* OnBoardingViewController.swift */; };
 		F967AF0D2844B47C00758CE0 /* FirstOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */; };
 		F967AF0F2844B48900758CE0 /* SecondOnBoardingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */; };
@@ -139,6 +140,7 @@
 		F956967C2865A45200146291 /* UserDefaultsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUseCase.swift; sourceTree = "<group>"; };
 		F956967E2865F54700146291 /* SessionIdResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionIdResponseModel.swift; sourceTree = "<group>"; };
 		F95696802865F57900146291 /* SessionIdPostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionIdPostResponseModel.swift; sourceTree = "<group>"; };
+		F9674F88287704900053D0F4 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		F967AF092844B36900758CE0 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		F967AF0C2844B47C00758CE0 /* FirstOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstOnBoardingUIView.swift; sourceTree = "<group>"; };
 		F967AF0E2844B48900758CE0 /* SecondOnBoardingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondOnBoardingUIView.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				F983599B284110A300BD6F8A /* Login */,
 				F99F54C9284261E200302337 /* Dashboard */,
 				F935D1772874828B00FF8109 /* Profile */,
+				F97E8E71284F335700461380 /* Loading */,
 				F9C73AAF2843D908004EF079 /* MovieDetails */,
 				F981054A283F7E93005496FD /* Components */,
 			);
@@ -325,6 +328,7 @@
 		F97E8E71284F335700461380 /* Loading */ = {
 			isa = PBXGroup;
 			children = (
+				F9674F88287704900053D0F4 /* ActivityIndicator.swift */,
 				F97E8E72284F337D00461380 /* LoadingUIView.swift */,
 				F904FDF5284F366200B0A72A /* LottieSpinner.json */,
 			);
@@ -449,7 +453,6 @@
 				F9489B1C283E20E600677A73 /* Home */,
 				F99D1B58284262D2009EE515 /* ComingSoon */,
 				F99D1B5E28428072009EE515 /* Favorites */,
-				F97E8E71284F335700461380 /* Loading */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -809,6 +812,7 @@
 				F99D1B602842808A009EE515 /* FavoritesUIView.swift in Sources */,
 				F9C0449A283B9ED40038F175 /* AppDelegate.swift in Sources */,
 				F9489B20283E51C200677A73 /* HomeLatestMovieUIView.swift in Sources */,
+				F9674F89287704900053D0F4 /* ActivityIndicator.swift in Sources */,
 				F925351C284F53F70037AD29 /* UIResponder.Extensions.swift in Sources */,
 				F9C43349286303CF0027BFB7 /* UIImageView.Extensions.swift in Sources */,
 				F9D99EFD2861B0BB0012B2F6 /* BaseCoordinator.swift in Sources */,

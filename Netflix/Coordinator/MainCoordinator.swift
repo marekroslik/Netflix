@@ -38,7 +38,11 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
     
     func showMovieDetails(model: MovieDetailsModel) {
         let movieDetails = MovieDetailsViewController()
-        movieDetails.viewModel = MovieDetailsViewModel(model: model)
+        movieDetails.viewModel = MovieDetailsViewModel(
+            model: model,
+            apiClient: APIClient(),
+            userDefaultsUseCase: UserDefaultsUseCase()
+        )
         movieDetails.modalPresentationStyle = .fullScreen
         movieDetails.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
