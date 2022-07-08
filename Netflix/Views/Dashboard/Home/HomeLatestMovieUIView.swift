@@ -45,7 +45,7 @@ final class HomeLatestMovieUIView: UIView {
     // Create latest film NAME UI
     let filmName: UILabel = {
         let filmNameText = UILabel()
-        filmNameText.numberOfLines = 2
+        filmNameText.numberOfLines = 0
         filmNameText.font = UIFont.systemFont(ofSize: 50, weight: .bold)
         filmNameText.textAlignment = .center
         filmNameText.textColor = .white

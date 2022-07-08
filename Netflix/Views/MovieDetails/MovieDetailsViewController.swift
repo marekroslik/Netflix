@@ -2,6 +2,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import SDWebImage
 
 final class MovieDetailsViewController: UIViewController {
     
@@ -37,9 +38,14 @@ final class MovieDetailsViewController: UIViewController {
         
         outputs.showMovieInfo
             .drive(onNext: { [movieDetailsView] model in
-                movieDetailsView.imageMovieDetails.downloaded(
-                    from: APIConstants.Api.urlImages + (model?.posterPath ?? ""),
-                    loadingView: movieDetailsView.loading)
+                movieDetailsView.loading.isHidden = false
+                guard let posterPath = model?.posterPath else { return }
+                print("\(APIConstants.Api.urlImages)\(posterPath)")
+                movieDetailsView.imageMovieDetails.sd_setImage(
+                    with: URL(string: "\(APIConstants.Api.urlImages)\(posterPath)"),
+                    completed: { [movieDetailsView] _, _, _, _ in
+                        movieDetailsView.loading.isHidden = true
+                    })
                 movieDetailsView.movieTitle.text = model?.title
                 movieDetailsView.movieDuration.text = model?.duration
                 movieDetailsView.movieScore.text = model?.score?.description

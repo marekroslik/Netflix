@@ -6,6 +6,9 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
+  - SDWebImage (5.13.0):
+    - SDWebImage/Core (= 5.13.0)
+  - SDWebImage/Core (5.13.0)
   - SnapKit (5.6.0)
   - SwiftGen (6.5.1)
   - SwiftLint (0.47.1)
@@ -14,6 +17,7 @@ DEPENDENCIES:
   - lottie-ios
   - RxCocoa
   - RxSwift
+  - SDWebImage
   - SnapKit
   - SwiftGen
   - SwiftLint
@@ -24,6 +28,7 @@ SPEC REPOS:
     - RxCocoa
     - RxRelay
     - RxSwift
+    - SDWebImage
     - SnapKit
     - SwiftGen
     - SwiftLint
@@ -33,10 +38,11 @@ SPEC CHECKSUMS:
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  SDWebImage: 0327043dbb9533e75f2eff8445b3df0f2ceca6ac
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftGen: a6d22010845f08fe18fbdf3a07a8e380fd22e0ea
   SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
 
-PODFILE CHECKSUM: 08787b5c1a93bfebf48b4c0354eb09e8edd7081e
+PODFILE CHECKSUM: 2b39f30d4e3acd0e028b400ff852f647653f49a1
 
 COCOAPODS: 1.11.3

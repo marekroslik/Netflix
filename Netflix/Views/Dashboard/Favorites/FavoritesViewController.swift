@@ -1,6 +1,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import SDWebImage
 
 final class FavoritesViewController: UIViewController {
     
@@ -37,10 +38,13 @@ final class FavoritesViewController: UIViewController {
         }).drive(favoritesView.table.rx.items(
             cellIdentifier: CustomFavoritesTableViewCell.identifier,
             cellType: CustomFavoritesTableViewCell.self)) { (_, element, cell) in
-                cell.image.downloaded(
-                    from: "\(APIConstants.Api.urlImages)\(element.posterPath!)",
-                    loadingView: cell.loading
-                )
+                cell.loading.isHidden = false
+                guard let posterPath = element.posterPath else { return }
+                if let imageUrl = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                    cell.image.sd_setImage(with: imageUrl, completed: { [cell] _, _, _, _ in
+                        cell.loading.isHidden = true
+                    })
+                }
             }
             .disposed(by: bag)
         
