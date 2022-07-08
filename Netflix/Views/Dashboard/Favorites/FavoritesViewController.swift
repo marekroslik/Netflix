@@ -8,26 +8,33 @@ final class FavoritesViewController: UIViewController {
     var viewModel: FavoritesViewModel!
     
     private let bag = DisposeBag()
-    let viewDidLoadRelay = PublishRelay<Void>()
+    let updateFavorites = PublishRelay<Void>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(favoritesView)
         applyConstraints()
         bindViewModel()
-        viewDidLoadRelay.accept(())
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        updateFavorites.accept(())
     }
     
     private func bindViewModel() {
         let inputs = FavoritesViewModel.Input(
-            loadingFavoritesMovies: viewDidLoadRelay.asObservable(),
+            loadingFavoritesMovies: updateFavorites.asObservable().do(onNext: { [self] _ in
+                self.favoritesView.loading.isHidden = false
+            }),
             favoritesMovieCellTrigger: favoritesView.table.rx.itemSelected.asObservable(),
             favoritesMoviesDeleteTrigger: favoritesView.table.rx.itemDeleted.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
         
-        outputs.showFavoritesMovies.drive(favoritesView.table.rx.items(
+        outputs.showFavoritesMovies.do(onNext: { _ in
+            self.favoritesView.loading.isHidden = true
+        }).drive(favoritesView.table.rx.items(
             cellIdentifier: CustomFavoritesTableViewCell.identifier,
             cellType: CustomFavoritesTableViewCell.self)) { (_, element, cell) in
                 cell.image.downloaded(
@@ -38,7 +45,9 @@ final class FavoritesViewController: UIViewController {
             .disposed(by: bag)
         
         outputs.deleteFavoritesMovie
-            .drive()
+            .drive(onNext: { [updateFavorites] _ in
+                updateFavorites.accept(())
+            })
             .disposed(by: bag)
         
         outputs.showMovieInfo

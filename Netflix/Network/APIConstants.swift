@@ -22,7 +22,7 @@ struct APIConstants {
         static let favoritesMovies = "account/{account_id}/favorite/movies"
         static let searchMovies = "search/movie"
         static let account = "account"
-        static let favorite = "favorite"
+        static let favorite = "/{account_id}/favorite"
         static let sessionId = "authentication/session/new"
     }
     

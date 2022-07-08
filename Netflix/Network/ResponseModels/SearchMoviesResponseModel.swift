@@ -12,7 +12,7 @@ struct SearchMoviesResponseModel: Codable {
     }
     
     struct Result: Codable {
-        let id: Int?
+        let id: Int
         let posterPath: String?
         let title: String?
         let voteAverage: Double?

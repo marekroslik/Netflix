@@ -1,6 +1,8 @@
 import Foundation
 
 struct MovieDetailsModel {
+    let id: Int
+    let favorite = false
     let posterPath: String?
     let title: String?
     let duration: String?

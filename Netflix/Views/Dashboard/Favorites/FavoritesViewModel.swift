@@ -17,7 +17,7 @@ class FavoritesViewModel: ViewModelType {
     }
     
     var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
-    private var apiClient: APIClient
+    private let apiClient: APIClient
     private let userDefaultsUseCase: UserDefaultsUseCase
     
     private var favoritesMovies: [FavoritesMoviesResponseModel.Result]?
@@ -33,23 +33,29 @@ class FavoritesViewModel: ViewModelType {
             .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 return apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
             })
-            .do(onNext: { [weak self] model in
-                self?.favoritesMovies = model.results
+            .do(onNext: { [self] model in
+                self.favoritesMovies = model.results
             })
             .map { $0.results as [FavoritesMoviesResponseModel.Result] }
             .asDriver(onErrorJustReturn: [FavoritesMoviesResponseModel.Result]())
         
         let deleteFavoritesMovie = input.favoritesMoviesDeleteTrigger
-            .map({ indexPath in
-                print(indexPath)
-                return ()
+            .flatMapLatest({ [weak self] indexPath -> Observable<MarkAsFavoriteResponseModel> in
+                guard let self = self else { return Observable.never() }
+                return (self.apiClient.markAsFavorite(model: MarkAsFavoritePostResponseModel(
+                        mediaType: "movie",
+                        mediaID: (self.favoritesMovies?[indexPath.row].id)!,
+                        favorite: false
+                    ), withSessionId: (self.userDefaultsUseCase.sessionId!)))
             })
+            .map({ _ in () })
             .asDriver(onErrorJustReturn: ())
         
         let showMovieInfo = input.favoritesMovieCellTrigger
             .map({ [weak self] indexPath in
                 if let film = self?.favoritesMovies?[indexPath.row] {
                     self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                        id: film.id,
                         posterPath: film.posterPath,
                         title: film.title,
                         duration: "0",

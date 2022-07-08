@@ -49,6 +49,7 @@ final class SplashViewModel: ViewModelType {
                     requestToken: model.requestToken!
                 )
                 return apiClient.authenticationWithLoginPassword(model: model)
+                    .observe(on: MainScheduler.instance)
                     .catch { [weak self] error in
                         switch error {
                         case APIError.wrongPassword:

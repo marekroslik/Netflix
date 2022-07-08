@@ -11,8 +11,8 @@ struct FavoritesMoviesResponseModel: Codable {
         case totalResults = "total_results"
     }
     
-    struct Result: Codable {
-        let id: Int?
+    struct Result: Codable, Equatable {
+        let id: Int
         let posterPath: String?
         let title: String?
         let voteAverage: Double?

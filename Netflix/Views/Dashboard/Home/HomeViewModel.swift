@@ -70,6 +70,7 @@ class HomeViewModel: ViewModelType {
             .map({ [weak self] indexPath in
                 if let film = self?.popularMovies?[indexPath.row] {
                     self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                        id: film.id,
                         posterPath: film.posterPath,
                         title: film.title,
                         duration: "0",

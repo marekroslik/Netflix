@@ -274,6 +274,7 @@
 				F983599B284110A300BD6F8A /* Login */,
 				F99F54C9284261E200302337 /* Dashboard */,
 				F935D1772874828B00FF8109 /* Profile */,
+				F97E8E71284F335700461380 /* Loading */,
 				F9C73AAF2843D908004EF079 /* MovieDetails */,
 				F981054A283F7E93005496FD /* Components */,
 			);
@@ -449,7 +450,6 @@
 				F9489B1C283E20E600677A73 /* Home */,
 				F99D1B58284262D2009EE515 /* ComingSoon */,
 				F99D1B5E28428072009EE515 /* Favorites */,
-				F97E8E71284F335700461380 /* Loading */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";

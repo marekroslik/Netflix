@@ -57,6 +57,7 @@ class ComingSoonViewModel: ViewModelType {
             .map({ [weak self] indexPath in
                 if let film = self?.comingSoonMovies?[indexPath.row] {
                     self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                        id: film.id,
                         posterPath: film.posterPath,
                         title: film.title,
                         duration: "0",
@@ -71,6 +72,7 @@ class ComingSoonViewModel: ViewModelType {
             .map({ [weak self] indexPath in
                 if let film = self?.searchMovies?[indexPath.row] {
                     self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                        id: film.id,
                         posterPath: film.posterPath,
                         title: film.title,
                         duration: "0",
