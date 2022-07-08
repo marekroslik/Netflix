@@ -10,4 +10,5 @@ pod 'SnapKit'
 pod 'RxSwift'
 pod 'RxCocoa'
 pod 'lottie-ios'
+pod 'SDWebImage'
 end

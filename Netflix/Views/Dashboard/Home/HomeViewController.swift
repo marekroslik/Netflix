@@ -2,6 +2,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import SDWebImage
 
 final class HomeViewController: UIViewController {
     var viewModel: HomeViewModel!
@@ -37,10 +38,14 @@ final class HomeViewController: UIViewController {
         outputs.showLatestMovie
             .drive(onNext: { [latestMovieView] model in
                 latestMovieView.filmName.text = model?.title ?? ""
-                if let poster = model?.posterPath {
-                    latestMovieView.movieImage.downloaded(
-                        from: "\(APIConstants.Api.urlImages)\(poster)",
-                        loadingView: latestMovieView.loading)
+                latestMovieView.loading.isHidden = false
+                guard let posterPath = model?.posterPath else { return }
+                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                    latestMovieView.movieImage.sd_setImage(
+                        with: poster,
+                        completed: { [latestMovieView] _, _, _, _ in
+                        latestMovieView.loading.isHidden = true
+                    })
                 }
                 if let tags = model?.tagline {
                     if !tags.isEmpty {
@@ -53,9 +58,14 @@ final class HomeViewController: UIViewController {
         outputs.showPopularMovies.drive(popularMoviesView.popularMoviesCollectionView.rx.items(
             cellIdentifier: CustomPopularMoviesCollectionViewCell.identifier,
             cellType: CustomPopularMoviesCollectionViewCell.self)) { (_, element, cell) in
-                cell.imageView.downloaded(
-                    from: "\(APIConstants.Api.urlImages)\(element.posterPath!)",
-                    loadingView: cell.loading)
+                cell.loading.isHidden = false
+                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(element.posterPath!)") {
+                    cell.imageView.sd_setImage(
+                        with: poster,
+                        completed: { [cell] _, _, _, _ in
+                        cell.loading.isHidden = true
+                    })
+                }
             }
             .disposed(by: bag)
         

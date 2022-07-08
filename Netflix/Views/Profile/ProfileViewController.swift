@@ -43,10 +43,11 @@ final class ProfileViewController: UIViewController {
                 if let username = model?.username {
                     profileView.mailLabel.text = username
                 }
+                profileView.loading.isHidden = false
                 if let avatar = model?.avatar?.gravatar?.hash {
-                    profileView.profileImage.downloaded(
-                        from: "\(APIConstants.Api.gravatarImage)\(avatar)\(APIConstants.ParamKeys.gravataRetro)",
-                        loadingView: profileView.loading)
+                    profileView.profileImage.sd_setImage(with: URL(string: "\(APIConstants.Api.gravatarImage)\(avatar)\(APIConstants.ParamKeys.gravataRetro)"), completed: { [profileView] _, _, _, _ in
+                        profileView.loading.isHidden = true
+                    })
                 }
                 
             })

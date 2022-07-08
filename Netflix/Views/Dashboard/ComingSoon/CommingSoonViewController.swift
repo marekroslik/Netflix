@@ -1,6 +1,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import SDWebImage
 
 final class ComingSoonViewController: UIViewController {
     
@@ -35,10 +36,14 @@ final class ComingSoonViewController: UIViewController {
         outputs.showComingSoonMovies.drive(comingSoonView.comingSoonCollectionView.rx.items(
             cellIdentifier: CustomComingSoonCollectionViewCell.identifier,
             cellType: CustomComingSoonCollectionViewCell.self)) { (_, element, cell) in
-                if let poster = element.posterPath {
-                    cell.imageView.downloaded(
-                        from: "\(APIConstants.Api.urlImages)\(poster)",
-                        loadingView: cell.loading)
+                cell.loading.isHidden = false
+                guard let posterPath = element.posterPath else { return }
+                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                    cell.imageView.sd_setImage(
+                        with: poster,
+                        completed: { [cell] _, _, _, _ in
+                        cell.loading.isHidden = true
+                    })
                 }
             }
             .disposed(by: bag)
@@ -48,10 +53,12 @@ final class ComingSoonViewController: UIViewController {
         outputs.showSearchMovies.drive(comingSoonView.searchMoviesCollectionView.rx.items(
             cellIdentifier: CustomComingSoonCollectionViewCell.identifier,
             cellType: CustomComingSoonCollectionViewCell.self)) { (_, element, cell) in
-                if let poster = element.posterPath {
-                    cell.imageView.downloaded(
-                        from: "\(APIConstants.Api.urlImages)\(poster)",
-                        loadingView: cell.loading)
+                cell.loading.isHidden = false
+                guard let posterPath = element.posterPath else { return }
+                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                    cell.imageView.sd_setImage(with: poster, completed: { [cell] _, _, _, _ in
+                        cell.loading.isHidden = true
+                    })
                 }
                 
             }
