@@ -59,9 +59,8 @@ final class LoginViewController: UIViewController {
             .disposed(by: bag)
         
         outputs.showLoading
-            .drive(onNext: { [weak self] bool in
-                print(bool)
-                self?.loginView.loading.isHidden = bool
+            .drive(onNext: { [weak self] _ in
+                self?.loginView.loading.isHidden = false
             })
             .disposed(by: bag)
         

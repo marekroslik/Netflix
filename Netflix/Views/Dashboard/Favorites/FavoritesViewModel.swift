@@ -34,7 +34,17 @@ class FavoritesViewModel: ViewModelType {
                 return apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
             })
             .do(onNext: { [self] model in
-                print("")
+                print(model)
+                print(self.favoritesMovies)
+            })
+            .filter({ [self] model -> Bool in
+                if let favorites = self.favoritesMovies {
+                    return model.results != favorites
+                }
+                return true
+            })
+            .do(onNext: { [self] model in
+                print("UPDATE")
                 self.favoritesMovies = model.results
             })
             .map { $0.results as [FavoritesMoviesResponseModel.Result] }
@@ -49,11 +59,7 @@ class FavoritesViewModel: ViewModelType {
                         favorite: false
                     ), withSessionId: (self.userDefaultsUseCase.sessionId!)))
             })
-            .withLatestFrom(input.favoritesMoviesDeleteTrigger)
-            .map({ [self] indexPath in
-                self.favoritesMovies?.remove(at: indexPath.row)
-                return ()
-            })
+            .map({ _ in () })
             .asDriver(onErrorJustReturn: ())
         
         let showMovieInfo = input.favoritesMovieCellTrigger
