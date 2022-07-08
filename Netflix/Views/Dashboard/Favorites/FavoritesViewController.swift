@@ -23,14 +23,18 @@ final class FavoritesViewController: UIViewController {
     
     private func bindViewModel() {
         let inputs = FavoritesViewModel.Input(
-            loadingFavoritesMovies: updateFavorites.asObservable(),
+            loadingFavoritesMovies: updateFavorites.asObservable().do(onNext: { [self] _ in
+                self.favoritesView.loading.isHidden = false
+            }),
             favoritesMovieCellTrigger: favoritesView.table.rx.itemSelected.asObservable(),
             favoritesMoviesDeleteTrigger: favoritesView.table.rx.itemDeleted.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
         
-        outputs.showFavoritesMovies.drive(favoritesView.table.rx.items(
+        outputs.showFavoritesMovies.do(onNext: { _ in
+            self.favoritesView.loading.isHidden = true
+        }).drive(favoritesView.table.rx.items(
             cellIdentifier: CustomFavoritesTableViewCell.identifier,
             cellType: CustomFavoritesTableViewCell.self)) { (_, element, cell) in
                 cell.image.downloaded(
