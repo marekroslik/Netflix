@@ -40,7 +40,6 @@ final class MovieDetailsViewController: UIViewController {
             .drive(onNext: { [movieDetailsView] model in
                 movieDetailsView.loading.isHidden = false
                 guard let posterPath = model?.posterPath else { return }
-                print("\(APIConstants.Api.urlImages)\(posterPath)")
                 movieDetailsView.imageMovieDetails.sd_setImage(
                     with: URL(string: "\(APIConstants.Api.urlImages)\(posterPath)"),
                     completed: { [movieDetailsView] _, _, _, _ in
