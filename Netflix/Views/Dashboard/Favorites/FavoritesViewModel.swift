@@ -33,10 +33,6 @@ class FavoritesViewModel: ViewModelType {
             .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 return apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
             })
-            .do(onNext: { [self] model in
-                print(model)
-                print(self.favoritesMovies)
-            })
             .filter({ [self] model -> Bool in
                 if let favorites = self.favoritesMovies {
                     return model.results != favorites

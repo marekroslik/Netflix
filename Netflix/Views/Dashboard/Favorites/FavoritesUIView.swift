@@ -10,6 +10,12 @@ final class FavoritesUIView: UIView {
         return table
     }()
     
+    let loading: LoadingUIView = {
+        let view = LoadingUIView()
+        view.isHidden = true
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
@@ -20,6 +26,7 @@ final class FavoritesUIView: UIView {
     // Add subviews
     private func addSubviews() {
         addSubview(table)
+        addSubview(loading)
     }
     
     // Configuration table function
@@ -33,6 +40,10 @@ final class FavoritesUIView: UIView {
     // Set constantints
     private func applyConstraints() {
         table.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        loading.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
