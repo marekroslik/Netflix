@@ -50,6 +50,13 @@ final class HomeLatestMovieUIView: UIView {
         filmNameText.textAlignment = .center
         filmNameText.textColor = .white
         filmNameText.adjustsFontSizeToFitWidth = true
+        
+        filmNameText.layer.shadowColor = UIColor.black.cgColor
+        filmNameText.layer.shadowRadius = 2.0
+        filmNameText.layer.shadowOpacity = 0.5
+        filmNameText.layer.shadowOffset = .zero
+        filmNameText.layer.masksToBounds = false
+
         return filmNameText
     }()
     
@@ -138,9 +145,9 @@ final class HomeLatestMovieUIView: UIView {
         // Latest movie name constraints
         filmName.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(hashtags)
+            make.bottom.equalTo(hashtags.snp.top)
             make.width.equalTo(movieImage).multipliedBy(0.8)
-            make.height.equalTo(200)
+            make.height.equalTo(movieImage).multipliedBy(0.5)
         }
         
         // Latest movie hashtags constraints

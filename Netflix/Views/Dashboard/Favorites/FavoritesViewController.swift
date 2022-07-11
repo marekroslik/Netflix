@@ -15,6 +15,7 @@ final class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(favoritesView)
         applyConstraints()
+        addAnimation()
         bindViewModel()
     }
     
@@ -28,13 +29,19 @@ final class FavoritesViewController: UIViewController {
                 self.favoritesView.loading.isHidden = false
             }),
             favoritesMovieCellTrigger: favoritesView.table.rx.itemSelected.asObservable(),
-            favoritesMoviesDeleteTrigger: favoritesView.table.rx.itemDeleted.asObservable()
+            favoritesMoviesDeleteTrigger: favoritesView.table.rx.itemDeleted.asObservable(),
+            switchToComingSoon: favoritesView.switchTabButton.rx.tap.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
         
-        outputs.showFavoritesMovies.do(onNext: { _ in
+        outputs.showFavoritesMovies.do(onNext: { [self] model in
             self.favoritesView.loading.isHidden = true
+            if model == [] {
+                self.favoritesView.table.isHidden = true
+            } else {
+                self.favoritesView.table.isHidden = false
+            }
         }).drive(favoritesView.table.rx.items(
             cellIdentifier: CustomFavoritesTableViewCell.identifier,
             cellType: CustomFavoritesTableViewCell.self)) { (_, element, cell) in
@@ -57,6 +64,17 @@ final class FavoritesViewController: UIViewController {
         outputs.showMovieInfo
             .drive()
             .disposed(by: bag)
+        
+        outputs.switchToComingSoon
+            .drive()
+            .disposed(by: bag)
+    }
+    
+    private func addAnimation() {
+        addButtonsAnimation(
+            favoritesView.switchTabButton,
+            disposeBag: bag
+        )
     }
     
     private func applyConstraints() {
@@ -69,5 +87,6 @@ final class FavoritesViewController: UIViewController {
 extension FavoritesViewController {
     enum Event {
         case movieDetails(model: MovieDetailsModel)
+        case comingSoon
     }
 }

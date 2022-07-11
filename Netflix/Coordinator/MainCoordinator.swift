@@ -148,6 +148,8 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
                 switch event {
                 case .movieDetails(let model):
                     self?.showMovieDetails(model: model)
+                case .comingSoon:
+                    self?.selectPage(.comingSoon)
                 }
             }
             navController.pushViewController(favorites, animated: true)
