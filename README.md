@@ -44,7 +44,7 @@
 
 ## Favorites
 
-<img src="/Screeshots/Favorites.png" width="200">
+<img src="/Screeshots/Favorites1.png" width="200"> <img src="/Screeshots/Favorites2.png" width="200">
 
 ## MovieDetails
 
