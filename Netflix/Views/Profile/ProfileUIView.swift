@@ -42,7 +42,7 @@ final class ProfileUIView: UIView {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Name"
+        label.text = "User"
         label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
         label.textColor = .white
         label.textAlignment = .right
@@ -60,7 +60,7 @@ final class ProfileUIView: UIView {
     
     let mailLabel: UILabel = {
         let label = UILabel()
-        label.text = "thinhtran2406@gmail.com"
+        label.text = "User@gmail.com"
         label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = .darkGray
         return label

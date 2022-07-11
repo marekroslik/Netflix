@@ -116,7 +116,10 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
         case .home:
             // If needed: Each tab bar flow can have it's own Coordinator.
             let home = HomeViewController()
-            home.viewModel = HomeViewModel(apiClient: APIClient())
+            home.viewModel = HomeViewModel(
+                apiClient: APIClient(),
+                userDefaultsUseCase: UserDefaultsUseCase()
+            )
             home.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails(let model):
