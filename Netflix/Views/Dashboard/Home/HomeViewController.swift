@@ -23,6 +23,10 @@ final class HomeViewController: UIViewController {
         viewDidLoadRelay.accept(())
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        viewDidLoadRelay.accept(())
+    }
+    
     private func bindViewModel() {
         let inputs = HomeViewModel.Input(
             loadingLatestMovie: viewDidLoadRelay.asObservable(),
@@ -65,6 +69,13 @@ final class HomeViewController: UIViewController {
                         completed: { [cell] _, _, _, _ in
                         cell.loading.isHidden = true
                     })
+                }
+                if element.favorites == true {
+                    cell.shadowView.clipsToBounds = false
+                    cell.shadowView.layer.shadowColor = UIColor.red.cgColor
+                    cell.shadowView.layer.shadowOffset = .zero
+                    cell.shadowView.layer.shadowRadius = 5.0
+                    cell.shadowView.layer.shadowOpacity = 1
                 }
             }
             .disposed(by: bag)

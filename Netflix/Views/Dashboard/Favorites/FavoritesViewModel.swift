@@ -8,12 +8,14 @@ class FavoritesViewModel: ViewModelType {
         let loadingFavoritesMovies: Observable<Void>
         let favoritesMovieCellTrigger: Observable<IndexPath>
         let favoritesMoviesDeleteTrigger: Observable<IndexPath>
+        let switchToComingSoon: Observable<Void>
     }
     
     struct Output {
         let showFavoritesMovies: Driver<[FavoritesMoviesResponseModel.Result]>
         let deleteFavoritesMovie: Driver<Void>
         let showMovieInfo: Driver<Void>
+        let switchToComingSoon: Driver<Void>
     }
     
     var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
@@ -55,6 +57,7 @@ class FavoritesViewModel: ViewModelType {
                 if let film = self?.favoritesMovies?[indexPath.row] {
                     self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
                         id: film.id,
+                        favorite: true,
                         posterPath: film.posterPath,
                         title: film.title,
                         duration: "0",
@@ -65,9 +68,15 @@ class FavoritesViewModel: ViewModelType {
             })
             .asDriver(onErrorJustReturn: ())
         
+        let switchToComingSoon = input.switchToComingSoon
+            .do(onNext: { [didSendEventClosure] _ in
+                didSendEventClosure?(.comingSoon)
+        }).asDriver(onErrorJustReturn: ())
+        
         return Output(
             showFavoritesMovies: showFavoritesMovies,
             deleteFavoritesMovie: deleteFavoritesMovie,
-            showMovieInfo: showMovieInfo)
+            showMovieInfo: showMovieInfo,
+            switchToComingSoon: switchToComingSoon)
     }
 }

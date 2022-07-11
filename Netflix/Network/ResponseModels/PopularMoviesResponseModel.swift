@@ -1,6 +1,6 @@
 struct PopularMoviesResponseModel: Codable {
     let page: Int
-    let results: [Result]
+    var results: [Result]
     let totalResults, totalPages: Int
     
     enum CodingKeys: String, CodingKey {
@@ -11,6 +11,7 @@ struct PopularMoviesResponseModel: Codable {
     
     struct Result: Codable {
         let id: Int
+        var favorites: Bool = false
         let posterPath: String?
         let title: String?
         let voteAverage: Double?

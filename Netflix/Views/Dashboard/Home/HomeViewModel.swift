@@ -25,7 +25,7 @@ class HomeViewModel: ViewModelType {
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
     private let apiClient: APIClient
     private var latestMovie: LatestMovieResponseModel?
-    private var popularMovies: [PopularMoviesResponseModel.Result]?
+    private var popularMovies: PopularMoviesResponseModel?
     
     init(apiClient: APIClient) {
         self.apiClient = apiClient
@@ -48,45 +48,60 @@ class HomeViewModel: ViewModelType {
                 apiClient.getPopularMovies(atPage: 1)
             })
             .do(onNext: { [weak self] model in
-                self?.popularMovies = model.results
+                self?.popularMovies = model
             })
-            .map { $0.results as [PopularMoviesResponseModel.Result] }
-            .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
-        
-        let playLatestMovie = input.playLatestMovieTrigger
-            .asDriver(onErrorJustReturn: ())
-        
-        let likeLatestMovie = input.likeLatestMovieTrigger
-            .asDriver(onErrorJustReturn: ())
-        
-        let showAccount = input.showAccountTrigger
-            .do(onNext: { [weak self] _ in
-                self?.didSendEventClosure?(.profile)
+            .flatMapLatest({ [apiClient] _ -> Observable<FavoritesMoviesResponseModel> in
+                apiClient.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!)
             })
-            .asDriver(onErrorJustReturn: ())
-        
-        let showMovieInfo = input.popularMovieCellTrigger
-            .map({ [weak self] indexPath in
-                if let film = self?.popularMovies?[indexPath.row] {
-                    self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
-                        id: film.id,
-                        posterPath: film.posterPath,
-                        title: film.title,
-                        duration: "0",
-                        score: film.voteAverage,
-                        release: film.releaseDate,
-                        synopsis: film.overview)))
+            .do(onNext: { [weak self] model in
+                guard let array1 = self?.popularMovies?.results else { return }
+                guard let array2 = model.results else { return }
+                for element in array2 {
+                    if let index = array1.firstIndex(where: { $0.id == element.id}) {
+                        self?.popularMovies?.results[index].favorites = true
+                    }
                 }
             })
-            .asDriver(onErrorJustReturn: ())
-        
-        return Output(
-            showLatestMovie: showLatestMovie,
-            showPopularMovies: showPopularMovies,
-            playLatestMovie: playLatestMovie,
-            likeLatestMovie: likeLatestMovie,
-            showAccount: showAccount,
-            showMovieInfo: showMovieInfo
-        )
-    }
+            .map({ [weak self] _ in
+                return self?.popularMovies?.results as [PopularMoviesResponseModel.Result]
+            })
+                .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
+                
+                let playLatestMovie = input.playLatestMovieTrigger
+                .asDriver(onErrorJustReturn: ())
+                
+                let likeLatestMovie = input.likeLatestMovieTrigger
+                .asDriver(onErrorJustReturn: ())
+                
+                let showAccount = input.showAccountTrigger
+                .do(onNext: { [weak self] _ in
+                    self?.didSendEventClosure?(.profile)
+                })
+                    .asDriver(onErrorJustReturn: ())
+                    
+                    let showMovieInfo = input.popularMovieCellTrigger
+                    .map({ [weak self] indexPath in
+                        if let film = self?.popularMovies?.results[indexPath.row] {
+                            self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                                id: film.id,
+                                favorite: film.favorites,
+                                posterPath: film.posterPath,
+                                title: film.title,
+                                duration: "0",
+                                score: film.voteAverage,
+                                release: film.releaseDate,
+                                synopsis: film.overview)))
+                        }
+                    })
+                    .asDriver(onErrorJustReturn: ())
+                    
+                    return Output(
+                        showLatestMovie: showLatestMovie,
+                        showPopularMovies: showPopularMovies,
+                        playLatestMovie: playLatestMovie,
+                        likeLatestMovie: likeLatestMovie,
+                        showAccount: showAccount,
+                        showMovieInfo: showMovieInfo
+                    )
+                    }
 }

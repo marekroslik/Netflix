@@ -32,7 +32,7 @@ final class MovieDetailsUIView: UIView {
     }()
     
     // Create play button
-    private let playButton: UIButton = {
+    let playButton: UIButton = {
         let button = UIButton()
         button.setTitle(" Play", for: .normal)
         button.setImage(UIImage(systemName: "play.fill"),

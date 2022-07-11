@@ -50,15 +50,34 @@ final class MovieDetailsViewController: UIViewController {
                 movieDetailsView.movieScore.text = model?.score?.description
                 movieDetailsView.releaseDateData.text = model?.release
                 movieDetailsView.synopsisData.text = model?.synopsis
+                if model!.favorite {
+                    movieDetailsView
+                        .topLikeButton
+                        .setImage(UIImage(systemName: "heart.fill")?
+                            .withRenderingMode(.alwaysTemplate), for: .normal)
+                } else {
+                    movieDetailsView
+                        .topLikeButton
+                        .setImage(UIImage(systemName: "heart")?
+                            .withRenderingMode(.alwaysTemplate), for: .normal)
+                }
                 
             })
             .disposed(by: bag)
         
-        outputs.setAsFavorite.drive(onNext: { [movieDetailsView] _ in
-            movieDetailsView.topLikeButton.setImage(
-                UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysTemplate),
-                for: .normal
-            )
+        outputs.setAsFavorite.drive(onNext: { [movieDetailsView] bool in
+            if bool {
+                movieDetailsView
+                    .topLikeButton
+                    .setImage(UIImage(systemName: "heart.fill")?
+                        .withRenderingMode(.alwaysTemplate), for: .normal)
+            } else {
+                movieDetailsView
+                    .topLikeButton
+                    .setImage(UIImage(systemName: "heart")?
+                        .withRenderingMode(.alwaysTemplate), for: .normal)
+            }
+            
         }).disposed(by: bag)
         
         outputs.closeView.drive().disposed(by: bag)
@@ -68,6 +87,7 @@ final class MovieDetailsViewController: UIViewController {
         addButtonsAnimation(
             movieDetailsView.topBackButton,
             movieDetailsView.topLikeButton,
+            movieDetailsView.playButton,
             disposeBag: bag
         )
     }

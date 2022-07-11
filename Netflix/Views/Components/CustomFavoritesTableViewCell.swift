@@ -22,6 +22,11 @@ final class CustomFavoritesTableViewCell: UITableViewCell {
         addSubview(image)
         addSubview(loading)
         self.backgroundColor = .black
+        self.selectedBackgroundView = {
+            let back = UIView()
+            back.backgroundColor = .black
+            return back
+        }()
     }
     
     override func layoutSubviews() {

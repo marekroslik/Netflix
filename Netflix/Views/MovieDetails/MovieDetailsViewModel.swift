@@ -12,11 +12,11 @@ class MovieDetailsViewModel: ViewModelType {
     struct Output {
         let closeView: Driver<Void>
         let showMovieInfo: Driver<MovieDetailsModel?>
-        let setAsFavorite: Driver<Void>
+        let setAsFavorite: Driver<Bool>
     }
     
     var didSendEventClosure: ((MovieDetailsViewController.Event) -> Void)?
-    private let model: MovieDetailsModel
+    private var model: MovieDetailsModel
     private let apiClient: APIClient
     private let userDefaultsUseCase: UserDefaultsUseCase
     
@@ -43,15 +43,18 @@ class MovieDetailsViewModel: ViewModelType {
             .asDriver(onErrorJustReturn: nil)
         
         let setAsFavorite = input.setAsFavoriteTrigger
-            .flatMapLatest({ [apiClient, model, userDefaultsUseCase] _ -> Observable<MarkAsFavoriteResponseModel> in
+            .flatMapLatest({ [self] _ -> Observable<MarkAsFavoriteResponseModel> in
                 return apiClient.markAsFavorite(model: MarkAsFavoritePostResponseModel(
                     mediaType: "movie",
                     mediaID: model.id,
-                    favorite: true
+                    favorite: !model.favorite
                 ), withSessionId: userDefaultsUseCase.sessionId!)
             })
-            .map { _ in () }
-            .asDriver(onErrorJustReturn: ())
+            .map { [self] _ in
+                self.model.favorite.toggle()
+                return self.model.favorite
+            }
+            .asDriver(onErrorJustReturn: false)
         
         return Output(
             closeView: closeView,
