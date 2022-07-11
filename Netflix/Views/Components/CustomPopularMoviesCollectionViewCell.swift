@@ -19,6 +19,11 @@ final class CustomPopularMoviesCollectionViewCell: UICollectionViewCell {
         let shadow = UIView()
         shadow.backgroundColor = .white
         shadow.layer.cornerRadius = 5
+        shadow.clipsToBounds = false
+        shadow.layer.shadowColor = UIColor.red.cgColor
+        shadow.layer.shadowOffset = .zero
+        shadow.layer.shadowRadius = 5.0
+        shadow.layer.shadowOpacity = 1
         return shadow
     }()
     

@@ -86,11 +86,9 @@ final class HomeViewController: UIViewController {
                         })
                 }
                 if element.favorites == true {
-                    cell.shadowView.clipsToBounds = false
-                    cell.shadowView.layer.shadowColor = UIColor.red.cgColor
-                    cell.shadowView.layer.shadowOffset = .zero
-                    cell.shadowView.layer.shadowRadius = 5.0
                     cell.shadowView.layer.shadowOpacity = 1
+                } else {
+                    cell.shadowView.layer.shadowOpacity = 0
                 }
             }
             .disposed(by: bag)
