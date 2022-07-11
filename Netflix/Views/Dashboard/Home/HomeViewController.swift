@@ -43,14 +43,6 @@ final class HomeViewController: UIViewController {
             .drive(onNext: { [latestMovieView] model in
                 latestMovieView.filmName.text = model?.title ?? ""
                 latestMovieView.loading.isHidden = false
-                guard let posterPath = model?.posterPath else { return }
-                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
-                    latestMovieView.movieImage.sd_setImage(
-                        with: poster,
-                        completed: { [latestMovieView] _, _, _, _ in
-                            latestMovieView.loading.isHidden = true
-                        })
-                }
                 if let tags = model?.tagline {
                     if !tags.isEmpty {
                         latestMovieView.hashtags.text = tags
@@ -70,6 +62,14 @@ final class HomeViewController: UIViewController {
                                 UIImage(systemName: "heart"),
                                 for: .normal)
                     }
+                }
+                guard let posterPath = model?.posterPath else { return }
+                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                    latestMovieView.movieImage.sd_setImage(
+                        with: poster,
+                        completed: { [latestMovieView] _, _, _, _ in
+                            latestMovieView.loading.isHidden = true
+                        })
                 }
             })
             .disposed(by: bag)

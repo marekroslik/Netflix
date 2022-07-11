@@ -21,7 +21,7 @@ class FavoritesViewModel: ViewModelType {
     var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
     private let apiClient: APIClient
     private let userDefaultsUseCase: UserDefaultsUseCase
-    private var favoritesMovies: [FavoritesMoviesResponseModel.Result]?
+    private var favoritesMovies: FavoritesMoviesResponseModel?
     
     init(apiClient: APIClient, userDefaultsUseCase: UserDefaultsUseCase) {
         self.apiClient = apiClient
@@ -34,8 +34,9 @@ class FavoritesViewModel: ViewModelType {
             .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 return apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
             })
-            .do(onNext: { [self] model in
-                self.favoritesMovies = model.results
+            .do(onNext: { [weak self] model in
+                guard let self = self else { return () }
+                self.favoritesMovies = model
             })
             .map { $0.results as [FavoritesMoviesResponseModel.Result] }
             .asDriver(onErrorJustReturn: [FavoritesMoviesResponseModel.Result]())
@@ -45,7 +46,7 @@ class FavoritesViewModel: ViewModelType {
                 guard let self = self else { return Observable.never() }
                 return (self.apiClient.markAsFavorite(model: MarkAsFavoritePostResponseModel(
                         mediaType: "movie",
-                        mediaID: (self.favoritesMovies?[indexPath.row].id)!,
+                        mediaID: (self.favoritesMovies?.results?[indexPath.row].id)!,
                         favorite: false
                     ), withSessionId: (self.userDefaultsUseCase.sessionId!)))
             })
@@ -54,8 +55,9 @@ class FavoritesViewModel: ViewModelType {
         
         let showMovieInfo = input.favoritesMovieCellTrigger
             .map({ [weak self] indexPath in
-                if let film = self?.favoritesMovies?[indexPath.row] {
-                    self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                guard let self = self else { return () }
+                if let film = self.favoritesMovies?.results?[indexPath.row] {
+                    self.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
                         id: film.id,
                         favorite: true,
                         posterPath: film.posterPath,
@@ -70,7 +72,8 @@ class FavoritesViewModel: ViewModelType {
         
         let switchToComingSoon = input.switchToComingSoon
             .do(onNext: { [didSendEventClosure] _ in
-                didSendEventClosure?(.comingSoon)
+                guard let didSendEventClosure = didSendEventClosure else { return () }
+                didSendEventClosure(.comingSoon)
         }).asDriver(onErrorJustReturn: ())
         
         return Output(

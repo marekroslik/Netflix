@@ -51,7 +51,7 @@ class HomeViewModel: ViewModelType {
                     self?.latestMovie?.favorites = true
                     }
             })
-                .map({ [weak self] _ in
+                .map({ [weak self] _ -> LatestMovieResponseModel in
                     return (self?.latestMovie)! as LatestMovieResponseModel
                 })
                 .asDriver(onErrorJustReturn: nil)
