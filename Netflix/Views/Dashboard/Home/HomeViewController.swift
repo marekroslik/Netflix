@@ -48,12 +48,27 @@ final class HomeViewController: UIViewController {
                     latestMovieView.movieImage.sd_setImage(
                         with: poster,
                         completed: { [latestMovieView] _, _, _, _ in
-                        latestMovieView.loading.isHidden = true
-                    })
+                            latestMovieView.loading.isHidden = true
+                        })
                 }
                 if let tags = model?.tagline {
                     if !tags.isEmpty {
                         latestMovieView.hashtags.text = tags
+                    }
+                }
+                if let like = model?.favorites {
+                    if like {
+                        latestMovieView
+                            .likeButton
+                            .setImage(
+                                UIImage(systemName: "heart.fill"),
+                                for: .normal)
+                    } else {
+                        latestMovieView
+                            .likeButton
+                            .setImage(
+                                UIImage(systemName: "heart"),
+                                for: .normal)
                     }
                 }
             })
@@ -67,8 +82,8 @@ final class HomeViewController: UIViewController {
                     cell.imageView.sd_setImage(
                         with: poster,
                         completed: { [cell] _, _, _, _ in
-                        cell.loading.isHidden = true
-                    })
+                            cell.loading.isHidden = true
+                        })
                 }
                 if element.favorites == true {
                     cell.shadowView.clipsToBounds = false
@@ -84,6 +99,22 @@ final class HomeViewController: UIViewController {
             .drive().disposed(by: bag)
         
         outputs.showAccount.drive().disposed(by: bag)
+        
+        outputs.likeLatestMovie.drive(onNext: { [latestMovieView] bool in
+            if bool {
+                latestMovieView
+                    .likeButton
+                    .setImage(UIImage(systemName: "heart.fill")?
+                        .withRenderingMode(.alwaysTemplate), for: .normal)
+            } else {
+                latestMovieView
+                    .likeButton
+                    .setImage(UIImage(systemName: "heart")?
+                        .withRenderingMode(.alwaysTemplate), for: .normal)
+            }
+            
+        }).disposed(by: bag)
+        
     }
     
     private func addAnimation() {
