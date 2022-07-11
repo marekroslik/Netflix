@@ -16,7 +16,7 @@ class ComingSoonViewModel: ViewModelType {
         let showSearchMovies: Driver<[SearchMoviesResponseModel.Result]>
         let showComingSoonMovieInfo: Driver<Void>
         let showSearchMovieInfo: Driver<Void>
-        let showHideSearch: Driver<Bool>
+        let showHideComingSoon: Driver<Bool>
     }
     
     var didSendEventClosure: ((ComingSoonViewController.Event) -> Void)?
@@ -82,20 +82,20 @@ class ComingSoonViewModel: ViewModelType {
             })
             .asDriver(onErrorJustReturn: ())
         
-        let showHideSearch = input.searchText
+        let showHideComingSoon = input.searchText
             .debounce(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
-            .map { $0.isEmpty }
+            .map { !$0.isEmpty }
             .do(onNext: { [weak self] _ in
                 self?.searchMovies?.removeAll()
             })
-                .startWith(true)
-                .asDriver(onErrorJustReturn: true)
+                .startWith(false)
+                .asDriver(onErrorJustReturn: false)
                 
                 return Output(
                     showComingSoonMovies: showComingSoonMovies,
                     showSearchMovies: showSearchMovies,
                     showComingSoonMovieInfo: showComingSoonMovieInfo,
                     showSearchMovieInfo: showSearchMovieInfo,
-                    showHideSearch: showHideSearch)
+                    showHideComingSoon: showHideComingSoon)
                 }
 }

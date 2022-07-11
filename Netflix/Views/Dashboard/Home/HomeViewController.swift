@@ -45,7 +45,7 @@ final class HomeViewController: UIViewController {
                 latestMovieView.loading.isHidden = false
                 if let tags = model?.tagline {
                     if !tags.isEmpty {
-                        latestMovieView.hashtags.text = tags
+                        latestMovieView.hashtags.text = tags.replacingOccurrences(of: ", ", with: " • ")
                     }
                 }
                 if let like = model?.favorites {

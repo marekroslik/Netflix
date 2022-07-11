@@ -29,8 +29,8 @@ final class ComingSoonViewController: UIViewController {
         
         let outputs = viewModel.transform(input: inputs)
         
-        outputs.showHideSearch
-            .drive(comingSoonView.searchMoviesCollectionView.rx.isHidden)
+        outputs.showHideComingSoon
+            .drive(comingSoonView.comingSoonCollectionView.rx.isHidden)
             .disposed(by: bag)
         
         outputs.showComingSoonMovies.drive(comingSoonView.comingSoonCollectionView.rx.items(
@@ -50,7 +50,13 @@ final class ComingSoonViewController: UIViewController {
         
         outputs.showComingSoonMovieInfo.drive().disposed(by: bag)
         
-        outputs.showSearchMovies.drive(comingSoonView.searchMoviesCollectionView.rx.items(
+        outputs.showSearchMovies.do(onNext: { [comingSoonView] model in
+            if model == [] {
+                comingSoonView.searchMoviesCollectionView.isHidden = true
+            } else {
+                comingSoonView.searchMoviesCollectionView.isHidden = false
+            }
+        }).drive(comingSoonView.searchMoviesCollectionView.rx.items(
             cellIdentifier: CustomComingSoonCollectionViewCell.identifier,
             cellType: CustomComingSoonCollectionViewCell.self)) { (_, element, cell) in
                 cell.loading.isHidden = false

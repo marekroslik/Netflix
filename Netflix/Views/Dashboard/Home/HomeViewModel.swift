@@ -49,7 +49,7 @@ class HomeViewModel: ViewModelType {
                 guard let array = model.results else { return }
                 if array.firstIndex(where: { $0.id == self?.latestMovie?.id}) != nil {
                     self?.latestMovie?.favorites = true
-                    }
+                }
             })
                 .map({ [weak self] _ -> LatestMovieResponseModel in
                     return (self?.latestMovie)! as LatestMovieResponseModel
@@ -96,36 +96,36 @@ class HomeViewModel: ViewModelType {
                             return self.latestMovie!.favorites
                         }
                         .asDriver(onErrorJustReturn: false)
-                        
-                        let showAccount = input.showAccountTrigger
-                        .do(onNext: { [weak self] _ in
-                            self?.didSendEventClosure?(.profile)
-                        })
-                            .asDriver(onErrorJustReturn: ())
-                            
-                            let showMovieInfo = input.popularMovieCellTrigger
-                            .map({ [weak self] indexPath in
-                                if let film = self?.popularMovies?.results[indexPath.row] {
-                                    self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
-                                        id: film.id,
-                                        favorite: film.favorites,
-                                        posterPath: film.posterPath,
-                                        title: film.title,
-                                        duration: "0",
-                                        score: film.voteAverage,
-                                        release: film.releaseDate,
-                                        synopsis: film.overview)))
-                                }
-                            })
-                            .asDriver(onErrorJustReturn: ())
-                            
-                            return Output(
-                                showLatestMovie: showLatestMovie,
-                                showPopularMovies: showPopularMovies,
-                                playLatestMovie: playLatestMovie,
-                                likeLatestMovie: likeLatestMovie,
-                                showAccount: showAccount,
-                                showMovieInfo: showMovieInfo
-                            )
-                            }
+        
+        let showAccount = input.showAccountTrigger
+            .do(onNext: { [weak self] _ in
+                self?.didSendEventClosure?(.profile)
+            })
+                .asDriver(onErrorJustReturn: ())
+                
+                let showMovieInfo = input.popularMovieCellTrigger
+                .map({ [weak self] indexPath in
+                    if let film = self?.popularMovies?.results[indexPath.row] {
+                        self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
+                            id: film.id,
+                            favorite: film.favorites,
+                            posterPath: film.posterPath,
+                            title: film.title,
+                            duration: "0",
+                            score: film.voteAverage,
+                            release: film.releaseDate,
+                            synopsis: film.overview)))
+                    }
+                })
+                .asDriver(onErrorJustReturn: ())
+                
+                return Output(
+                    showLatestMovie: showLatestMovie,
+                    showPopularMovies: showPopularMovies,
+                    playLatestMovie: playLatestMovie,
+                    likeLatestMovie: likeLatestMovie,
+                    showAccount: showAccount,
+                    showMovieInfo: showMovieInfo
+                )
+                }
 }

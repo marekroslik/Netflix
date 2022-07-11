@@ -49,6 +49,19 @@ final class ComingSoonUIView: UIView {
         return collectionView
     }()
     
+    let searchEmptyText: UILabel = {
+        let label = UILabel()
+        label.text = "Ooops, nothing found"
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 50, weight: .bold)
+        label.textAlignment = .center
+        label.textColor = .white
+        label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = .black
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
@@ -57,9 +70,10 @@ final class ComingSoonUIView: UIView {
     
     // Add subviews function
     private func addSubviews() {
+        addSubview(searchEmptyText)
         addSubview(searchTextField)
-        addSubview(comingSoonCollectionView)
         addSubview(searchMoviesCollectionView)
+        addSubview(comingSoonCollectionView)
     }
     
     // Set constraints function
@@ -76,6 +90,10 @@ final class ComingSoonUIView: UIView {
             make.left.right.equalToSuperview()
             make.top.equalTo(searchTextField.snp.bottom).offset(15)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        searchEmptyText.snp.makeConstraints { make in
+            make.edges.equalTo(searchMoviesCollectionView)
         }
         
         searchMoviesCollectionView.snp.makeConstraints { make in
