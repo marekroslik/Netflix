@@ -40,7 +40,7 @@
 
 ## Search
 
-<img src="/Screeshots/Search.png" width="200">
+<img src="/Screeshots/Search1.png" width="200"> <img src="/Screeshots/Search2.png" width="200">
 
 ## Favorites
 
