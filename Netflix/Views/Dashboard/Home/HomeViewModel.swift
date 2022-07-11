@@ -23,8 +23,7 @@ class HomeViewModel: ViewModelType {
     }
     
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
-    private var apiClient: APIClient
-    
+    private let apiClient: APIClient
     private var latestMovie: LatestMovieResponseModel?
     private var popularMovies: [PopularMoviesResponseModel.Result]?
     

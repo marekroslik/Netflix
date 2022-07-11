@@ -20,10 +20,9 @@ final class LoginViewModel: ViewModelType {
     }
     
     var didSendEventClosure: ((LoginViewController.Event) -> Void)?
-    private var apiClient: APIClient
+    private let apiClient: APIClient
     private let keyChainUseCase: KeyChainUseCase
     private let userDefaultsUseCase: UserDefaultsUseCase
-    
     private let bag = DisposeBag()
     private let errorHandling = PublishSubject<String>()
     

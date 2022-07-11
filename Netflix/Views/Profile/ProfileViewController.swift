@@ -45,7 +45,9 @@ final class ProfileViewController: UIViewController {
                 }
                 profileView.loading.isHidden = false
                 if let avatar = model?.avatar?.gravatar?.hash {
-                    profileView.profileImage.sd_setImage(with: URL(string: "\(APIConstants.Api.gravatarImage)\(avatar)\(APIConstants.ParamKeys.gravataRetro)"), completed: { [profileView] _, _, _, _ in
+                    profileView.profileImage.sd_setImage(
+                        with: URL(string: "\(APIConstants.Api.gravatarImage)\(avatar)\(APIConstants.ParamKeys.gravataRetro)"),
+                        completed: { [profileView] _, _, _, _ in
                         profileView.loading.isHidden = true
                     })
                 }

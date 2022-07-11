@@ -16,6 +16,7 @@ final class SplashViewModel: ViewModelType {
     private let apiClient: APIClient
     private let keyChainUseCase: KeyChainUseCase
     private let userDefaultsUseCase: UserDefaultsUseCase
+    private let startTime = Date()
     
     init(apiClient: APIClient, keyChainUseCase: KeyChainUseCase, userDefaultsUseCase: UserDefaultsUseCase) {
         self.apiClient = apiClient
@@ -25,11 +26,18 @@ final class SplashViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let getAccess = input.checkAccess
-            .do(onNext: { [didSendEventClosure, keyChainUseCase] _ in
+            .do(onNext: { [didSendEventClosure, keyChainUseCase, startTime] _ in
                 do {
                     _ = try keyChainUseCase.getLoginAndPassword()
                 } catch {
-                    didSendEventClosure?(.login)
+                    let time = Date().timeIntervalSince(startTime)
+                    if time < 2 {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2 - time) {
+                            didSendEventClosure?(.login)
+                        }
+                    } else {
+                        didSendEventClosure?(.login)
+                    }
                 }
             })
             .flatMapLatest { [apiClient] _ -> Observable<TokenResponseModel>in
@@ -42,7 +50,7 @@ final class SplashViewModel: ViewModelType {
             .do(onNext: { [userDefaultsUseCase] tokenResponse in
                 userDefaultsUseCase.token = tokenResponse.requestToken
             })
-            .flatMapLatest { [apiClient, keyChainUseCase] model -> Observable<LoginResponseModel> in
+            .flatMapLatest { [apiClient, keyChainUseCase, didSendEventClosure, startTime] model -> Observable<LoginResponseModel> in
                 let model = LoginPostResponseModel(
                     username: try keyChainUseCase.getLoginAndPassword().login,
                     password: try keyChainUseCase.getLoginAndPassword().password,
@@ -50,11 +58,18 @@ final class SplashViewModel: ViewModelType {
                 )
                 return apiClient.authenticationWithLoginPassword(model: model)
                     .observe(on: MainScheduler.instance)
-                    .catch { [weak self] error in
+                    .catch { [didSendEventClosure, startTime] error in
                         switch error {
                         case APIError.wrongPassword:
                             print("Invalid username or password")
-                            self?.didSendEventClosure?(.login)
+                            let time = Date().timeIntervalSince(startTime)
+                            if time < 2 {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2 - time) {
+                                    didSendEventClosure?(.login)
+                                }
+                            } else {
+                                didSendEventClosure?(.login)
+                            }
                             return Observable.never()
                         default:
                             print("Internet error")
@@ -72,12 +87,19 @@ final class SplashViewModel: ViewModelType {
                     }
             }
             .observe(on: MainScheduler.instance)
-            .do(onNext: { [didSendEventClosure, userDefaultsUseCase] sessionIdResponse in
+            .do(onNext: { [didSendEventClosure, userDefaultsUseCase, startTime] sessionIdResponse in
                 userDefaultsUseCase.sessionId = sessionIdResponse.sessionID
-                didSendEventClosure?(.main)
+                let time = Date().timeIntervalSince(startTime)
+                if time < 2 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2 - time) {
+                        didSendEventClosure?(.main)
+                    }
+                } else {
+                    didSendEventClosure?(.main)
+                }
             })
-                .map({ _ in () })
+            .map({ _ in () })
                 .asDriver(onErrorJustReturn: ())
-        return Output(getAccess: getAccess)
-    }
+                return Output(getAccess: getAccess)
+                }
 }

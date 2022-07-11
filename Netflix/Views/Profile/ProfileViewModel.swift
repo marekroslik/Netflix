@@ -18,7 +18,7 @@ class ProfileViewModel: ViewModelType {
     
     var didSendEventClosure: ((ProfileViewController.Event) -> Void)?
     
-    private var apiClient: APIClient
+    private let apiClient: APIClient
     private let keyChainUseCase: KeyChainUseCase
     private let userDefaultsUseCase: UserDefaultsUseCase
     

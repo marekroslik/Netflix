@@ -19,7 +19,6 @@ class FavoritesViewModel: ViewModelType {
     var didSendEventClosure: ((FavoritesViewController.Event) -> Void)?
     private let apiClient: APIClient
     private let userDefaultsUseCase: UserDefaultsUseCase
-    
     private var favoritesMovies: [FavoritesMoviesResponseModel.Result]?
     
     init(apiClient: APIClient, userDefaultsUseCase: UserDefaultsUseCase) {

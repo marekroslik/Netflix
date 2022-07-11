@@ -20,8 +20,7 @@ class ComingSoonViewModel: ViewModelType {
     }
     
     var didSendEventClosure: ((ComingSoonViewController.Event) -> Void)?
-    private var apiClient: APIClient
-    
+    private let apiClient: APIClient
     private var comingSoonMovies: [UpcomingMoviesResponseModel.Result]?
     private var searchMovies: [SearchMoviesResponseModel.Result]?
     
