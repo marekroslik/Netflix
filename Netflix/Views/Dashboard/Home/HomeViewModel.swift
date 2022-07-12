@@ -82,7 +82,6 @@ class HomeViewModel: ViewModelType {
                             
                             let playLatestMovie = input.playLatestMovieTrigger
                             .map({ [weak self] _ in
-                                print(self?.latestMovie)
                                 if let id = self?.latestMovie?.id {
                                     self?.didSendEventClosure?(.showVideo(id: id))
                                 } else {
