@@ -13,6 +13,7 @@ protocol APIClientProtocol {
     func getAccountDetails(withSessionID id: String) -> Observable<AccountDetailsResponseModel>
     func getFavoritesMovies(atPage page: Int, withSessionId id: String) -> Observable<FavoritesMoviesResponseModel>
     func markAsFavorite(model: MarkAsFavoritePostResponseModel, withSessionId id: String) -> Observable<MarkAsFavoriteResponseModel>
+    func getVideo(id: Int) -> Observable<VideoResponseModel>
 }
 
 class APIClient: APIClientProtocol {
@@ -183,6 +184,22 @@ class APIClient: APIClientProtocol {
                             APIConstants.HTTPHeaderField.contentType.rawValue)
         let payloadData = try? JSONEncoder().encode(model)
         request.httpBody = payloadData
+        return requestObservable.callAPI(request: request)
+    }
+    
+    func getVideo(id: Int) -> Observable<VideoResponseModel> {
+        let urlRequest =
+        APIConstants.Api.baseUrl +
+        APIConstants.Version.version3 +
+        APIConstants.Endpoint.movie +
+        String(id) +
+        APIConstants.Endpoint.videos +
+        APIConstants.ParamKeys.apiKey +
+        APIConstants.Api.apiKey
+        
+        var request = URLRequest(url: URL(string: urlRequest.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!)
+        request.httpMethod = APIConstants.RequestType.GET.rawValue
+        request.addValue(APIConstants.ContentType.json.rawValue, forHTTPHeaderField: APIConstants.HTTPHeaderField.contentType.rawValue)
         return requestObservable.callAPI(request: request)
     }
 }

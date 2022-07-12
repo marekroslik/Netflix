@@ -47,10 +47,29 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
         movieDetails.viewModel.didSendEventClosure = { [weak self] event in
             switch event {
             case .close:
+                self?.closePushView()
+            case .showVideo(let id):
+                self?.showVideo(id: id)
+            }
+        }
+        navigationController.pushViewController(movieDetails, animated: true)
+    }
+    
+    func showVideo(id: Int) {
+        let player = PlayerViewController()
+        player.viewModel = PlayerViewModel(
+            apiClient: APIClient(),
+            movieId: id
+        )
+        player.modalPresentationStyle = .automatic
+        player.viewModel.didSendEventClosure = { [weak self] event in
+            switch event {
+            case .close:
                 self?.closePresentView()
             }
         }
-        navigationController.present(movieDetails, animated: true)
+        
+        navigationController.present(player, animated: true)
     }
     
     func showProfile() {
@@ -74,6 +93,10 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
     
     func closePresentView() {
         navigationController.dismiss(animated: true)
+    }
+    
+    func closePushView() {
+        navigationController.popViewController(animated: true)
     }
     
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
@@ -126,6 +149,8 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
                     self?.showMovieDetails(model: model)
                 case .profile:
                     self?.showProfile()
+                case .showVideo(id: let id):
+                    self?.showVideo(id: id)
                 }
             }
             navController.pushViewController(home, animated: true)

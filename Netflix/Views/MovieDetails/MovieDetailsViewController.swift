@@ -32,7 +32,8 @@ final class MovieDetailsViewController: UIViewController {
         let inputs = MovieDetailsViewModel.Input(
             closeViewTrigger: movieDetailsView.topBackButton.rx.tap.asObservable(),
             getMovieInfo: viewDidLoadRelay.asObservable(),
-            setAsFavoriteTrigger: movieDetailsView.topLikeButton.rx.tap.asObservable())
+            setAsFavoriteTrigger: movieDetailsView.topLikeButton.rx.tap.asObservable(),
+            playVideoTrigger: movieDetailsView.playButton.rx.tap.asObservable())
         
         let outputs = viewModel.transform(input: inputs)
         
@@ -81,6 +82,8 @@ final class MovieDetailsViewController: UIViewController {
         }).disposed(by: bag)
         
         outputs.closeView.drive().disposed(by: bag)
+        
+        outputs.playVideo.drive().disposed(by: bag)
     }
     
     private func addAnimation() {
@@ -112,5 +115,6 @@ final class MovieDetailsViewController: UIViewController {
 extension MovieDetailsViewController {
     enum Event {
         case close
+        case showVideo(id: Int)
     }
 }

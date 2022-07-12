@@ -11,4 +11,5 @@ pod 'RxSwift'
 pod 'RxCocoa'
 pod 'lottie-ios'
 pod 'SDWebImage'
+pod 'youtube-ios-player-helper-swift'
 end
