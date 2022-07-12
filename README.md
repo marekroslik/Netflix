@@ -34,7 +34,7 @@
 
 <img src="/Screeshots/Home.png" width="200">
 
-## ComminSoon
+## ComingSoon
 
 <img src="/Screeshots/CommingSoon.png" width="200">
 
