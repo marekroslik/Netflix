@@ -50,6 +50,10 @@
 
 <img src="/Screeshots/MovieDetails.png" width="200">
 
+## Trailer
+
+<img src="/Screeshots/Trailer1.png" width="200"> <img src="/Screeshots/Trailer2.png" width="200">
+
 ## Profile
 
 <img src="/Screeshots/Profile.png" width="200">
