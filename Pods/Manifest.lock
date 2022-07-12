@@ -12,6 +12,7 @@ PODS:
   - SnapKit (5.6.0)
   - SwiftGen (6.5.1)
   - SwiftLint (0.47.1)
+  - youtube-ios-player-helper-swift (1.1)
 
 DEPENDENCIES:
   - lottie-ios
@@ -21,6 +22,7 @@ DEPENDENCIES:
   - SnapKit
   - SwiftGen
   - SwiftLint
+  - youtube-ios-player-helper-swift
 
 SPEC REPOS:
   trunk:
@@ -32,6 +34,7 @@ SPEC REPOS:
     - SnapKit
     - SwiftGen
     - SwiftLint
+    - youtube-ios-player-helper-swift
 
 SPEC CHECKSUMS:
   lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
@@ -42,7 +45,8 @@ SPEC CHECKSUMS:
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftGen: a6d22010845f08fe18fbdf3a07a8e380fd22e0ea
   SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
+  youtube-ios-player-helper-swift: 51a3c5325317c8271d0c7985c1bbe5a252ffb2fd
 
-PODFILE CHECKSUM: 2b39f30d4e3acd0e028b400ff852f647653f49a1
+PODFILE CHECKSUM: f37189948c50063fbd0e385c61cce9fd5b815ddb
 
 COCOAPODS: 1.11.3

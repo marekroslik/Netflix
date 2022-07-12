@@ -16,7 +16,7 @@ final class MovieDetailsUIView: UIView {
     // Create back button
     let topBackButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.down")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = .red
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 50), forImageIn: .normal)
         return button

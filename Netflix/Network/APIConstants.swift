@@ -24,6 +24,8 @@ struct APIConstants {
         static let account = "account"
         static let favorite = "/{account_id}/favorite"
         static let sessionId = "authentication/session/new"
+        static let movie = "movie/"
+        static let videos = "/videos"
     }
     
     struct ParamKeys {

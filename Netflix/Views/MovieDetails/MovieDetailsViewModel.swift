@@ -7,12 +7,14 @@ class MovieDetailsViewModel: ViewModelType {
         let closeViewTrigger: Observable<Void>
         let getMovieInfo: Observable<Void>
         let setAsFavoriteTrigger: Observable<Void>
+        let playVideoTrigger: Observable<Void>
     }
     
     struct Output {
         let closeView: Driver<Void>
         let showMovieInfo: Driver<MovieDetailsModel?>
         let setAsFavorite: Driver<Bool>
+        let playVideo: Driver<Void>
     }
     
     var didSendEventClosure: ((MovieDetailsViewController.Event) -> Void)?
@@ -56,10 +58,18 @@ class MovieDetailsViewModel: ViewModelType {
             }
             .asDriver(onErrorJustReturn: false)
         
+        let playVideo = input.playVideoTrigger
+            .map({ [didSendEventClosure, model] _ in
+                didSendEventClosure?(.showVideo(id: model.id))
+                return ()
+            })
+            .asDriver(onErrorJustReturn: ())
+        
         return Output(
             closeView: closeView,
             showMovieInfo: showMovieInfo,
-            setAsFavorite: setAsFavorite
+            setAsFavorite: setAsFavorite,
+            playVideo: playVideo
         )
     }
 }

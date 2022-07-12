@@ -113,6 +113,8 @@ final class HomeViewController: UIViewController {
             
         }).disposed(by: bag)
         
+        outputs.playLatestMovie.drive().disposed(by: bag)
+        
     }
     
     private func addAnimation() {
@@ -148,5 +150,6 @@ extension HomeViewController {
     enum Event {
         case movieDetails(model: MovieDetailsModel)
         case profile
+        case showVideo(id: Int)
     }
 }
