@@ -113,6 +113,8 @@ final class ProfileUIView: UIView {
         return button
     }()
     
+    let loadingView = LoadingUIView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
@@ -135,6 +137,7 @@ final class ProfileUIView: UIView {
         addSubview(watchedLabel)
         addSubview(moviesWatchedLabel)
         addSubview(logoutButton)
+        addSubview(loadingView)
     }
     
     // Set constraints
@@ -215,6 +218,10 @@ final class ProfileUIView: UIView {
             make.height.equalTo(40)
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.centerX.equalToSuperview()
+        }
+        
+        loadingView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     

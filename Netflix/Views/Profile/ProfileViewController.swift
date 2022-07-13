@@ -31,12 +31,15 @@ final class ProfileViewController: UIViewController {
         let inputs = ProfileViewModel.Input(
             closeViewTrigger: profileView.exitButton.rx.tap.asObservable(),
             logoutTrigger: profileView.logoutButton.rx.tap.asObservable(),
-            getInfo: viewDidLoadRelay.asObservable())
+            getInfo: viewDidLoadRelay.asObservable().do(onNext: { [self] _ in
+                self.profileView.loadingView.isHidden = false
+            }))
         
         let outputs = viewModel.transform(input: inputs)
         
         outputs.showInfo
             .drive(onNext: { [profileView] model in
+                profileView.loadingView.isHidden = true
                 if let name = model?.name {
                     profileView.nameLabel.text = name
                 }
