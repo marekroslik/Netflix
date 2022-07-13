@@ -9,6 +9,7 @@ final class HomeViewController: UIViewController {
     
     private let latestMovieView = HomeLatestMovieUIView()
     private let popularMoviesView = HomePopularMoviesUIView()
+    private let viewLoading = LoadingUIView()
     
     private let bag = DisposeBag()
     let viewDidLoadRelay = PublishRelay<Void>()
@@ -24,13 +25,16 @@ final class HomeViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         viewDidLoadRelay.accept(())
     }
     
     private func bindViewModel() {
         let inputs = HomeViewModel.Input(
             loadingLatestMovie: viewDidLoadRelay.asObservable(),
-            loadingPopularMovies: viewDidLoadRelay.asObservable(),
+            loadingPopularMovies: viewDidLoadRelay.asObservable().do(onNext: { [self] _ in
+                self.viewLoading.isHidden = false
+            }),
             playLatestMovieTrigger: latestMovieView.playButton.rx.tap.asObservable(),
             likeLatestMovieTrigger: latestMovieView.likeButton.rx.tap.asObservable(),
             showAccountTrigger: latestMovieView.accountButton.rx.tap.asObservable(),
@@ -74,7 +78,9 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: bag)
         
-        outputs.showPopularMovies.drive(popularMoviesView.popularMoviesCollectionView.rx.items(
+        outputs.showPopularMovies.do(onNext: { [self] _ in
+            self.viewLoading.isHidden = true
+        }).drive(popularMoviesView.popularMoviesCollectionView.rx.items(
             cellIdentifier: CustomPopularMoviesCollectionViewCell.identifier,
             cellType: CustomPopularMoviesCollectionViewCell.self)) { (_, element, cell) in
                 cell.loading.isHidden = false
@@ -130,6 +136,7 @@ final class HomeViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(latestMovieView)
         view.addSubview(popularMoviesView)
+        view.addSubview(viewLoading)
     }
     
     private func applyConstraints() {
@@ -142,6 +149,10 @@ final class HomeViewController: UIViewController {
         popularMoviesView.snp.makeConstraints { make in
             make.bottom.left.right.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.4)
+        }
+        
+        viewLoading.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 }

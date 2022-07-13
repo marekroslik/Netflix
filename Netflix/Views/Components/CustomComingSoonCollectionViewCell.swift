@@ -14,11 +14,23 @@ final class CustomComingSoonCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    let shadowView: UIView = {
+        let shadow = UIView()
+        shadow.backgroundColor = .white
+        shadow.clipsToBounds = false
+        shadow.layer.shadowColor = UIColor.red.cgColor
+        shadow.layer.shadowOffset = .zero
+        shadow.layer.shadowRadius = 5.0
+        shadow.layer.shadowOpacity = 1
+        return shadow
+    }()
+    
     let loading = LoadingUIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .black
+        contentView.addSubview(shadowView)
         contentView.addSubview(imageView)
         contentView.addSubview(loading)
     }
@@ -29,7 +41,20 @@ final class CustomComingSoonCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageView.frame = CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height)
-        loading.frame = CGRect(x: 0, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height)
+        imageView.frame = CGRect(
+            x: 5, y: 5,
+            width: contentView.frame.size.width-10,
+            height: contentView.frame.size.height-10
+        )
+        
+        loading.frame = CGRect(
+            x: 5, y: 5,
+            width: contentView.frame.size.width-10,
+            height: contentView.frame.size.height-10
+        )
+        shadowView.frame = CGRect(
+            x: 5, y: 5,
+            width: contentView.frame.size.width-10,
+            height: contentView.frame.size.height-10)
     }
 }

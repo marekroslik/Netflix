@@ -157,7 +157,10 @@ class MainCoordinator: BaseCoordinator, MainCoordinatorProtocol {
             
         case .comingSoon:
             let comingSoon = ComingSoonViewController()
-            comingSoon.viewModel = ComingSoonViewModel(apiClient: APIClient())
+            comingSoon.viewModel = ComingSoonViewModel(
+                apiClient: APIClient(),
+                userDefaultsUseCase: UserDefaultsUseCase()
+            )
             comingSoon.viewModel.didSendEventClosure = { [weak self] event in
                 switch event {
                 case .movieDetails(let model):

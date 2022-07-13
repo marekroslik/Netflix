@@ -20,6 +20,7 @@ final class FavoritesViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         updateFavorites.accept(())
     }
     

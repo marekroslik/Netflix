@@ -62,6 +62,8 @@ final class ComingSoonUIView: UIView {
         return label
     }()
     
+    let loading = LoadingUIView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
@@ -74,6 +76,7 @@ final class ComingSoonUIView: UIView {
         addSubview(searchTextField)
         addSubview(searchMoviesCollectionView)
         addSubview(comingSoonCollectionView)
+        addSubview(loading)
     }
     
     // Set constraints function
@@ -100,6 +103,10 @@ final class ComingSoonUIView: UIView {
             make.left.right.equalToSuperview()
             make.top.equalTo(searchTextField.snp.bottom).offset(15)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        loading.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     

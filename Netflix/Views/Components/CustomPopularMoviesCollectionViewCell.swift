@@ -45,12 +45,12 @@ final class CustomPopularMoviesCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         shadowView.frame = CGRect(
             x: 5, y: 5,
-            width: contentView.frame.size.width-10,
-            height: contentView.frame.size.height-10
+            width: contentView.frame.size.width-11,
+            height: contentView.frame.size.height-11
         )
         imageView.frame = CGRect(
             x: 5, y: 5,
-            width: contentView.frame.size.width-10,
+            width: contentView.frame.size.width-11,
             height: contentView.frame.size.height-10
         )
         loading.frame = CGRect(

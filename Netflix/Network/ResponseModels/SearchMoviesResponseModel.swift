@@ -2,7 +2,7 @@ import Foundation
 
 struct SearchMoviesResponseModel: Codable {
     let page: Int?
-    let results: [Result]?
+    var results: [Result]?
     let totalResults, totalPages: Int?
     
     enum CodingKeys: String, CodingKey {
@@ -13,6 +13,7 @@ struct SearchMoviesResponseModel: Codable {
     
     struct Result: Codable, Equatable {
         let id: Int
+        var favorites: Bool = false
         let posterPath: String?
         let title: String?
         let voteAverage: Double?
