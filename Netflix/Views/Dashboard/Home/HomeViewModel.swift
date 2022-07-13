@@ -42,9 +42,9 @@ class HomeViewModel: ViewModelType {
             .do(onNext: { [weak self] model in
                 self?.latestMovie = model
             })
-                .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
-                    apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
-                })
+            .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
+                apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
+            })
                 .do(onNext: { [weak self] model in
                     guard let array = model.results else { return }
                     if array.firstIndex(where: { $0.id == self?.latestMovie?.id}) != nil {
@@ -75,9 +75,9 @@ class HomeViewModel: ViewModelType {
                                 }
                             }
                         })
-                        .map({ [weak self] _ in
-                            return self?.popularMovies?.results as [PopularMoviesResponseModel.Result]
-                        })
+                            .map({ [weak self] _ in
+                                return self?.popularMovies?.results as [PopularMoviesResponseModel.Result]
+                            })
                             .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
                             
                             let playLatestMovie = input.playLatestMovieTrigger

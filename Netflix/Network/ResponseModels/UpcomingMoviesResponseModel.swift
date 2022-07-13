@@ -2,7 +2,7 @@ import Foundation
 
 struct UpcomingMoviesResponseModel: Codable {
     let page: Int?
-    let results: [Result]?
+    var results: [Result]?
     let dates: Dates?
     let totalPages, totalResults: Int?
     
@@ -17,6 +17,7 @@ struct UpcomingMoviesResponseModel: Codable {
     
     struct Result: Codable {
         let id: Int
+        var favorites: Bool = false
         let posterPath: String?
         let title: String?
         let voteAverage: Double?

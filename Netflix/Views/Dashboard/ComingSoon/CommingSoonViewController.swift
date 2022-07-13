@@ -19,9 +19,16 @@ final class ComingSoonViewController: UIViewController {
         viewDidLoadRelay.accept(())
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewDidLoadRelay.accept(())
+    }
+    
     private func bindViewModel() {
         let inputs = ComingSoonViewModel.Input(
-            loadingComingSoonMovies: viewDidLoadRelay.asObservable(),
+            loadingComingSoonMovies: viewDidLoadRelay.asObservable().do(onNext: { [self] _ in
+                self.comingSoonView.loading.isHidden = false
+            }),
             searchText: comingSoonView.searchTextField.rx.text.orEmpty.asObservable(),
             comingSoonMovieCellTrigger: comingSoonView.comingSoonCollectionView.rx.itemSelected.asObservable(),
             searchMovieCellTrigger: comingSoonView.searchMoviesCollectionView.rx.itemSelected.asObservable()
@@ -33,7 +40,9 @@ final class ComingSoonViewController: UIViewController {
             .drive(comingSoonView.comingSoonCollectionView.rx.isHidden)
             .disposed(by: bag)
         
-        outputs.showComingSoonMovies.drive(comingSoonView.comingSoonCollectionView.rx.items(
+        outputs.showComingSoonMovies.do(onNext: { [self] _ in
+            self.comingSoonView.loading.isHidden = true
+        }).drive(comingSoonView.comingSoonCollectionView.rx.items(
             cellIdentifier: CustomComingSoonCollectionViewCell.identifier,
             cellType: CustomComingSoonCollectionViewCell.self)) { (_, element, cell) in
                 cell.loading.isHidden = false
@@ -44,6 +53,11 @@ final class ComingSoonViewController: UIViewController {
                         completed: { [cell] _, _, _, _ in
                         cell.loading.isHidden = true
                     })
+                    if element.favorites == true {
+                        cell.shadowView.layer.shadowOpacity = 1
+                    } else {
+                        cell.shadowView.layer.shadowOpacity = 0
+                    }
                 }
             }
             .disposed(by: bag)
@@ -65,6 +79,11 @@ final class ComingSoonViewController: UIViewController {
                     cell.imageView.sd_setImage(with: poster, completed: { [cell] _, _, _, _ in
                         cell.loading.isHidden = true
                     })
+                    if element.favorites == true {
+                        cell.shadowView.layer.shadowOpacity = 1
+                    } else {
+                        cell.shadowView.layer.shadowOpacity = 0
+                    }
                 }
                 
             }
