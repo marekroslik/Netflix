@@ -5,15 +5,16 @@ import SDWebImage
 
 final class FavoritesViewController: UIViewController {
     
-    let favoritesView = FavoritesUIView()
+    private let favoritesView = FavoritesUIView()
     var viewModel: FavoritesViewModel!
     
     private let bag = DisposeBag()
-    let updateFavorites = PublishRelay<Void>()
+    private let updateFavorites = PublishRelay<Void>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(favoritesView)
+        tableSetUp()
         applyConstraints()
         addAnimation()
         bindViewModel()
@@ -22,6 +23,7 @@ final class FavoritesViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateFavorites.accept(())
+        favoritesView.table.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
     }
     
     private func bindViewModel() {
@@ -31,7 +33,8 @@ final class FavoritesViewController: UIViewController {
             }),
             favoritesMovieCellTrigger: favoritesView.table.rx.itemSelected.asObservable(),
             favoritesMoviesDeleteTrigger: favoritesView.table.rx.itemDeleted.asObservable(),
-            switchToComingSoon: favoritesView.switchTabButton.rx.tap.asObservable()
+            switchToComingSoon: favoritesView.switchTabButton.rx.tap.asObservable(),
+            trackFavoritesTableScrollTrigger: favoritesView.table.rx.willDisplayCell.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
@@ -69,6 +72,24 @@ final class FavoritesViewController: UIViewController {
         outputs.switchToComingSoon
             .drive()
             .disposed(by: bag)
+        
+        outputs.showTableLoading
+            .drive(onNext: { [favoritesView] bool in
+                favoritesView.table.tableFooterView = bool ? favoritesView.tableSpinner : UIView(frame: .zero)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func tableSetUp() {
+        favoritesView.table.refreshControl?.addTarget(self, action: #selector(refreshControlTriggered), for: .valueChanged)
+        favoritesView.tableSpinner.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: 200)
+        favoritesView.table.tableFooterView = favoritesView.tableSpinner
+        
+    }
+    
+    @objc private func refreshControlTriggered() {
+        updateFavorites.accept(())
+        favoritesView.table.refreshControl?.endRefreshing()
     }
     
     private func addAnimation() {

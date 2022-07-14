@@ -46,8 +46,7 @@ class HomeViewModel: ViewModelType {
                 apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
             })
                 .do(onNext: { [weak self] model in
-                    guard let array = model.results else { return }
-                    if array.firstIndex(where: { $0.id == self?.latestMovie?.id}) != nil {
+                    if  model.results.firstIndex(where: { $0.id == self?.latestMovie?.id}) != nil {
                         self?.latestMovie?.favorites = true
                     }
                 })
@@ -68,8 +67,7 @@ class HomeViewModel: ViewModelType {
                         })
                         .do(onNext: { [weak self] model in
                             guard let array1 = self?.popularMovies?.results else { return }
-                            guard let array2 = model.results else { return }
-                            for element in array2 {
+                            for element in model.results {
                                 if let index = array1.firstIndex(where: { $0.id == element.id}) {
                                     self?.popularMovies?.results[index].favorites = true
                                 }

@@ -46,8 +46,7 @@ class ComingSoonViewModel: ViewModelType {
             .do(onNext: { [weak self] model in
                 self?.favoritesMovies = model
                 guard let array1 = self?.comingSoonMovies?.results else { return }
-                guard let array2 = model.results else { return }
-                for element in array2 {
+                for element in model.results {
                     if let index = array1.firstIndex(where: { $0.id == element.id}) {
                         self?.comingSoonMovies?.results?[index].favorites = true
                     }
