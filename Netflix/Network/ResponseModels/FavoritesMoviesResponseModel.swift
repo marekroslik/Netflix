@@ -1,9 +1,9 @@
 import Foundation
 
 struct FavoritesMoviesResponseModel: Codable {
-    let page: Int?
-    let results: [Result]?
-    let totalPages, totalResults: Int?
+    var page: Int
+    var results: [Result]
+    var totalPages, totalResults: Int
     
     enum CodingKeys: String, CodingKey {
         case page, results
@@ -12,12 +12,12 @@ struct FavoritesMoviesResponseModel: Codable {
     }
     
     struct Result: Codable, Equatable, Hashable {
-        let id: Int
-        let posterPath: String?
-        let title: String?
-        let voteAverage: Double?
-        let releaseDate: String?
-        let overview: String?
+        var id: Int
+        var posterPath: String?
+        var title: String?
+        var voteAverage: Double?
+        var releaseDate: String?
+        var overview: String?
         
         // swiftlint:disable nesting
         enum CodingKeys: String, CodingKey {

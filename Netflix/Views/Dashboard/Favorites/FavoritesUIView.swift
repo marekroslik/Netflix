@@ -7,7 +7,30 @@ final class FavoritesUIView: UIView {
     let table: UITableView = {
         let table = UITableView()
         table.register(CustomFavoritesTableViewCell.self, forCellReuseIdentifier: CustomFavoritesTableViewCell.identifier)
+        table.estimatedRowHeight = 200
+        table.rowHeight = UITableView.automaticDimension
+        let refreshControl: UIRefreshControl = {
+            let refreshControl = UIRefreshControl()
+            refreshControl.tintColor = .red
+            return refreshControl
+        }()
+        table.refreshControl = refreshControl
+        table.translatesAutoresizingMaskIntoConstraints = false
+        table.tableFooterView = UIView(frame: .zero)
         return table
+    }()
+    
+    let tableSpinner: UIView = {
+        let view = UIView()
+        let spinner = UIActivityIndicatorView()
+        spinner.color = .red
+        spinner.transform = CGAffineTransform.init(scaleX: 2.5, y: 2.5)
+        view.addSubview(spinner)
+        spinner.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        spinner.startAnimating()
+        return view
     }()
     
     let loading: LoadingUIView = {
