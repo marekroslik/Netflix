@@ -21,7 +21,7 @@ class HomeViewModel: ViewModelType {
         let likeLatestMovie: Driver<Bool>
         let showAccount: Driver<Void>
         let showMovieInfo: Driver<Void>
-        let showTableLoading: Driver<Bool>
+        let showPopularCollectionLoading: Driver<Bool>
     }
     
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
@@ -30,7 +30,7 @@ class HomeViewModel: ViewModelType {
     private var latestMovie: LatestMovieResponseModel?
     private var popularMovies: PopularMoviesResponseModel?
     private var popularPage: Int = 1
-    private let showTableLoadingTrigger = PublishRelay<Bool>()
+    private let showPopularCollectionLoadingTrigger = PublishRelay<Bool>()
     
     init(apiClient: APIClient, userDefaultsUseCase: UserDefaultsUseCase) {
         self.apiClient = apiClient
@@ -65,6 +65,7 @@ class HomeViewModel: ViewModelType {
                     })
                     .do(onNext: { [weak self] model in
                         self?.popularMovies = model
+                        self?.popularPage = 1
                     })
                         .flatMapLatest({ [apiClient] _ -> Observable<FavoritesMoviesResponseModel> in
                             apiClient.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!)
@@ -77,9 +78,9 @@ class HomeViewModel: ViewModelType {
                                 }
                             }
                             if model.page < model.totalPages {
-                                self?.showTableLoadingTrigger.accept(true)
+                                self?.showPopularCollectionLoadingTrigger.accept(true)
                             } else {
-                                self?.showTableLoadingTrigger.accept(false)
+                                self?.showPopularCollectionLoadingTrigger.accept(false)
                             }
                         })
                             .map({ [weak self] _ in
@@ -163,9 +164,9 @@ class HomeViewModel: ViewModelType {
                             }
                         }
                         if model.page < model.totalPages {
-                            self?.showTableLoadingTrigger.accept(true)
+                            self?.showPopularCollectionLoadingTrigger.accept(true)
                         } else {
-                            self?.showTableLoadingTrigger.accept(false)
+                            self?.showPopularCollectionLoadingTrigger.accept(false)
                         }
                     })
                         .map({ [weak self] _ in
@@ -179,7 +180,7 @@ class HomeViewModel: ViewModelType {
                             return Driver.just(driver)
                         }
         
-        let showTableLoading = showTableLoadingTrigger.map({ bool in
+        let showPopularCollectionLoading = showPopularCollectionLoadingTrigger.map({ bool in
             return bool
         }).startWith(true).asDriver(onErrorJustReturn: (true))
         
@@ -190,7 +191,7 @@ class HomeViewModel: ViewModelType {
             likeLatestMovie: likeLatestMovie,
             showAccount: showAccount,
             showMovieInfo: showMovieInfo,
-            showTableLoading: showTableLoading
+            showPopularCollectionLoading: showPopularCollectionLoading
         )
     }
 }

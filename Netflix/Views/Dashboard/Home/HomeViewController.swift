@@ -135,7 +135,7 @@ final class HomeViewController: UIViewController {
             .drive()
             .disposed(by: bag)
         
-        outputs.showTableLoading
+        outputs.showPopularCollectionLoading
             .drive(onNext: { [weak self] bool in
                 guard let self = self else { return }
                 self.showPopularFooter = bool
