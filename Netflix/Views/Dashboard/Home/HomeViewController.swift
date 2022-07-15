@@ -170,7 +170,7 @@ final class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController: UICollectionViewDelegate {
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private func collectionSetUp() {
         popularMoviesView.popularMoviesCollectionView.delegate = self
         popularMoviesView.popularMoviesCollectionView.register(
@@ -183,19 +183,31 @@ extension HomeViewController: UICollectionViewDelegate {
             withReuseIdentifier: FooterCollectionReusableView.identifier
         )
     }
-    private func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-            return collectionView.dequeueReusableSupplementaryView(
-                ofKind: elementKind,
+    
+    private func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionFooter {
+            return popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
                 withReuseIdentifier: FooterCollectionReusableView.identifier,
                 for: indexPath
             )
+        }
+        return UICollectionReusableView()
     }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-            return CGSize(width: 100, height: 100)
+        return CGSize(
+            width: 100,
+            height: popularMoviesView.popularMoviesCollectionView.frame.height
+        )
     }
 }
 

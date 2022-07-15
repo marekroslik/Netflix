@@ -346,8 +346,8 @@
 				F99AA5492840E44000BB3B76 /* CustomPopularMoviesCollectionViewCell.swift */,
 				F99D1B5C284268B3009EE515 /* CustomComingSoonCollectionViewCell.swift */,
 				F9C73AAD2843A67F004EF079 /* CustomFavoritesTableViewCell.swift */,
-				F9810548283F69BA005496FD /* UIVerticalButton.swift */,
 				F9518E1328817687002BE22E /* FooterCollectionReusableView.swift */,
+				F9810548283F69BA005496FD /* UIVerticalButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";

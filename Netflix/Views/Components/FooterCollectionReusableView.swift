@@ -12,18 +12,15 @@ class FooterCollectionReusableView: UICollectionReusableView {
         spinner.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
+        spinner.backgroundColor = .yellow
         spinner.startAnimating()
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .black
+        backgroundColor = .yellow
         addSubview(tableSpinner)
-        
-        tableSpinner.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -32,5 +29,6 @@ class FooterCollectionReusableView: UICollectionReusableView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        tableSpinner.frame = bounds
     }
 }
