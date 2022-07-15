@@ -10,6 +10,7 @@ final class HomeViewController: UIViewController {
     private let latestMovieView = HomeLatestMovieUIView()
     private let popularMoviesView = HomePopularMoviesUIView()
     private let viewLoading = LoadingUIView()
+    private var showPopularFooter: Bool = true
     
     private let bag = DisposeBag()
     let viewDidLoadRelay = PublishRelay<Void>()
@@ -134,6 +135,13 @@ final class HomeViewController: UIViewController {
             .drive()
             .disposed(by: bag)
         
+        outputs.showTableLoading
+            .drive(onNext: { [weak self] bool in
+                guard let self = self else { return }
+                self.showPopularFooter = bool
+            })
+            .disposed(by: bag)
+        
     }
     
     private func addAnimation() {
@@ -184,12 +192,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegate
         )
     }
     
-    private func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
+        print("CREATE VIEW")
         if kind == UICollectionView.elementKindSectionFooter {
+            print(popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: FooterCollectionReusableView.identifier,
+                for: indexPath
+            ))
             return popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: FooterCollectionReusableView.identifier,
@@ -204,10 +218,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegate
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        return CGSize(
-            width: 100,
-            height: popularMoviesView.popularMoviesCollectionView.frame.height
-        )
+        if showPopularFooter {
+            return CGSize(
+                width: 100,
+                height: popularMoviesView.popularMoviesCollectionView.frame.height
+            )
+        }
+        return CGSize(width: 0, height: 0)
     }
 }
 

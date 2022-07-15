@@ -21,6 +21,7 @@ class HomeViewModel: ViewModelType {
         let likeLatestMovie: Driver<Bool>
         let showAccount: Driver<Void>
         let showMovieInfo: Driver<Void>
+        let showTableLoading: Driver<Bool>
     }
     
     var didSendEventClosure: ((HomeViewController.Event) -> Void)?
@@ -29,6 +30,7 @@ class HomeViewModel: ViewModelType {
     private var latestMovie: LatestMovieResponseModel?
     private var popularMovies: PopularMoviesResponseModel?
     private var popularPage: Int = 1
+    private let showTableLoadingTrigger = PublishRelay<Bool>()
     
     init(apiClient: APIClient, userDefaultsUseCase: UserDefaultsUseCase) {
         self.apiClient = apiClient
@@ -47,62 +49,68 @@ class HomeViewModel: ViewModelType {
             .flatMapLatest({ [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
             })
-            .do(onNext: { [weak self] model in
-                if  model.results.firstIndex(where: { $0.id == self?.latestMovie?.id}) != nil {
-                    self?.latestMovie?.favorites = true
-                }
-            })
-                .map({ [weak self] _ -> LatestMovieResponseModel in
-                    return (self?.latestMovie)! as LatestMovieResponseModel
-                })
-                .asDriver(onErrorJustReturn: nil)
-                
-                let showPopularMoviesDefault = input.loadingPopularMovies
-                .flatMapLatest({ [apiClient] _ -> Observable<PopularMoviesResponseModel> in
-                    apiClient.getPopularMovies(atPage: 1)
-                })
                 .do(onNext: { [weak self] model in
-                    self?.popularMovies = model
+                    if  model.results.firstIndex(where: { $0.id == self?.latestMovie?.id}) != nil {
+                        self?.latestMovie?.favorites = true
+                    }
                 })
-                    .flatMapLatest({ [apiClient] _ -> Observable<FavoritesMoviesResponseModel> in
-                        apiClient.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!)
+                    .map({ [weak self] _ -> LatestMovieResponseModel in
+                        return (self?.latestMovie)! as LatestMovieResponseModel
+                    })
+                    .asDriver(onErrorJustReturn: nil)
+                    
+                    let showPopularMoviesDefault = input.loadingPopularMovies
+                    .flatMapLatest({ [apiClient] _ -> Observable<PopularMoviesResponseModel> in
+                        apiClient.getPopularMovies(atPage: 1)
                     })
                     .do(onNext: { [weak self] model in
-                        guard let array1 = self?.popularMovies?.results else { return }
-                        for element in model.results {
-                            if let index = array1.firstIndex(where: { $0.id == element.id}) {
-                                self?.popularMovies?.results[index].favorites = true
-                            }
-                        }
+                        self?.popularMovies = model
                     })
-                        .map({ [weak self] _ in
-                            return self?.popularMovies?.results as [PopularMoviesResponseModel.Result]
+                        .flatMapLatest({ [apiClient] _ -> Observable<FavoritesMoviesResponseModel> in
+                            apiClient.getFavoritesMovies(atPage: 1, withSessionId: UserDefaultsUseCase().sessionId!)
                         })
-                        .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
-                        
-                        let playLatestMovie = input.playLatestMovieTrigger
-                        .map({ [weak self] _ in
-                            if let id = self?.latestMovie?.id {
-                                self?.didSendEventClosure?(.showVideo(id: id))
+                        .do(onNext: { [weak self] model in
+                            guard let array1 = self?.popularMovies?.results else { return }
+                            for element in model.results {
+                                if let index = array1.firstIndex(where: { $0.id == element.id}) {
+                                    self?.popularMovies?.results[index].favorites = true
+                                }
+                            }
+                            if model.page < model.totalPages {
+                                self?.showTableLoadingTrigger.accept(true)
                             } else {
-                                return ()
+                                self?.showTableLoadingTrigger.accept(false)
                             }
                         })
-                        .asDriver(onErrorJustReturn: ())
-                        
-                        let likeLatestMovie = input.likeLatestMovieTrigger
-                        .flatMapLatest({ [self] _ -> Observable<MarkAsFavoriteResponseModel> in
-                            return apiClient.markAsFavorite(model: MarkAsFavoritePostResponseModel(
-                                mediaType: "movie",
-                                mediaID: latestMovie!.id,
-                                favorite: !latestMovie!.favorites
-                            ), withSessionId: UserDefaultsUseCase().sessionId!)
-                        })
-                        .map { [self] _ in
-                            self.latestMovie!.favorites.toggle()
-                            return self.latestMovie!.favorites
-                        }
-                        .asDriver(onErrorJustReturn: false)
+                            .map({ [weak self] _ in
+                                guard let model = self?.popularMovies?.results else { return [PopularMoviesResponseModel.Result]() }
+                                return model
+                            })
+                            .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
+                            
+                            let playLatestMovie = input.playLatestMovieTrigger
+                            .map({ [weak self] _ in
+                                if let id = self?.latestMovie?.id {
+                                    self?.didSendEventClosure?(.showVideo(id: id))
+                                } else {
+                                    return ()
+                                }
+                            })
+                            .asDriver(onErrorJustReturn: ())
+                            
+                            let likeLatestMovie = input.likeLatestMovieTrigger
+                            .flatMapLatest({ [self] _ -> Observable<MarkAsFavoriteResponseModel> in
+                                return apiClient.markAsFavorite(model: MarkAsFavoritePostResponseModel(
+                                    mediaType: "movie",
+                                    mediaID: latestMovie!.id,
+                                    favorite: !latestMovie!.favorites
+                                ), withSessionId: UserDefaultsUseCase().sessionId!)
+                            })
+                            .map { [self] _ in
+                                self.latestMovie!.favorites.toggle()
+                                return self.latestMovie!.favorites
+                            }
+                            .asDriver(onErrorJustReturn: false)
         
         let showAccount = input.showAccountTrigger
             .do(onNext: { [weak self] _ in
@@ -134,7 +142,7 @@ class HomeViewModel: ViewModelType {
                     return index.row == 19 * self.popularPage && page < totalPages
                 })
                 // Delay for test
-                .delay(RxTimeInterval.seconds(5), scheduler: MainScheduler.instance)
+                .delay(RxTimeInterval.seconds(2), scheduler: MainScheduler.instance)
                 .flatMapLatest({ [weak self] _ -> Observable<PopularMoviesResponseModel> in
                     guard let self = self else { return Observable.never() }
                     return self.apiClient.getPopularMovies(atPage: self.popularPage + 1)
@@ -154,9 +162,15 @@ class HomeViewModel: ViewModelType {
                                 self?.popularMovies?.results[index].favorites = true
                             }
                         }
+                        if model.page < model.totalPages {
+                            self?.showTableLoadingTrigger.accept(true)
+                        } else {
+                            self?.showTableLoadingTrigger.accept(false)
+                        }
                     })
                         .map({ [weak self] _ in
-                            return self?.popularMovies?.results as [PopularMoviesResponseModel.Result]
+                            guard let model =  self?.popularMovies?.results else { return [PopularMoviesResponseModel.Result]() }
+                            return model
                         })
                         .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())
                         
@@ -165,13 +179,18 @@ class HomeViewModel: ViewModelType {
                             return Driver.just(driver)
                         }
         
+        let showTableLoading = showTableLoadingTrigger.map({ bool in
+            return bool
+        }).startWith(true).asDriver(onErrorJustReturn: (true))
+        
         return Output(
             showLatestMovie: showLatestMovie,
             showPopularMovies: showPopularMovies,
             playLatestMovie: playLatestMovie,
             likeLatestMovie: likeLatestMovie,
             showAccount: showAccount,
-            showMovieInfo: showMovieInfo
+            showMovieInfo: showMovieInfo,
+            showTableLoading: showTableLoading
         )
     }
 }
