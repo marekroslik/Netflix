@@ -19,6 +19,7 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
+        collectionSetUp()
         bindViewModel()
         addAnimation()
         viewDidLoadRelay.accept(())
@@ -27,6 +28,7 @@ final class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewDidLoadRelay.accept(())
+        popularMoviesView.popularMoviesCollectionView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
     }
     
     private func bindViewModel() {
@@ -38,7 +40,8 @@ final class HomeViewController: UIViewController {
             playLatestMovieTrigger: latestMovieView.playButton.rx.tap.asObservable(),
             likeLatestMovieTrigger: latestMovieView.likeButton.rx.tap.asObservable(),
             showAccountTrigger: latestMovieView.accountButton.rx.tap.asObservable(),
-            popularMovieCellTrigger: popularMoviesView.popularMoviesCollectionView.rx.itemSelected.asObservable()
+            popularMovieCellTrigger: popularMoviesView.popularMoviesCollectionView.rx.itemSelected.asObservable(),
+            popularMovieScrollTrigger: popularMoviesView.popularMoviesCollectionView.rx.willDisplayCell.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
@@ -73,53 +76,63 @@ final class HomeViewController: UIViewController {
                         with: poster,
                         completed: { [latestMovieView] _, _, _, _ in
                             latestMovieView.loading.isHidden = true
-                        })
+                        }
+                    )
                 }
             })
             .disposed(by: bag)
         
-        outputs.showPopularMovies.do(onNext: { [self] _ in
-            self.viewLoading.isHidden = true
-        }).drive(popularMoviesView.popularMoviesCollectionView.rx.items(
-            cellIdentifier: CustomPopularMoviesCollectionViewCell.identifier,
-            cellType: CustomPopularMoviesCollectionViewCell.self)) { (_, element, cell) in
-                cell.loading.isHidden = false
-                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(element.posterPath!)") {
-                    cell.imageView.sd_setImage(
-                        with: poster,
-                        completed: { [cell] _, _, _, _ in
-                            cell.loading.isHidden = true
-                        })
+        outputs.showPopularMovies
+            .do(onNext: { [self] _ in
+                self.viewLoading.isHidden = true
+            })
+            .drive(popularMoviesView.popularMoviesCollectionView.rx.items(
+                cellIdentifier: CustomPopularMoviesCollectionViewCell.identifier,
+                cellType: CustomPopularMoviesCollectionViewCell.self)) { (_, element, cell) in
+                    cell.loading.isHidden = false
+                    if let poster = URL(string: "\(APIConstants.Api.urlImages)\(element.posterPath!)") {
+                        cell.imageView.sd_setImage(
+                            with: poster,
+                            completed: { [cell] _, _, _, _ in
+                                cell.loading.isHidden = true
+                            })
+                    }
+                    if element.favorites == true {
+                        cell.shadowView.layer.shadowOpacity = 1
+                    } else {
+                        cell.shadowView.layer.shadowOpacity = 0
+                    }
                 }
-                if element.favorites == true {
-                    cell.shadowView.layer.shadowOpacity = 1
-                } else {
-                    cell.shadowView.layer.shadowOpacity = 0
-                }
-            }
-            .disposed(by: bag)
+                .disposed(by: bag)
         
         outputs.showMovieInfo
-            .drive().disposed(by: bag)
+            .drive()
+            .disposed(by: bag)
         
-        outputs.showAccount.drive().disposed(by: bag)
+        outputs.showAccount
+            .drive()
+            .disposed(by: bag)
         
-        outputs.likeLatestMovie.drive(onNext: { [latestMovieView] bool in
-            if bool {
-                latestMovieView
-                    .likeButton
-                    .setImage(UIImage(systemName: "heart.fill")?
-                        .withRenderingMode(.alwaysTemplate), for: .normal)
-            } else {
-                latestMovieView
-                    .likeButton
-                    .setImage(UIImage(systemName: "heart")?
-                        .withRenderingMode(.alwaysTemplate), for: .normal)
-            }
-            
-        }).disposed(by: bag)
+        outputs.likeLatestMovie
+            .drive(onNext: { [latestMovieView] bool in
+                if bool {
+                    latestMovieView
+                        .likeButton
+                        .setImage(UIImage(systemName: "heart.fill")?
+                            .withRenderingMode(.alwaysTemplate), for: .normal)
+                } else {
+                    latestMovieView
+                        .likeButton
+                        .setImage(UIImage(systemName: "heart")?
+                            .withRenderingMode(.alwaysTemplate), for: .normal)
+                }
+                
+            })
+            .disposed(by: bag)
         
-        outputs.playLatestMovie.drive().disposed(by: bag)
+        outputs.playLatestMovie
+            .drive()
+            .disposed(by: bag)
         
     }
     
@@ -154,6 +167,35 @@ final class HomeViewController: UIViewController {
         viewLoading.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    private func collectionSetUp() {
+        popularMoviesView.popularMoviesCollectionView.delegate = self
+        popularMoviesView.popularMoviesCollectionView.register(
+            CustomPopularMoviesCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier
+        )
+        popularMoviesView.popularMoviesCollectionView.register(
+            FooterCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: FooterCollectionReusableView.identifier
+        )
+    }
+    private func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            return collectionView.dequeueReusableSupplementaryView(
+                ofKind: elementKind,
+                withReuseIdentifier: FooterCollectionReusableView.identifier,
+                for: indexPath
+            )
+    }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+            return CGSize(width: 100, height: 100)
     }
 }
 

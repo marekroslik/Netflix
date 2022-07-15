@@ -1,7 +1,7 @@
 struct PopularMoviesResponseModel: Codable {
-    let page: Int
+    var page: Int
     var results: [Result]
-    let totalResults, totalPages: Int
+    var totalResults, totalPages: Int
     
     enum CodingKeys: String, CodingKey {
         case page, results
@@ -10,13 +10,13 @@ struct PopularMoviesResponseModel: Codable {
     }
     
     struct Result: Codable {
-        let id: Int
+        var id: Int
         var favorites: Bool = false
-        let posterPath: String?
-        let title: String?
-        let voteAverage: Double?
-        let releaseDate: String?
-        let overview: String?
+        var posterPath: String?
+        var title: String?
+        var voteAverage: Double?
+        var releaseDate: String?
+        var overview: String?
         
         // swiftlint:disable nesting
         enum CodingKeys: String, CodingKey {

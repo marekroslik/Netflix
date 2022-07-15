@@ -22,10 +22,6 @@ final class HomePopularMoviesUIView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .black
-        collectionView.register(
-            CustomPopularMoviesCollectionViewCell.self,
-            forCellWithReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier
-        )
         return collectionView
     }()
     
@@ -38,7 +34,6 @@ final class HomePopularMoviesUIView: UIView {
     // Add subviews fucntion
     private func addSubviews() {
         addSubview(categoryName)
-        //        createCollectionView()
         addSubview(popularMoviesCollectionView)
     }
     
