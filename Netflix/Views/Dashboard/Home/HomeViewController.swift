@@ -197,21 +197,39 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegate
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        print("CREATE VIEW")
-        if kind == UICollectionView.elementKindSectionFooter {
-            print(popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: FooterCollectionReusableView.identifier,
-                for: indexPath
-            ))
-            return popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: FooterCollectionReusableView.identifier,
-                for: indexPath
-            )
-        }
-        return UICollectionReusableView()
+        return popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
+                            ofKind: UICollectionView.elementKindSectionFooter,
+                            withReuseIdentifier: FooterCollectionReusableView.identifier,
+                            for: indexPath) as? FooterCollectionReusableView ?? UICollectionReusableView(frame: .zero)
     }
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        willDisplaySupplementaryView view: UICollectionReusableView,
+//        forElementKind elementKind: String,
+//        at indexPath: IndexPath) -> UICollectionReusableView {
+//            print("CREATE VIEW")
+//            let footer = popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
+//                ofKind: UICollectionView.elementKindSectionFooter,
+//                withReuseIdentifier: FooterCollectionReusableView.identifier,
+//                for: indexPath) as? FooterCollectionReusableView
+//            return footer ?? UICollectionReusableView(frame: .zero)
+//    }
+//
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        viewForSupplementaryElementOfKind kind: String,
+//        at indexPath: IndexPath
+//    ) -> UICollectionReusableView {
+//        print("CREATE VIEW")
+//        if kind == UICollectionView.elementKindSectionFooter {
+//            return popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
+//                ofKind: kind,
+//                withReuseIdentifier: FooterCollectionReusableView.identifier,
+//                for: indexPath
+//            )
+//        }
+//        return UICollectionReusableView()
+//    }
     
     func collectionView(
         _ collectionView: UICollectionView,
