@@ -12,14 +12,12 @@ class FooterCollectionReusableView: UICollectionReusableView {
         spinner.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
-        spinner.backgroundColor = .yellow
         spinner.startAnimating()
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .yellow
         addSubview(tableSpinner)
     }
     

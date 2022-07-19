@@ -2,18 +2,56 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 import SDWebImage
 
 final class HomeViewController: UIViewController {
     var viewModel: HomeViewModel!
-    
     private let latestMovieView = HomeLatestMovieUIView()
     private let popularMoviesView = HomePopularMoviesUIView()
     private let viewLoading = LoadingUIView()
-    private var showPopularFooter: Bool = true
     
     private let bag = DisposeBag()
-    let viewDidLoadRelay = PublishRelay<Void>()
+    private let updateAllData = PublishRelay<Void>()
+    private var showPopularFooter: Bool = true
+    private let dataSourcePopularMovies = RxCollectionViewSectionedAnimatedDataSource<PopularMoviesCellModel>(
+        configureCell: { _, collectionView, indexPath, model in
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier,
+                for: indexPath
+            ) as? CustomPopularMoviesCollectionViewCell
+            if model.favorites == true {
+                cell?.shadowView.layer.shadowOpacity = 1
+            } else {
+                cell?.shadowView.layer.shadowOpacity = 0
+            }
+            guard let posterPath = model.posterPath else {
+                cell?.loading.isHidden = false
+                return cell ?? UICollectionViewCell(frame: .zero)
+            }
+            if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                cell?.imageView.sd_setImage(
+                    with: poster,
+                    completed: { [cell] _, error, _, _ in
+                        if error == nil {
+                            cell?.loading.isHidden = true
+                        } else {
+                            cell?.loading.isHidden = false
+                        }
+                    }
+                )
+            }
+            return cell ?? UICollectionViewCell(frame: .zero)
+        },
+        configureSupplementaryView: { _, collectionView, kind, indexPath in
+            let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: FooterCollectionReusableView.identifier,
+                for: indexPath
+            ) as? FooterCollectionReusableView
+            return footer ?? UICollectionReusableView(frame: .zero)
+        }
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,21 +61,21 @@ final class HomeViewController: UIViewController {
         collectionSetUp()
         bindViewModel()
         addAnimation()
-        viewDidLoadRelay.accept(())
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewDidLoadRelay.accept(())
+        updateAllData.accept(())
         popularMoviesView.popularMoviesCollectionView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
     }
     
     private func bindViewModel() {
         let inputs = HomeViewModel.Input(
-            loadingLatestMovie: viewDidLoadRelay.asObservable(),
-            loadingPopularMovies: viewDidLoadRelay.asObservable().do(onNext: { [self] _ in
-                self.viewLoading.isHidden = false
-            }),
+            loadingLatestMovie: updateAllData.asObservable(),
+            loadingPopularMovies: updateAllData.asObservable()
+                .do { [weak self] _ in
+                    self?.viewLoading.isHidden = false
+                },
             playLatestMovieTrigger: latestMovieView.playButton.rx.tap.asObservable(),
             likeLatestMovieTrigger: latestMovieView.likeButton.rx.tap.asObservable(),
             showAccountTrigger: latestMovieView.accountButton.rx.tap.asObservable(),
@@ -58,25 +96,30 @@ final class HomeViewController: UIViewController {
                 }
                 if let like = model?.favorites {
                     if like {
-                        latestMovieView
-                            .likeButton
-                            .setImage(
-                                UIImage(systemName: "heart.fill"),
-                                for: .normal)
+                        latestMovieView.likeButton.setImage(
+                            UIImage(systemName: "heart.fill"),
+                            for: .normal
+                        )
                     } else {
-                        latestMovieView
-                            .likeButton
-                            .setImage(
-                                UIImage(systemName: "heart"),
-                                for: .normal)
+                        latestMovieView.likeButton.setImage(
+                            UIImage(systemName: "heart"),
+                            for: .normal
+                        )
                     }
                 }
-                guard let posterPath = model?.posterPath else { return }
+                guard let posterPath = model?.posterPath else {
+                    latestMovieView.loading.isHidden = false
+                    return
+                }
                 if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
                     latestMovieView.movieImage.sd_setImage(
                         with: poster,
-                        completed: { [latestMovieView] _, _, _, _ in
-                            latestMovieView.loading.isHidden = true
+                        completed: { [latestMovieView] _, error, _, _ in
+                            if error == nil {
+                                latestMovieView.loading.isHidden = false
+                            } else {
+                                latestMovieView.loading.isHidden = true
+                            }
                         }
                     )
                 }
@@ -84,29 +127,16 @@ final class HomeViewController: UIViewController {
             .disposed(by: bag)
         
         outputs.showPopularMovies
-            .do(onNext: { [self] _ in
-                self.viewLoading.isHidden = true
-            })
-            .drive(popularMoviesView.popularMoviesCollectionView.rx.items(
-                cellIdentifier: CustomPopularMoviesCollectionViewCell.identifier,
-                cellType: CustomPopularMoviesCollectionViewCell.self)) { (_, element, cell) in
-                    cell.loading.isHidden = false
-                    if let poster = URL(string: "\(APIConstants.Api.urlImages)\(element.posterPath!)") {
-                        cell.imageView.sd_setImage(
-                            with: poster,
-                            completed: { [cell] _, _, _, _ in
-                                cell.loading.isHidden = true
-                            })
-                    }
-                    if element.favorites == true {
-                        cell.shadowView.layer.shadowOpacity = 1
-                    } else {
-                        cell.shadowView.layer.shadowOpacity = 0
-                    }
-                }
-                .disposed(by: bag)
+            .do { [weak self] _ in
+                self?.viewLoading.isHidden = true
+            }
+            .map { model in
+                [PopularMoviesCellModel(title: "Popular movies", data: model)]
+            }
+            .drive(popularMoviesView.popularMoviesCollectionView.rx.items(dataSource: dataSourcePopularMovies))
+            .disposed(by: bag)
         
-        outputs.showMovieInfo
+        outputs.showPopularMovieInfo
             .drive()
             .disposed(by: bag)
         
@@ -117,17 +147,16 @@ final class HomeViewController: UIViewController {
         outputs.likeLatestMovie
             .drive(onNext: { [latestMovieView] bool in
                 if bool {
-                    latestMovieView
-                        .likeButton
-                        .setImage(UIImage(systemName: "heart.fill")?
-                            .withRenderingMode(.alwaysTemplate), for: .normal)
+                    latestMovieView.likeButton.setImage(
+                        UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysTemplate),
+                        for: .normal
+                    )
                 } else {
-                    latestMovieView
-                        .likeButton
-                        .setImage(UIImage(systemName: "heart")?
-                            .withRenderingMode(.alwaysTemplate), for: .normal)
+                    latestMovieView.likeButton.setImage(
+                        UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate),
+                        for: .normal
+                    )
                 }
-                
             })
             .disposed(by: bag)
         
@@ -137,11 +166,9 @@ final class HomeViewController: UIViewController {
         
         outputs.showPopularCollectionLoading
             .drive(onNext: { [weak self] bool in
-                guard let self = self else { return }
-                self.showPopularFooter = bool
+                self?.showPopularFooter = bool
             })
             .disposed(by: bag)
-        
     }
     
     private func addAnimation() {
@@ -191,45 +218,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegate
             withReuseIdentifier: FooterCollectionReusableView.identifier
         )
     }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        return popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
-                            ofKind: UICollectionView.elementKindSectionFooter,
-                            withReuseIdentifier: FooterCollectionReusableView.identifier,
-                            for: indexPath) as? FooterCollectionReusableView ?? UICollectionReusableView(frame: .zero)
-    }
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        willDisplaySupplementaryView view: UICollectionReusableView,
-//        forElementKind elementKind: String,
-//        at indexPath: IndexPath) -> UICollectionReusableView {
-//            print("CREATE VIEW")
-//            let footer = popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
-//                ofKind: UICollectionView.elementKindSectionFooter,
-//                withReuseIdentifier: FooterCollectionReusableView.identifier,
-//                for: indexPath) as? FooterCollectionReusableView
-//            return footer ?? UICollectionReusableView(frame: .zero)
-//    }
-//
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        viewForSupplementaryElementOfKind kind: String,
-//        at indexPath: IndexPath
-//    ) -> UICollectionReusableView {
-//        print("CREATE VIEW")
-//        if kind == UICollectionView.elementKindSectionFooter {
-//            return popularMoviesView.popularMoviesCollectionView.dequeueReusableSupplementaryView(
-//                ofKind: kind,
-//                withReuseIdentifier: FooterCollectionReusableView.identifier,
-//                for: indexPath
-//            )
-//        }
-//        return UICollectionReusableView()
-//    }
     
     func collectionView(
         _ collectionView: UICollectionView,

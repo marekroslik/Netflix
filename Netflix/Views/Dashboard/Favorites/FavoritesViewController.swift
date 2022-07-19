@@ -50,10 +50,17 @@ final class FavoritesViewController: UIViewController {
             cellIdentifier: CustomFavoritesTableViewCell.identifier,
             cellType: CustomFavoritesTableViewCell.self)) { (_, element, cell) in
                 cell.loading.isHidden = false
-                guard let posterPath = element.posterPath else { return }
+                guard let posterPath = element.posterPath else {
+                    cell.loading.isHidden = false
+                    return
+                }
                 if let imageUrl = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
-                    cell.image.sd_setImage(with: imageUrl, completed: { [cell] _, _, _, _ in
-                        cell.loading.isHidden = true
+                    cell.image.sd_setImage(with: imageUrl, completed: { [cell] _, error, _, _ in
+                        if error == nil {
+                            cell.loading.isHidden = true
+                        } else {
+                            cell.loading.isHidden = false
+                        }
                     })
                 }
             }
