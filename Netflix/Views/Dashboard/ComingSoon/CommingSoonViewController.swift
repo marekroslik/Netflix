@@ -86,7 +86,7 @@ final class ComingSoonViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(comingSoonView)
         applyConstraints()
-        collectionSetUp()
+        collectionSetup()
         bindViewModel()
         viewDidLoadRelay.accept(())
         self.hideKeyboardWhenTappedAround() 
@@ -95,8 +95,8 @@ final class ComingSoonViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewDidLoadRelay.accept(())
-        comingSoonView.comingSoonCollectionView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
-        comingSoonView.searchMoviesCollectionView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+        comingSoonView.comingSoonCollectionView.setContentOffset(.zero, animated: false)
+        comingSoonView.searchMoviesCollectionView.setContentOffset(.zero, animated: false)
     }
     
     private func bindViewModel() {
@@ -166,7 +166,7 @@ final class ComingSoonViewController: UIViewController {
 }
 
 extension ComingSoonViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    private func collectionSetUp() {
+    private func collectionSetup() {
         comingSoonView.comingSoonCollectionView.delegate = self
         comingSoonView.comingSoonCollectionView.register(
             CustomComingSoonCollectionViewCell.self,
@@ -217,10 +217,7 @@ extension ComingSoonViewController: UICollectionViewDelegate, UICollectionViewDe
             }
             
         default:
-            return CGSize(
-                width: 0,
-                height: 0
-            )
+            return .zero
         }
     }
 }

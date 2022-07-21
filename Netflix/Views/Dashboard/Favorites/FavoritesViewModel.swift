@@ -24,7 +24,6 @@ class FavoritesViewModel: ViewModelType {
     private let apiClient: APIClient
     private let userDefaultsUseCase: UserDefaultsUseCase
     private var favoritesMovies: FavoritesMoviesResponseModel?
-    private var favoritesPage: Int = 1
     private let showTableLoadingTrigger = PublishRelay<Bool>()
     
     init(apiClient: APIClient, userDefaultsUseCase: UserDefaultsUseCase) {
@@ -35,19 +34,22 @@ class FavoritesViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         
         let showFavoritesMoviesDefault = input.loadingFavoritesMovies
-            .flatMapLatest({ [weak self] _ -> Observable<FavoritesMoviesResponseModel> in
-                return self!.apiClient.getFavoritesMovies(atPage: 1, withSessionId: self!.userDefaultsUseCase.sessionId!)
-            })
-            .do(onNext: { [weak self] model in
+            .flatMapLatest { [weak self] _ -> Observable<FavoritesMoviesResponseModel> in
+                guard
+                    let self = self,
+                    let sessionId = self.userDefaultsUseCase.sessionId
+                else { return Observable.never() }
+                return self.apiClient.getFavoritesMovies(atPage: 1, withSessionId: sessionId)
+            }
+            .do { [weak self] model in
                 guard let self = self else { return () }
                 self.favoritesMovies = model
-                self.favoritesPage = 1
                 if model.page < model.totalPages {
                     self.showTableLoadingTrigger.accept(true)
                 } else {
                     self.showTableLoadingTrigger.accept(false)
                 }
-            })
+            }
             .map { [weak self] _ in
                 guard
                     let self = self,
@@ -58,7 +60,7 @@ class FavoritesViewModel: ViewModelType {
             .asDriver(onErrorJustReturn: [FavoritesMoviesResponseModel.Result]())
         
         let deleteFavoritesMovie = input.favoritesMoviesDeleteTrigger
-            .flatMapLatest({ [weak self] indexPath -> Observable<MarkAsFavoriteResponseModel> in
+            .flatMapLatest { [weak self] indexPath -> Observable<MarkAsFavoriteResponseModel> in
                 guard
                     let self = self,
                     let movieId = self.favoritesMovies?.results[indexPath.row].id,
@@ -69,12 +71,12 @@ class FavoritesViewModel: ViewModelType {
                     mediaID: movieId,
                     favorite: false
                 ), withSessionId: sessionId))
-            })
-            .map({ _ in () })
+            }
+            .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         
         let showMovieInfo = input.favoritesMovieCellTrigger
-            .map({ [weak self] indexPath in
+            .map { [weak self] indexPath in
                 guard let self = self else { return () }
                 if let film = self.favoritesMovies?.results[indexPath.row] {
                     self.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
@@ -87,53 +89,58 @@ class FavoritesViewModel: ViewModelType {
                         release: film.releaseDate,
                         synopsis: film.overview)))
                 }
-            })
+            }
             .asDriver(onErrorJustReturn: ())
         
         let switchToComingSoon = input.switchToComingSoon
-            .do(onNext: { [didSendEventClosure] _ in
+            .do { [didSendEventClosure] _ in
                 guard let didSendEventClosure = didSendEventClosure else { return () }
                 didSendEventClosure(.comingSoon)
-            }).asDriver(onErrorJustReturn: ())
+            }
+            .asDriver(onErrorJustReturn: ())
         
-                let showTableLoading = showTableLoadingTrigger.map({ bool in
-                    return bool
-                }).startWith(true).asDriver(onErrorJustReturn: (true))
-                
-                let showScrollFavoritesMovies = input.trackFavoritesTableScrollTrigger
-                .filter({ [weak self] (_, indexPath: IndexPath) in
-                    guard
-                        let self = self,
-                        let page = self.favoritesMovies?.page,
-                        let totalPages = self.favoritesMovies?.totalPages
-                    else { return false }
-                    return indexPath.row == 19 * self.favoritesPage && page < totalPages
-                })
-                .flatMapLatest({ [weak self] _ -> Observable<FavoritesMoviesResponseModel> in
-                    guard
-                        let self = self,
-                        let sessionId = self.userDefaultsUseCase.sessionId
-                    else { return Observable.never() }
-                    return self.apiClient.getFavoritesMovies(
-                        atPage: self.favoritesPage + 1,
-                        withSessionId: sessionId
-                    )
-                })
-                .do(onNext: { [weak self] model in
-                    guard let self = self else { return () }
-                    self.favoritesMovies?.results += model.results
-                    self.favoritesPage += 1
-                    if model.page < model.totalPages {
-                        self.showTableLoadingTrigger.accept(true)
-                    } else {
-                        self.showTableLoadingTrigger.accept(false)
-                    }
-                })
-                    .map { [weak self] _ in
-                        guard let result = self?.favoritesMovies?.results else { return [FavoritesMoviesResponseModel.Result]() }
-                        return result
-                    }
-                    .asDriver(onErrorJustReturn: [FavoritesMoviesResponseModel.Result]())
+        let showTableLoading = showTableLoadingTrigger
+            .map { bool in
+                return bool
+            }
+            .startWith(true)
+            .asDriver(onErrorJustReturn: (true))
+        
+        let showScrollFavoritesMovies = input.trackFavoritesTableScrollTrigger
+            .filter { [weak self] (_, indexPath: IndexPath) in
+                guard
+                    let self = self,
+                    let page = self.favoritesMovies?.page,
+                    let totalPages = self.favoritesMovies?.totalPages
+                else { return false }
+                return indexPath.row == 19 * page && page < totalPages
+            }
+            .flatMapLatest { [weak self] _ -> Observable<FavoritesMoviesResponseModel> in
+                guard
+                    let self = self,
+                    let sessionId = self.userDefaultsUseCase.sessionId,
+                    let page = self.favoritesMovies?.page
+                else { return Observable.never() }
+                return self.apiClient.getFavoritesMovies(
+                    atPage: page + 1,
+                    withSessionId: sessionId
+                )
+            }
+            .do { [weak self] model in
+                guard let self = self else { return () }
+                self.favoritesMovies?.results += model.results
+                self.favoritesMovies?.page = model.page
+                if model.page < model.totalPages {
+                    self.showTableLoadingTrigger.accept(true)
+                } else {
+                    self.showTableLoadingTrigger.accept(false)
+                }
+            }
+            .map { [weak self] _ in
+                guard let result = self?.favoritesMovies?.results else { return [FavoritesMoviesResponseModel.Result]() }
+                return result
+            }
+            .asDriver(onErrorJustReturn: [FavoritesMoviesResponseModel.Result]())
         
         let showFavoritesMovies = Driver.merge(showFavoritesMoviesDefault, showScrollFavoritesMovies)
             .flatMapLatest { driver in

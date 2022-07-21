@@ -14,7 +14,7 @@ final class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(favoritesView)
-        tableSetUp()
+        tableSetup()
         applyConstraints()
         addAnimation()
         bindViewModel()
@@ -23,7 +23,7 @@ final class FavoritesViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateFavorites.accept(())
-        favoritesView.table.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+        favoritesView.table.setContentOffset(.zero, animated: false)
     }
     
     private func bindViewModel() {
@@ -87,7 +87,7 @@ final class FavoritesViewController: UIViewController {
             .disposed(by: bag)
     }
     
-    private func tableSetUp() {
+    private func tableSetup() {
         favoritesView.table.refreshControl?.addTarget(self, action: #selector(refreshControlTriggered), for: .valueChanged)
         favoritesView.tableSpinner.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: 200)
         favoritesView.table.tableFooterView = favoritesView.tableSpinner

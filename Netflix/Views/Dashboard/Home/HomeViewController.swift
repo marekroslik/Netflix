@@ -58,7 +58,7 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         applyConstraints()
-        collectionSetUp()
+        collectionSetup()
         bindViewModel()
         addAnimation()
     }
@@ -66,7 +66,7 @@ final class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateAllData.accept(())
-        popularMoviesView.popularMoviesCollectionView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+        popularMoviesView.popularMoviesCollectionView.setContentOffset(.zero, animated: false)
     }
     
     private func bindViewModel() {
@@ -107,6 +107,7 @@ final class HomeViewController: UIViewController {
                         )
                     }
                 }
+                latestMovieView.loading.isHidden = false
                 guard let posterPath = model?.posterPath else { return }
                 if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
                     latestMovieView.movieImage.sd_setImage(
@@ -203,12 +204,13 @@ final class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    private func collectionSetUp() {
+    private func collectionSetup() {
         popularMoviesView.popularMoviesCollectionView.delegate = self
         popularMoviesView.popularMoviesCollectionView.register(
             CustomPopularMoviesCollectionViewCell.self,
             forCellWithReuseIdentifier: CustomPopularMoviesCollectionViewCell.identifier
         )
+        
         popularMoviesView.popularMoviesCollectionView.register(
             FooterCollectionReusableView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
@@ -225,18 +227,15 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegate
         case popularMoviesView.popularMoviesCollectionView:
             if showPopularFooter {
                 return CGSize(
-                    width: view.frame.width,
-                    height: 100
+                    width: 100,
+                    height: view.frame.height
                 )
             } else {
                 return .zero
             }
             
         default:
-            return CGSize(
-                width: 0,
-                height: 0
-            )
+            return .zero
         }
     }
 }
