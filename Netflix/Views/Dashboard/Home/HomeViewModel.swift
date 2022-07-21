@@ -29,6 +29,7 @@ class HomeViewModel: ViewModelType {
     private let userDefaultsUseCase: UserDefaultsUseCase
     private var latestMovie: LatestMovieResponseModel?
     private var popularMovies: PopularMoviesResponseModel?
+    private var favoritesMovies: FavoritesMoviesResponseModel?
     private let showPopularCollectionLoadingTrigger = PublishRelay<Bool>()
     
     init(apiClient: APIClient, userDefaultsUseCase: UserDefaultsUseCase) {
@@ -73,11 +74,36 @@ class HomeViewModel: ViewModelType {
             }
             .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
-                return apiClient.getFavoritesMovies(atPage: 1, withSessionId: sessionId)
+                
+                func loadFavorites(at page: Int = 1 ) -> Observable<FavoritesMoviesResponseModel> {
+                    return apiClient.getFavoritesMovies(atPage: page, withSessionId: sessionId)
+                        .flatMap { result -> Observable<FavoritesMoviesResponseModel> in
+                            if result.page == result.totalPages {
+                                return Observable.just(result)
+                            } else {
+                                return loadFavorites(at: page + 1).map { nextPageMovies in
+                                    var combined = result
+                                    combined.results += nextPageMovies.results
+                                    return combined
+                                }
+                            }
+                        }
+                }
+                return loadFavorites()
             }
             .do { [weak self] model in
+                self?.favoritesMovies = model
+                print(model.results.count)
+                for (index, movie) in model.results.enumerated() {
+                    print("\(index) \(movie.title!)")
+                }
+                
+                return
+            }
+            .do { [weak self] _ in
                 guard let popularMovies = self?.popularMovies?.results else { return }
-                for element in model.results {
+                guard let favoritesMovies = self?.favoritesMovies?.results else { return }
+                for element in favoritesMovies {
                     if let index = popularMovies.firstIndex(where: { $0.identity == element.id}) {
                         self?.popularMovies?.results[index].favorites = true
                     }
@@ -169,13 +195,11 @@ class HomeViewModel: ViewModelType {
                     self?.showPopularCollectionLoadingTrigger.accept(false)
                 }
             }
-            .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
-                guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
-                return apiClient.getFavoritesMovies(atPage: 1, withSessionId: sessionId)
-            }
-            .do { [weak self] model in
+            .do { [weak self] _ in
                 guard let array1 = self?.popularMovies?.results else { return }
-                for element in model.results {
+                guard let favoritesMovies = self?.favoritesMovies?.results else { return }
+
+                for element in favoritesMovies {
                     if let index = array1.firstIndex(where: { $0.identity == element.id}) {
                         self?.popularMovies?.results[index].favorites = true
                     }
