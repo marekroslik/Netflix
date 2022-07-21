@@ -1,6 +1,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 import SDWebImage
 
 final class ComingSoonViewController: UIViewController {
@@ -10,11 +11,81 @@ final class ComingSoonViewController: UIViewController {
     
     private let bag = DisposeBag()
     let viewDidLoadRelay = PublishRelay<Void>()
+    private let dataSourceComingSoon = RxCollectionViewSectionedAnimatedDataSource<ComingSoonCellModel>(
+        configureCell: { _, collectionView, indexPath, model in
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CustomComingSoonCollectionViewCell.identifier,
+                for: indexPath
+            ) as? CustomComingSoonCollectionViewCell
+            cell?.shadowView.layer.shadowOpacity = model.favorites ? 1 : 0
+            guard let posterPath = model.posterPath else {
+                cell?.loading.isHidden = false
+                return cell ?? UICollectionViewCell(frame: .zero)
+            }
+            if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                cell?.imageView.sd_setImage(
+                    with: poster,
+                    completed: { [cell] _, error, _, _ in
+                        if error == nil {
+                            cell?.loading.isHidden = true
+                        } else {
+                            cell?.loading.isHidden = false
+                        }
+                    }
+                )
+            }
+            return cell ?? UICollectionViewCell(frame: .zero)
+        },
+        configureSupplementaryView: { _, collectionView, kind, indexPath in
+            let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: FooterCollectionReusableView.identifier,
+                for: indexPath
+            ) as? FooterCollectionReusableView
+            return footer ?? UICollectionReusableView(frame: .zero)
+        }
+    )
+    
+    private let dataSourceSearchMovies = RxCollectionViewSectionedAnimatedDataSource<SearchMoviesCellModel>(
+        configureCell: { _, collectionView, indexPath, model in
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CustomComingSoonCollectionViewCell.identifier,
+                for: indexPath
+            ) as? CustomComingSoonCollectionViewCell
+            cell?.shadowView.layer.shadowOpacity = model.favorites ? 1 : 0
+            guard let posterPath = model.posterPath else {
+                cell?.loading.isHidden = false
+                return cell ?? UICollectionViewCell(frame: .zero)
+            }
+            if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
+                cell?.imageView.sd_setImage(
+                    with: poster,
+                    completed: { [cell] _, error, _, _ in
+                        if error == nil {
+                            cell?.loading.isHidden = true
+                        } else {
+                            cell?.loading.isHidden = false
+                        }
+                    }
+                )
+            }
+            return cell ?? UICollectionViewCell(frame: .zero)
+        },
+        configureSupplementaryView: { _, collectionView, kind, indexPath in
+            let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: FooterCollectionReusableView.identifier,
+                for: indexPath
+            ) as? FooterCollectionReusableView
+            return footer ?? UICollectionReusableView(frame: .zero)
+        }
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(comingSoonView)
         applyConstraints()
+        collectionSetUp()
         bindViewModel()
         viewDidLoadRelay.accept(())
     }
@@ -40,53 +111,30 @@ final class ComingSoonViewController: UIViewController {
             .drive(comingSoonView.comingSoonCollectionView.rx.isHidden)
             .disposed(by: bag)
         
-        outputs.showComingSoonMovies.do(onNext: { [self] _ in
-            self.comingSoonView.loading.isHidden = true
-        }).drive(comingSoonView.comingSoonCollectionView.rx.items(
-            cellIdentifier: CustomComingSoonCollectionViewCell.identifier,
-            cellType: CustomComingSoonCollectionViewCell.self)) { (_, element, cell) in
-                cell.loading.isHidden = false
-                guard let posterPath = element.posterPath else { return }
-                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
-                    cell.imageView.sd_setImage(
-                        with: poster,
-                        completed: { [cell] _, _, _, _ in
-                        cell.loading.isHidden = true
-                    })
-                    if element.favorites == true {
-                        cell.shadowView.layer.shadowOpacity = 1
-                    } else {
-                        cell.shadowView.layer.shadowOpacity = 0
-                    }
-                }
+        outputs.showComingSoonMovies
+            .do { [self] _ in
+                self.comingSoonView.loading.isHidden = true
             }
+            .map { model in
+                [ComingSoonCellModel(title: "Coming soon", data: model)]
+            }
+            .drive(comingSoonView.comingSoonCollectionView.rx.items(dataSource: dataSourceComingSoon))
             .disposed(by: bag)
         
         outputs.showComingSoonMovieInfo.drive().disposed(by: bag)
         
-        outputs.showSearchMovies.do(onNext: { [comingSoonView] model in
-            if model == [] {
-                comingSoonView.searchMoviesCollectionView.isHidden = true
-            } else {
-                comingSoonView.searchMoviesCollectionView.isHidden = false
-            }
-        }).drive(comingSoonView.searchMoviesCollectionView.rx.items(
-            cellIdentifier: CustomComingSoonCollectionViewCell.identifier,
-            cellType: CustomComingSoonCollectionViewCell.self)) { (_, element, cell) in
-                cell.loading.isHidden = false
-                guard let posterPath = element.posterPath else { return }
-                if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
-                    cell.imageView.sd_setImage(with: poster, completed: { [cell] _, _, _, _ in
-                        cell.loading.isHidden = true
-                    })
-                    if element.favorites == true {
-                        cell.shadowView.layer.shadowOpacity = 1
-                    } else {
-                        cell.shadowView.layer.shadowOpacity = 0
-                    }
+        outputs.showSearchMovies
+            .do { [comingSoonView] model in
+                if model == [] {
+                    comingSoonView.searchMoviesCollectionView.isHidden = true
+                } else {
+                    comingSoonView.searchMoviesCollectionView.isHidden = false
                 }
-                
             }
+            .map { model in
+                [SearchMoviesCellModel(title: "Search movies", data: model)]
+            }
+            .drive(comingSoonView.searchMoviesCollectionView.rx.items(dataSource: dataSourceSearchMovies))
             .disposed(by: bag)
         
         outputs.showSearchMovieInfo.drive().disposed(by: bag)
@@ -96,6 +144,58 @@ final class ComingSoonViewController: UIViewController {
     private func applyConstraints() {
         comingSoonView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+    }
+}
+
+extension ComingSoonViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    private func collectionSetUp() {
+        comingSoonView.comingSoonCollectionView.delegate = self
+        comingSoonView.comingSoonCollectionView.register(
+            CustomComingSoonCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier
+        )
+        comingSoonView.comingSoonCollectionView.register(
+            FooterCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: FooterCollectionReusableView.identifier
+        )
+        
+        comingSoonView.searchMoviesCollectionView.delegate = self
+        comingSoonView.searchMoviesCollectionView.register(
+            CustomComingSoonCollectionViewCell.self,
+            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier
+        )
+        comingSoonView.searchMoviesCollectionView.register(
+            FooterCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: FooterCollectionReusableView.identifier
+        )
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+        switch collectionView {
+        case comingSoonView.comingSoonCollectionView:
+            return CGSize(
+                width: view.frame.width,
+                height: 100
+            )
+            
+        case comingSoonView.searchMoviesCollectionView:
+            return CGSize(
+                width: view.frame.width,
+                height: 100
+            )
+            
+        default:
+            return CGSize(
+                width: 0,
+                height: 0
+            )
         }
     }
 }

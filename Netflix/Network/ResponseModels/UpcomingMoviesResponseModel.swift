@@ -1,4 +1,4 @@
-import Foundation
+import RxDataSources
 
 struct UpcomingMoviesResponseModel: Codable {
     let page: Int?
@@ -15,8 +15,8 @@ struct UpcomingMoviesResponseModel: Codable {
         let maximum, minimum: String?
     }
     
-    struct Result: Codable {
-        let id: Int
+    struct Result: Codable, IdentifiableType, Equatable {
+        let identity: Int
         var favorites: Bool = false
         let posterPath: String?
         let title: String?
@@ -26,7 +26,7 @@ struct UpcomingMoviesResponseModel: Codable {
         
         // swiftlint:disable nesting
         enum CodingKeys: String, CodingKey {
-            case id
+            case identity = "id"
             case posterPath = "poster_path"
             case title
             case voteAverage = "vote_average"

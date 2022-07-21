@@ -28,10 +28,6 @@ final class ComingSoonUIView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .black
-        collectionView.register(
-            CustomComingSoonCollectionViewCell.self,
-            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier
-        )
         return collectionView
     }()
     
@@ -42,10 +38,6 @@ final class ComingSoonUIView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .black
-        collectionView.register(
-            CustomComingSoonCollectionViewCell.self,
-            forCellWithReuseIdentifier: CustomComingSoonCollectionViewCell.identifier
-        )
         return collectionView
     }()
     

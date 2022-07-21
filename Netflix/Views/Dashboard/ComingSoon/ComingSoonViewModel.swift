@@ -47,7 +47,7 @@ class ComingSoonViewModel: ViewModelType {
                 self?.favoritesMovies = model
                 guard let array1 = self?.comingSoonMovies?.results else { return }
                 for element in model.results {
-                    if let index = array1.firstIndex(where: { $0.id == element.id}) {
+                    if let index = array1.firstIndex(where: { $0.identity == element.id}) {
                         self?.comingSoonMovies?.results?[index].favorites = true
                     }
                 }
@@ -68,7 +68,7 @@ class ComingSoonViewModel: ViewModelType {
                     guard let array1 = model.results else { return }
                     guard let array2 = self?.favoritesMovies?.results else { return }
                     for element in array2 {
-                        if let index = array1.firstIndex(where: { $0.id == element.id}) {
+                        if let index = array1.firstIndex(where: { $0.identity == element.id}) {
                             self?.searchMovies?.results?[index].favorites = true
                         }
                     }
@@ -81,7 +81,7 @@ class ComingSoonViewModel: ViewModelType {
             .map({ [weak self] indexPath in
                 if let film = self?.comingSoonMovies?.results?[indexPath.row] {
                     self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
-                        id: film.id,
+                        id: film.identity,
                         favorite: film.favorites,
                         posterPath: film.posterPath,
                         title: film.title,
@@ -97,7 +97,7 @@ class ComingSoonViewModel: ViewModelType {
             .map({ [weak self] indexPath in
                 if let film = self?.searchMovies?.results?[indexPath.row] {
                     self?.didSendEventClosure?(.movieDetails(model: MovieDetailsModel(
-                        id: film.id,
+                        id: film.identity,
                         favorite: film.favorites,
                         posterPath: film.posterPath,
                         title: film.title,
