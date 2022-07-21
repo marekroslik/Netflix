@@ -1,10 +1,10 @@
 import RxDataSources
 
 struct UpcomingMoviesResponseModel: Codable {
-    let page: Int?
-    var results: [Result]?
+    var page: Int
+    var results: [Result]
     let dates: Dates?
-    let totalPages, totalResults: Int?
+    let totalPages, totalResults: Int
     
     enum CodingKeys: String, CodingKey {
         case page, results, dates

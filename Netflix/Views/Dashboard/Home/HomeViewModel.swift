@@ -65,22 +65,22 @@ class HomeViewModel: ViewModelType {
             }
             .do { [weak self] model in
                 self?.popularMovies = model
+                if model.page < model.totalPages {
+                    self?.showPopularCollectionLoadingTrigger.accept(true)
+                } else {
+                    self?.showPopularCollectionLoadingTrigger.accept(false)
+                }
             }
             .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
                 return apiClient.getFavoritesMovies(atPage: 1, withSessionId: sessionId)
             }
             .do { [weak self] model in
-                guard let array1 = self?.popularMovies?.results else { return }
+                guard let popularMovies = self?.popularMovies?.results else { return }
                 for element in model.results {
-                    if let index = array1.firstIndex(where: { $0.identity == element.id}) {
+                    if let index = popularMovies.firstIndex(where: { $0.identity == element.id}) {
                         self?.popularMovies?.results[index].favorites = true
                     }
-                }
-                if model.page < model.totalPages {
-                    self?.showPopularCollectionLoadingTrigger.accept(true)
-                } else {
-                    self?.showPopularCollectionLoadingTrigger.accept(false)
                 }
             }
             .map { [weak self] _ in
@@ -103,10 +103,12 @@ class HomeViewModel: ViewModelType {
         
         let likeLatestMovie = input.likeLatestMovieTrigger
             .flatMapLatest { [weak self] _ -> Observable<MarkAsFavoriteResponseModel> in
-                guard let self = self else { return Observable.never() }
-                guard let id = self.latestMovie?.id else { return Observable.never() }
-                guard let favorites = self.latestMovie?.favorites else { return Observable.never() }
-                guard let sessionId = self.userDefaultsUseCase.sessionId else { return Observable.never() }
+                guard
+                    let self = self,
+                    let id = self.latestMovie?.id,
+                    let favorites = self.latestMovie?.favorites,
+                    let sessionId = self.userDefaultsUseCase.sessionId
+                else { return Observable.never() }
                 return self.apiClient.markAsFavorite(model: MarkAsFavoritePostResponseModel(
                     mediaType: "movie",
                     mediaID: id,
@@ -144,21 +146,28 @@ class HomeViewModel: ViewModelType {
         
         let showScrollPopularMovies = input.popularMovieScrollTrigger
             .filter { [weak self] (_, index: IndexPath) in
-                guard let self = self else { return false }
-                guard let page = self.popularMovies?.page else { return false }
-                guard let totalPages = self.popularMovies?.totalPages else { return false }
+                guard
+                    let self = self,
+                    let page = self.popularMovies?.page,
+                    let totalPages = self.popularMovies?.totalPages
+                else { return false }
                 return index.row == 19 * page && page < totalPages
             }
-        // Delay for test
-            .delay(RxTimeInterval.seconds(2), scheduler: MainScheduler.instance)
             .flatMapLatest { [weak self] _ -> Observable<PopularMoviesResponseModel> in
-                guard let self = self else { return Observable.never() }
-                guard let page = self.popularMovies?.page else { return Observable.never() }
+                guard
+                    let self = self,
+                    let page = self.popularMovies?.page
+                else { return Observable.never() }
                 return self.apiClient.getPopularMovies(atPage: page + 1)
             }
             .do { [weak self] model in
                 self?.popularMovies?.page += 1
                 self?.popularMovies?.results += model.results
+                if model.page < model.totalPages {
+                    self?.showPopularCollectionLoadingTrigger.accept(true)
+                } else {
+                    self?.showPopularCollectionLoadingTrigger.accept(false)
+                }
             }
             .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
@@ -170,11 +179,6 @@ class HomeViewModel: ViewModelType {
                     if let index = array1.firstIndex(where: { $0.identity == element.id}) {
                         self?.popularMovies?.results[index].favorites = true
                     }
-                }
-                if model.page < model.totalPages {
-                    self?.showPopularCollectionLoadingTrigger.accept(true)
-                } else {
-                    self?.showPopularCollectionLoadingTrigger.accept(false)
                 }
             }
             .map { [weak self] _ in

@@ -1,9 +1,9 @@
 import RxDataSources
 
 struct SearchMoviesResponseModel: Codable {
-    let page: Int?
-    var results: [Result]?
-    let totalResults, totalPages: Int?
+    var page: Int
+    var results: [Result]
+    let totalResults, totalPages: Int
     
     enum CodingKeys: String, CodingKey {
         case page, results

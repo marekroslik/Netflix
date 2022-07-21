@@ -49,17 +49,21 @@ class FavoritesViewModel: ViewModelType {
                 }
             })
             .map { [weak self] _ in
-                guard let self = self else { return [FavoritesMoviesResponseModel.Result]() }
-                guard let result = self.favoritesMovies?.results else { return [FavoritesMoviesResponseModel.Result]() }
+                guard
+                    let self = self,
+                    let result = self.favoritesMovies?.results
+                else { return [FavoritesMoviesResponseModel.Result]() }
                 return result
             }
             .asDriver(onErrorJustReturn: [FavoritesMoviesResponseModel.Result]())
         
         let deleteFavoritesMovie = input.favoritesMoviesDeleteTrigger
             .flatMapLatest({ [weak self] indexPath -> Observable<MarkAsFavoriteResponseModel> in
-                guard let self = self else { return Observable.never() }
-                guard let movieId = self.favoritesMovies?.results[indexPath.row].id else { return Observable.never() }
-                guard let sessionId = self.userDefaultsUseCase.sessionId else { return Observable.never() }
+                guard
+                    let self = self,
+                    let movieId = self.favoritesMovies?.results[indexPath.row].id,
+                    let sessionId = self.userDefaultsUseCase.sessionId
+                else { return Observable.never() }
                 return (self.apiClient.markAsFavorite(model: MarkAsFavoritePostResponseModel(
                     mediaType: "movie",
                     mediaID: movieId,
@@ -98,16 +102,18 @@ class FavoritesViewModel: ViewModelType {
                 
                 let showScrollFavoritesMovies = input.trackFavoritesTableScrollTrigger
                 .filter({ [weak self] (_, indexPath: IndexPath) in
-                    guard let self = self else { return false }
-                    guard let page = self.favoritesMovies?.page else { return false }
-                    guard let totalPages = self.favoritesMovies?.totalPages else { return false }
+                    guard
+                        let self = self,
+                        let page = self.favoritesMovies?.page,
+                        let totalPages = self.favoritesMovies?.totalPages
+                    else { return false }
                     return indexPath.row == 19 * self.favoritesPage && page < totalPages
                 })
-                // Delay for test
-                .delay(RxTimeInterval.seconds(2), scheduler: MainScheduler.instance)
                 .flatMapLatest({ [weak self] _ -> Observable<FavoritesMoviesResponseModel> in
-                    guard let self = self else { return Observable.never() }
-                    guard let sessionId = self.userDefaultsUseCase.sessionId else { return Observable.never() }
+                    guard
+                        let self = self,
+                        let sessionId = self.userDefaultsUseCase.sessionId
+                    else { return Observable.never() }
                     return self.apiClient.getFavoritesMovies(
                         atPage: self.favoritesPage + 1,
                         withSessionId: sessionId

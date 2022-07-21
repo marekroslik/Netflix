@@ -5,12 +5,13 @@ import RxDataSources
 import SDWebImage
 
 final class ComingSoonViewController: UIViewController {
-    
     private let comingSoonView = ComingSoonUIView()
     var viewModel: ComingSoonViewModel!
     
     private let bag = DisposeBag()
     let viewDidLoadRelay = PublishRelay<Void>()
+    private var showComingSoonFooter: Bool = true
+    private var showSearchFooter: Bool = true
     private let dataSourceComingSoon = RxCollectionViewSectionedAnimatedDataSource<ComingSoonCellModel>(
         configureCell: { _, collectionView, indexPath, model in
             let cell = collectionView.dequeueReusableCell(
@@ -88,11 +89,14 @@ final class ComingSoonViewController: UIViewController {
         collectionSetUp()
         bindViewModel()
         viewDidLoadRelay.accept(())
+        self.hideKeyboardWhenTappedAround() 
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewDidLoadRelay.accept(())
+        comingSoonView.comingSoonCollectionView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+        comingSoonView.searchMoviesCollectionView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
     }
     
     private func bindViewModel() {
@@ -102,7 +106,9 @@ final class ComingSoonViewController: UIViewController {
             }),
             searchText: comingSoonView.searchTextField.rx.text.orEmpty.asObservable(),
             comingSoonMovieCellTrigger: comingSoonView.comingSoonCollectionView.rx.itemSelected.asObservable(),
-            searchMovieCellTrigger: comingSoonView.searchMoviesCollectionView.rx.itemSelected.asObservable()
+            searchMovieCellTrigger: comingSoonView.searchMoviesCollectionView.rx.itemSelected.asObservable(),
+            comingSoonMovieScrollTrigger: comingSoonView.comingSoonCollectionView.rx.willDisplayCell.asObservable(),
+            searchMovieScrollTrigger: comingSoonView.searchMoviesCollectionView.rx.willDisplayCell.asObservable()
         )
         
         let outputs = viewModel.transform(input: inputs)
@@ -139,6 +145,17 @@ final class ComingSoonViewController: UIViewController {
         
         outputs.showSearchMovieInfo.drive().disposed(by: bag)
         
+        outputs.showComingSoonCollectionLoading
+            .drive(onNext: { [weak self] bool in
+                self?.showComingSoonFooter = bool
+            })
+            .disposed(by: bag)
+        
+        outputs.showSearchCollectionLoading
+            .drive(onNext: { [weak self] bool in
+                self?.showSearchFooter = bool
+            })
+            .disposed(by: bag)
     }
     
     private func applyConstraints() {
@@ -180,16 +197,24 @@ extension ComingSoonViewController: UICollectionViewDelegate, UICollectionViewDe
     ) -> CGSize {
         switch collectionView {
         case comingSoonView.comingSoonCollectionView:
-            return CGSize(
-                width: view.frame.width,
-                height: 100
-            )
+            if showComingSoonFooter {
+                return CGSize(
+                    width: view.frame.width,
+                    height: 100
+                )
+            } else {
+                return .zero
+            }
             
         case comingSoonView.searchMoviesCollectionView:
-            return CGSize(
-                width: view.frame.width,
-                height: 100
-            )
+            if showComingSoonFooter {
+                return CGSize(
+                    width: view.frame.width,
+                    height: 100
+                )
+            } else {
+                return .zero
+            }
             
         default:
             return CGSize(

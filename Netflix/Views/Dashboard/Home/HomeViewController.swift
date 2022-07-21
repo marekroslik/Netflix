@@ -107,10 +107,7 @@ final class HomeViewController: UIViewController {
                         )
                     }
                 }
-                guard let posterPath = model?.posterPath else {
-                    latestMovieView.loading.isHidden = false
-                    return
-                }
+                guard let posterPath = model?.posterPath else { return }
                 if let poster = URL(string: "\(APIConstants.Api.urlImages)\(posterPath)") {
                     latestMovieView.movieImage.sd_setImage(
                         with: poster,
@@ -224,13 +221,23 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegate
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        if showPopularFooter {
+        switch collectionView {
+        case popularMoviesView.popularMoviesCollectionView:
+            if showPopularFooter {
+                return CGSize(
+                    width: view.frame.width,
+                    height: 100
+                )
+            } else {
+                return .zero
+            }
+            
+        default:
             return CGSize(
-                width: 100,
-                height: popularMoviesView.popularMoviesCollectionView.frame.height
+                width: 0,
+                height: 0
             )
         }
-        return CGSize(width: 0, height: 0)
     }
 }
 
