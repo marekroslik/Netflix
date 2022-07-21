@@ -1,7 +1,9 @@
+import RxDataSources
+
 struct PopularMoviesResponseModel: Codable {
-    let page: Int
+    var page: Int
     var results: [Result]
-    let totalResults, totalPages: Int
+    var totalResults, totalPages: Int
     
     enum CodingKeys: String, CodingKey {
         case page, results
@@ -9,18 +11,19 @@ struct PopularMoviesResponseModel: Codable {
         case totalPages = "total_pages"
     }
     
-    struct Result: Codable {
-        let id: Int
+    struct Result: Codable, IdentifiableType, Equatable {
+        
+        var identity: Int
         var favorites: Bool = false
-        let posterPath: String?
-        let title: String?
-        let voteAverage: Double?
-        let releaseDate: String?
-        let overview: String?
+        var posterPath: String?
+        var title: String?
+        var voteAverage: Double?
+        var releaseDate: String?
+        var overview: String?
         
         // swiftlint:disable nesting
         enum CodingKeys: String, CodingKey {
-            case id
+            case identity = "id"
             case posterPath = "poster_path"
             case title
             case voteAverage = "vote_average"
