@@ -88,7 +88,6 @@ final class ComingSoonViewController: UIViewController {
         applyConstraints()
         collectionSetup()
         bindViewModel()
-        viewDidLoadRelay.accept(())
         self.hideKeyboardWhenTappedAround() 
     }
     
@@ -207,7 +206,7 @@ extension ComingSoonViewController: UICollectionViewDelegate, UICollectionViewDe
             }
             
         case comingSoonView.searchMoviesCollectionView:
-            if showComingSoonFooter {
+            if showSearchFooter {
                 return CGSize(
                     width: view.frame.width,
                     height: 100

@@ -48,7 +48,21 @@ class HomeViewModel: ViewModelType {
             }
             .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
-                return apiClient.getFavoritesMovies(atPage: 1, withSessionId: sessionId)
+                func loadFavorites(at page: Int = 1 ) -> Observable<FavoritesMoviesResponseModel> {
+                    return apiClient.getFavoritesMovies(atPage: page, withSessionId: sessionId)
+                        .flatMap { result -> Observable<FavoritesMoviesResponseModel> in
+                            if result.page == result.totalPages {
+                                return Observable.just(result)
+                            } else {
+                                return loadFavorites(at: page + 1).map { nextPageMovies in
+                                    var combined = result
+                                    combined.results += nextPageMovies.results
+                                    return combined
+                                }
+                            }
+                        }
+                }
+                return loadFavorites()
             }
             .do { [weak self] model in
                 if  model.results.firstIndex(where: { $0.id == self?.latestMovie?.id}) != nil {
@@ -74,7 +88,6 @@ class HomeViewModel: ViewModelType {
             }
             .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
                 guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
-                
                 func loadFavorites(at page: Int = 1 ) -> Observable<FavoritesMoviesResponseModel> {
                     return apiClient.getFavoritesMovies(atPage: page, withSessionId: sessionId)
                         .flatMap { result -> Observable<FavoritesMoviesResponseModel> in
@@ -93,14 +106,6 @@ class HomeViewModel: ViewModelType {
             }
             .do { [weak self] model in
                 self?.favoritesMovies = model
-                print(model.results.count)
-                for (index, movie) in model.results.enumerated() {
-                    print("\(index) \(movie.title!)")
-                }
-                
-                return
-            }
-            .do { [weak self] _ in
                 guard let popularMovies = self?.popularMovies?.results else { return }
                 guard let favoritesMovies = self?.favoritesMovies?.results else { return }
                 for element in favoritesMovies {
@@ -206,7 +211,8 @@ class HomeViewModel: ViewModelType {
                 }
             }
             .map { [weak self] _ in
-                guard let model = self?.popularMovies?.results else { return [PopularMoviesResponseModel.Result]() }
+                guard let model = self?.popularMovies?.results
+                else { return [PopularMoviesResponseModel.Result]() }
                 return model
             }
             .asDriver(onErrorJustReturn: [PopularMoviesResponseModel.Result]())

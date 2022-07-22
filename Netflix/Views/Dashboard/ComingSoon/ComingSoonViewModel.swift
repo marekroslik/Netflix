@@ -38,7 +38,6 @@ class ComingSoonViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        
         let showComingSoonMoviesDefault = input.loadingComingSoonMovies
             .flatMapLatest { [apiClient] _ -> Observable<UpcomingMoviesResponseModel> in
                 apiClient.getUpcomingMovies(atPage: 1)
@@ -51,8 +50,23 @@ class ComingSoonViewModel: ViewModelType {
                     self?.showComingSoonCollectionLoadingTrigger.accept(false)
                 }
             }
-            .flatMapLatest { [apiClient, userDefaultsUseCase] _ in
-                apiClient.getFavoritesMovies(atPage: 1, withSessionId: userDefaultsUseCase.sessionId!)
+            .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
+                guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
+                func loadFavorites(at page: Int = 1 ) -> Observable<FavoritesMoviesResponseModel> {
+                    return apiClient.getFavoritesMovies(atPage: page, withSessionId: sessionId)
+                        .flatMap { result -> Observable<FavoritesMoviesResponseModel> in
+                            if result.page == result.totalPages {
+                                return Observable.just(result)
+                            } else {
+                                return loadFavorites(at: page + 1).map { nextPageMovies in
+                                    var combined = result
+                                    combined.results += nextPageMovies.results
+                                    return combined
+                                }
+                            }
+                        }
+                }
+                return loadFavorites()
             }
             .do { [weak self] model in
                 self?.favoritesMovies = model
@@ -78,16 +92,38 @@ class ComingSoonViewModel: ViewModelType {
             }
             .do { [weak self] model in
                 self?.searchMovies = model
-                guard let array2 = self?.favoritesMovies?.results else { return }
-                for element in array2 {
-                    if let index = model.results.firstIndex(where: { $0.identity == element.id}) {
+                if model.page < model.totalPages {
+                    self?.showSearchCollectionLoadingTrigger.accept(true)
+                } else {
+                    self?.showSearchCollectionLoadingTrigger.accept(false)
+                }
+            }
+            .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
+                guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
+                func loadFavorites(at page: Int = 1 ) -> Observable<FavoritesMoviesResponseModel> {
+                    return apiClient.getFavoritesMovies(atPage: page, withSessionId: sessionId)
+                        .flatMap { result -> Observable<FavoritesMoviesResponseModel> in
+                            if result.page == result.totalPages {
+                                return Observable.just(result)
+                            } else {
+                                return loadFavorites(at: page + 1).map { nextPageMovies in
+                                    var combined = result
+                                    combined.results += nextPageMovies.results
+                                    return combined
+                                }
+                            }
+                        }
+                }
+                return loadFavorites()
+            }
+            .do { [weak self] model in
+                self?.favoritesMovies = model
+                guard let searchMovies = self?.searchMovies?.results else { return }
+                guard let favoritesMovies = self?.favoritesMovies?.results else { return }
+                for element in favoritesMovies {
+                    if let index = searchMovies.firstIndex(where: { $0.identity == element.id}) {
                         self?.searchMovies?.results[index].favorites = true
                     }
-                }
-                if model.page < model.totalPages {
-                    self?.showComingSoonCollectionLoadingTrigger.accept(true)
-                } else {
-                    self?.showComingSoonCollectionLoadingTrigger.accept(false)
                 }
             }
             .map { [weak self] _ in
@@ -163,15 +199,11 @@ class ComingSoonViewModel: ViewModelType {
                     self?.showComingSoonCollectionLoadingTrigger.accept(false)
                 }
             }
-            .flatMapLatest { [apiClient, userDefaultsUseCase] _ -> Observable<FavoritesMoviesResponseModel> in
-                guard let sessionId = userDefaultsUseCase.sessionId else { return Observable.never() }
-                return apiClient.getFavoritesMovies(atPage: 1, withSessionId: sessionId)
-            }
-            .do { [weak self] model in
-                self?.favoritesMovies = model
-                guard let array1 = self?.comingSoonMovies?.results else { return }
-                for element in model.results {
-                    if let index = array1.firstIndex(where: { $0.identity == element.id}) {
+            .do { [weak self] _ in
+                guard let comingSoonMovies = self?.comingSoonMovies?.results else { return }
+                guard let favoritesMovies = self?.favoritesMovies?.results else { return }
+                for element in favoritesMovies {
+                    if let index = comingSoonMovies.firstIndex(where: { $0.identity == element.id}) {
                         self?.comingSoonMovies?.results[index].favorites = true
                     }
                 }
@@ -204,16 +236,19 @@ class ComingSoonViewModel: ViewModelType {
             .do { [weak self] model in
                 self?.searchMovies?.results += model.results
                 self?.searchMovies?.page = model.page
+                if model.page < model.totalPages {
+                    self?.showSearchCollectionLoadingTrigger.accept(true)
+                } else {
+                    self?.showSearchCollectionLoadingTrigger.accept(false)
+                }
+            }
+            .do { [weak self] _ in
+                guard let searchMovies = self?.searchMovies?.results else { return }
                 guard let favoritesMovies = self?.favoritesMovies?.results else { return }
                 for element in favoritesMovies {
-                    if let index = model.results.firstIndex(where: { $0.identity == element.id}) {
+                    if let index = searchMovies.firstIndex(where: { $0.identity == element.id}) {
                         self?.searchMovies?.results[index].favorites = true
                     }
-                }
-                if model.page < model.totalPages {
-                    self?.showComingSoonCollectionLoadingTrigger.accept(true)
-                } else {
-                    self?.showComingSoonCollectionLoadingTrigger.accept(false)
                 }
             }
             .map { [weak self] _ in
