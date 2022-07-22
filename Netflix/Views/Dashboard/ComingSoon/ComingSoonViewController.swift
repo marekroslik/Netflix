@@ -130,7 +130,7 @@ final class ComingSoonViewController: UIViewController {
         
         outputs.showSearchMovies
             .do { [comingSoonView] model in
-                if model == [] {
+                if model.isEmpty {
                     comingSoonView.searchMoviesCollectionView.isHidden = true
                 } else {
                     comingSoonView.searchMoviesCollectionView.isHidden = false

@@ -5,9 +5,10 @@
 - Swift
 - UIKit
 - MVVM
+- CoordintorPattern
 - RXSwift
 - RxCocoa
-- CoordintorPattern
+- RxDataSources
 - REST
 - Keychain
 - UserDefaults
